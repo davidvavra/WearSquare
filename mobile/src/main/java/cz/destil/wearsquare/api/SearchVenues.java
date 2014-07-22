@@ -29,10 +29,19 @@ public interface SearchVenues {
     public static class Venue {
         public String id;
         public String name;
+        List<FoursquareCategory> categories;
+
+        public String getCategoryIconUrl() {
+            if (categories.size() > 0) {
+                FoursquareIcon icon = categories.get(0).icon;
+                return icon.prefix + "64" + icon.suffix;
+            }
+            return null;
+        }
 
         @Override
         public String toString() {
-            return name;
+            return name + "|" + getCategoryIconUrl();
         }
     }
 
@@ -40,5 +49,14 @@ public interface SearchVenues {
 
     class FoursquareContent {
         List<Venue> venues;
+    }
+
+    class FoursquareCategory {
+        FoursquareIcon icon;
+    }
+
+    class FoursquareIcon {
+        String prefix;
+        String suffix;
     }
 }

@@ -1,0 +1,115 @@
+package cz.destil.wearsquare.adapter;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.wearable.view.CircledImageView;
+import android.support.wearable.view.WearableListView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import cz.destil.wearsquare.R;
+
+public class CheckInAdapter extends WearableListView.Adapter {
+
+    private float mDefaultCircleRadius;
+    private float mSelectedCircleRadius;
+    private Context mContext;
+    private List<Venue> items = new ArrayList<Venue>();
+
+    public CheckInAdapter(Context context) {
+        mContext = context;
+        mDefaultCircleRadius = context.getResources().getDimension(R.dimen.default_settings_circle_radius);
+        mSelectedCircleRadius = context.getResources().getDimension(R.dimen.selected_settings_circle_radius);
+    }
+
+    @Override
+    public WearableListView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        return new WearableListView.ViewHolder(new ListItem(mContext));
+    }
+
+    @Override
+    public void onBindViewHolder(WearableListView.ViewHolder viewHolder, int position) {
+        Venue venue = items.get(position);
+        ListItem listItem = (ListItem) viewHolder.itemView;
+        TextView text = (TextView) listItem.findViewById(R.id.text);
+        text.setText(venue.name);
+        CircledImageView image = (CircledImageView) listItem.findViewById(R.id.image);
+        image.setImageDrawable(new BitmapDrawable(mContext.getResources(), venue.icon));
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public void addVenue(Venue venue) {
+        items.add(venue);
+    }
+
+    class ListItem extends FrameLayout implements WearableListView.Item {
+
+        @InjectView(R.id.image)
+        CircledImageView image;
+        @InjectView(R.id.text)
+        TextView text;
+
+        public ListItem(Context context) {
+            super(context);
+            View.inflate(context, R.layout.list_item_check_in, this);
+            ButterKnife.inject(this, this);
+        }
+
+        @Override
+        public float getProximityMinValue() {
+            return mDefaultCircleRadius;
+        }
+
+        @Override
+        public float getProximityMaxValue() {
+            return mSelectedCircleRadius;
+        }
+
+        @Override
+        public float getCurrentProximityValue() {
+            return image.getCircleRadius();
+        }
+
+        @Override
+        public void setScalingAnimatorValue(float value) {
+            image.setCircleRadius(value);
+            image.setCircleRadiusPressed(value);
+        }
+
+        @Override
+        public void onScaleUpStart() {
+            image.setAlpha(1f);
+            text.setAlpha(1f);
+        }
+
+        @Override
+        public void onScaleDownStart() {
+            image.setAlpha(0.5f);
+            text.setAlpha(0.5f);
+        }
+    }
+
+    public static class Venue {
+        String id;
+        String name;
+        Bitmap icon;
+
+        public Venue(String id, String name, Bitmap icon) {
+            this.id = id;
+            this.name = name;
+            this.icon = icon;
+        }
+    }
+}

@@ -26,4 +26,5 @@ dependencies {
     compile 'Teleport:teleportlib:0.1.1'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.picasso:picasso:2.3.3'
 }
