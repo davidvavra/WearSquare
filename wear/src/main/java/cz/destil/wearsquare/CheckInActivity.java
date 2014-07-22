@@ -1,6 +1,5 @@
 package cz.destil.wearsquare;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.support.wearable.view.GridViewPager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class CheckInActivity extends Activity {
+public class CheckInActivity extends BaseActivity {
 
     @InjectView(R.id.viewpager)
     GridViewPager vPager;
@@ -20,7 +19,13 @@ public class CheckInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
         ButterKnife.inject(this);
-        vPager.setAdapter(new CheckInAdapter());
+       // vPager.setAdapter(new CheckInAdapter());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        teleport().sendMessage("/start", null);
     }
 
     class CheckInAdapter extends FragmentGridPagerAdapter {
