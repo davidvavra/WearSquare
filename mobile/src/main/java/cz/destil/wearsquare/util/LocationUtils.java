@@ -1,0 +1,16 @@
+package cz.destil.wearsquare.util;
+
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
+
+import cz.destil.wearsquare.core.App;
+
+public class LocationUtils {
+
+    public static String getLastLocation() {
+        LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        return location.getLatitude() + "," + location.getLongitude();
+    }
+}

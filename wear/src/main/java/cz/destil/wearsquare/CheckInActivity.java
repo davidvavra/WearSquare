@@ -1,11 +1,10 @@
 package cz.destil.wearsquare;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
-public class CheckInActivity extends Activity {
+public class CheckInActivity extends BaseActivity {
 
     private TextView mTextView;
 
@@ -18,6 +17,7 @@ public class CheckInActivity extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.text);
+                teleport().sendMessage("/start", null);
             }
         });
     }
