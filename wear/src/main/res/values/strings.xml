@@ -3,5 +3,6 @@
 
     <string name="app_name">WearSquare</string>
     <string name="please_connect">Please connect your Wear to your phone.</string>
+    <string name="check_in">Check in</string>
 
 </resources>
