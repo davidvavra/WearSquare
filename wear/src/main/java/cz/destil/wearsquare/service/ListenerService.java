@@ -3,6 +3,7 @@ package cz.destil.wearsquare.service;
 import android.graphics.Bitmap;
 
 import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.Node;
 import com.mariux.teleport.lib.TeleportService;
 
 import java.util.ArrayList;

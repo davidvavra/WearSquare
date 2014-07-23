@@ -4,10 +4,9 @@ import android.os.Bundle;
 import android.support.wearable.view.WearableListView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,6 +22,8 @@ public class CheckInActivity extends BaseActivity {
     WearableListView vList;
     @InjectView(R.id.progress)
     ProgressBar vProgress;
+    @InjectView(R.id.error)
+    TextView vError;
 
     CheckInAdapter mAdapter;
 
@@ -34,10 +35,20 @@ public class CheckInActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void startConnected() {
+        super.startConnected();
         DebugLog.d("sending start message");
         teleport().sendMessage("/start", null);
+        vProgress.setVisibility(View.VISIBLE);
+        vError.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startDisconnected() {
+        super.startDisconnected();
+        vProgress.setVisibility(View.GONE);
+        vError.setVisibility(View.VISIBLE);
+        vError.setText(R.string.please_connect);
     }
 
     @Subscribe

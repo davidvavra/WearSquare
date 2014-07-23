@@ -3,6 +3,11 @@ package cz.destil.wearsquare.core;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
 import com.mariux.teleport.lib.TeleportClient;
 
 import cz.destil.wearsquare.util.DebugLog;
@@ -30,6 +35,26 @@ public class BaseActivity extends Activity {
         super.onStart();
         DebugLog.d("onStart");
         mTeleportClient.connect();
+                Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+
+
+                    @Override
+                    public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
+                        if (getConnectedNodesResult.getNodes().size()>0) {
+                            startConnected();
+                        } else {
+                            startDisconnected();
+                        }
+                    }
+                });
+    }
+
+    protected void startDisconnected() {
+        DebugLog.d("start disconnected");
+    }
+
+    protected void startConnected() {
+        DebugLog.d("start connected");
     }
 
     @Override
@@ -43,4 +68,7 @@ public class BaseActivity extends Activity {
         return mTeleportClient;
     }
 
+    public boolean isConnected() {
+        return mTeleportClient.getGoogleApiClient().isConnected();
+    }
 }
