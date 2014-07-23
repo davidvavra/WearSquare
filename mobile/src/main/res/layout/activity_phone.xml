@@ -9,7 +9,7 @@
     tools:context=".PhoneActivity">
 
     <TextView
-        android:text="Waiting for message"
+        android:text="Launch WearSquare on you watch to check-in"
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

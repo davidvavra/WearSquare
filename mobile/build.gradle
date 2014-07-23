@@ -27,4 +27,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
 }

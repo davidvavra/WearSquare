@@ -19,27 +19,27 @@ public class Api {
     public static final String URL = "https://api.foursquare.com/v2";
 
     public static RestAdapter get() {
-        return new RestAdapter.Builder().setEndpoint(URL).setLogLevel(RestAdapter.LogLevel.FULL).setLog(new
-                                                                                                                 RestAdapter.Log() {
-                                                                                                                     @Override
-                                                                                                                     public void log(String s) {
-                                                                                                                         if (BuildConfig.DEBUG) {
-                                                                                                                             DebugLog.i(s);
-                                                                                                                         }
-                                                                                                                     }
-                                                                                                                 })
+        return new RestAdapter.Builder().setEndpoint(URL).setLogLevel(RestAdapter.LogLevel.BASIC).setLog(new
+                                                                                                                RestAdapter.Log() {
+                                                                                                                    @Override
+                                                                                                                    public void log(String s) {
+                                                                                                                        if (BuildConfig.DEBUG) {
+                                                                                                                            DebugLog.i(s);
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                })
                 .setRequestInterceptor(new RequestInterceptor() {
-            @Override
-            public void intercept(RequestFacade requestFacade) {
-                requestFacade.addQueryParam("v", BUILD_DATE);
-                if (TextUtils.isEmpty("")) {
-                    requestFacade.addQueryParam("client_id", Hidden.CLIENT_ID);
-                    requestFacade.addQueryParam("client_secret", Hidden.CLIENT_SECRET);
-                } else {
-                    requestFacade.addQueryParam("oauth_token", "");
-                }
-            }
-        }).build();
+                    @Override
+                    public void intercept(RequestFacade requestFacade) {
+                        requestFacade.addQueryParam("v", BUILD_DATE);
+                        if (TextUtils.isEmpty("")) {
+                            requestFacade.addQueryParam("client_id", Hidden.CLIENT_ID);
+                            requestFacade.addQueryParam("client_secret", Hidden.CLIENT_SECRET);
+                        } else {
+                            requestFacade.addQueryParam("oauth_token", "");
+                        }
+                    }
+                }).build();
     }
 
     // parent classes common for all requests:

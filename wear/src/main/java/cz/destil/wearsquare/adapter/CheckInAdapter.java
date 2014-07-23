@@ -21,13 +21,18 @@ public class CheckInAdapter extends WearableListView.Adapter {
 
     private float mDefaultCircleRadius;
     private float mSelectedCircleRadius;
+    private int mDefaultCircleColor;
+    private int mSelectedCircleColor;
     private Context mContext;
-    private List<Venue> items = new ArrayList<Venue>();
+    private List<Venue> items;
 
-    public CheckInAdapter(Context context) {
+    public CheckInAdapter(Context context, List<Venue> items) {
         mContext = context;
+        this.items = items;
         mDefaultCircleRadius = context.getResources().getDimension(R.dimen.default_settings_circle_radius);
         mSelectedCircleRadius = context.getResources().getDimension(R.dimen.selected_settings_circle_radius);
+        mDefaultCircleColor = context.getResources().getColor(R.color.unselected);
+        mSelectedCircleColor = context.getResources().getColor(R.color.selected);
     }
 
     @Override
@@ -48,10 +53,6 @@ public class CheckInAdapter extends WearableListView.Adapter {
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public void addVenue(Venue venue) {
-        items.add(venue);
     }
 
     class ListItem extends FrameLayout implements WearableListView.Item {
@@ -92,12 +93,14 @@ public class CheckInAdapter extends WearableListView.Adapter {
         public void onScaleUpStart() {
             image.setAlpha(1f);
             text.setAlpha(1f);
+            image.setCircleColor(mSelectedCircleColor);
         }
 
         @Override
         public void onScaleDownStart() {
             image.setAlpha(0.5f);
             text.setAlpha(0.5f);
+            image.setCircleColor(mDefaultCircleColor);
         }
     }
 

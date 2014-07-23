@@ -34,7 +34,7 @@ public interface SearchVenues {
         public String getCategoryIconUrl() {
             if (categories.size() > 0) {
                 FoursquareIcon icon = categories.get(0).icon;
-                return icon.prefix + "64" + icon.suffix;
+                return icon.prefix + "44" + icon.suffix;
             }
             return null;
         }
