@@ -2,7 +2,11 @@
 <resources>
 
     <string name="app_name">WearSquare</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="connect_to_4sq">Connect to Foursquare</string>
+    <string name="main_message">To check-in from your watch:\n - say \'OK Google, start check in\'\n - or launch
+        \'Check In\' from <a href="https://play.google.com/store/apps/details?id=com.npi.wearminilauncher">Wear
+        Mini Launcher</a></string>
+    <string name="login_message">Please login with Foursquare first:</string>
+    <string name="please_connect_foursquare_first">Login to Foursquare on your phone first</string>
 
 </resources>

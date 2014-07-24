@@ -20,12 +20,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
+    compile project(':foursquare-oauth-library')
     compile 'com.google.android.gms:play-services-wearable:+'
     compile 'Teleport:teleportlib:0.1.1'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    //compile 'com.squareup.okhttp:okhttp:2.0.0'
+    //compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 }

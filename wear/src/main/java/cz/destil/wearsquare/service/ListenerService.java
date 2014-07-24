@@ -12,6 +12,7 @@ import java.util.List;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.core.BaseAsyncTask;
+import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.VenueSearchEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
@@ -20,14 +21,20 @@ public class ListenerService extends TeleportService {
     @Override
     public void onCreate() {
         super.onCreate();
-        setOnSyncDataItemTask(new CheckInVenuesTask());
+        setOnSyncDataItemTask( new CheckInVenuesTask());
     }
 
     class CheckInVenuesTask extends OnSyncDataItemTask {
         @Override
         protected void onPostExecute(DataMap data) {
             DebugLog.d("receiving item");
-            new BitMapsTask(data).start();
+            if (data.containsKey("error_message")) {
+                DebugLog.d("error");
+                App.bus().post(new ErrorEvent(data.getString("error_message")));
+            } else {
+                DebugLog.d("check in");
+                new BitMapsTask(data).start();
+            }
             setOnSyncDataItemTask(new CheckInVenuesTask());
         }
     }

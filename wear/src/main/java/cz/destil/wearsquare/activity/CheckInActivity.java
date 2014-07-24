@@ -13,6 +13,7 @@ import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.core.BaseActivity;
+import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.VenueSearchEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
@@ -46,9 +47,7 @@ public class CheckInActivity extends BaseActivity {
     @Override
     public void startDisconnected() {
         super.startDisconnected();
-        vProgress.setVisibility(View.GONE);
-        vError.setVisibility(View.VISIBLE);
-        vError.setText(R.string.please_connect);
+        showError(getString(R.string.please_connect));
     }
 
     @Subscribe
@@ -57,5 +56,16 @@ public class CheckInActivity extends BaseActivity {
         vProgress.setVisibility(View.GONE);
         mAdapter = new CheckInAdapter(CheckInActivity.this, event.getVenues());
         vList.setAdapter(mAdapter);
+    }
+
+    @Subscribe
+    public void onError(ErrorEvent event) {
+        showError(event.getMessage());
+    }
+
+    private void showError(String message) {
+        vProgress.setVisibility(View.GONE);
+        vError.setVisibility(View.VISIBLE);
+        vError.setText(message);
     }
 }

@@ -1,17 +1,30 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".PhoneActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                tools:context=".PhoneActivity">
 
     <TextView
-        android:text="Launch WearSquare on you watch to check-in"
-        android:id="@+id/test"
+        android:id="@+id/primary"
+        tools:text="Primary message"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_height="wrap_content"/>
 
-</RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/foursquare_button"
+        android:text="@string/connect_to_4sq"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_blue"/>
+
+</LinearLayout>
