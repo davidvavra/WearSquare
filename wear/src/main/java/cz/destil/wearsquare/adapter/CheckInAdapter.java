@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -31,8 +30,8 @@ public class CheckInAdapter extends WearableListView.Adapter {
         this.items = items;
         mDefaultCircleRadius = context.getResources().getDimension(R.dimen.default_settings_circle_radius);
         mSelectedCircleRadius = context.getResources().getDimension(R.dimen.selected_settings_circle_radius);
-        mDefaultCircleColor = context.getResources().getColor(R.color.unselected);
-        mSelectedCircleColor = context.getResources().getColor(R.color.selected);
+        mDefaultCircleColor = context.getResources().getColor(R.color.medium_gray);
+        mSelectedCircleColor = context.getResources().getColor(R.color.brand);
     }
 
     @Override
@@ -48,6 +47,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         text.setText(venue.name);
         CircledImageView image = (CircledImageView) listItem.findViewById(R.id.image);
         image.setImageDrawable(new BitmapDrawable(mContext.getResources(), venue.icon));
+        listItem.setTag(venue.id);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.mariux.teleport.lib.TeleportClient;
 
+import butterknife.ButterKnife;
 import cz.destil.wearsquare.util.DebugLog;
 
 public class BaseActivity extends Activity {

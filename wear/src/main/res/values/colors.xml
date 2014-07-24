@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="selected">#2979ff</color>
-    <color name="unselected">#9e9e9e</color>
+    <color name="brand">#2979ff</color>
+    <color name="light_blue">#91a7ff</color>
+    <color name="medium_gray">#9e9e9e</color>
 </resources>

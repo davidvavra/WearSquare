@@ -17,7 +17,7 @@ import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.VenueSearchEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
-public class CheckInActivity extends BaseActivity {
+public class CheckInListActivity extends BaseActivity {
 
     @InjectView(R.id.list)
     WearableListView vList;
@@ -31,7 +31,7 @@ public class CheckInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_in);
+        setContentView(R.layout.activity_check_in_list);
         ButterKnife.inject(this);
     }
 
@@ -54,8 +54,24 @@ public class CheckInActivity extends BaseActivity {
     public void onVenueSearch(VenueSearchEvent event) {
         DebugLog.d("setting up adapter");
         vProgress.setVisibility(View.GONE);
-        mAdapter = new CheckInAdapter(CheckInActivity.this, event.getVenues());
+        mAdapter = new CheckInAdapter(CheckInListActivity.this, event.getVenues());
         vList.setAdapter(mAdapter);
+        vList.setClickListener(new WearableListView.ClickListener() {
+                                   @Override
+                                   public void onClick(WearableListView.ViewHolder viewHolder) {
+                                       String id = (String) viewHolder.itemView.getTag();
+                                       String name = ((TextView) viewHolder.itemView.findViewById(R.id.text)).getText
+                                               ().toString();
+                                       DebugLog.d("id=" + id + " name=" + name);
+                                       CheckInActivity.call(CheckInListActivity.this, id, name);
+                                   }
+
+                                   @Override
+                                   public void onTopEmptyRegionClick() {
+
+                                   }
+                               }
+        );
     }
 
     @Subscribe

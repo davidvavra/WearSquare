@@ -1,30 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="@color/white"
-              tools:context=".MyActivity"
-              tools:deviceIds="wear">
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/progress"
-        android:indeterminate="true"/>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center"
+    android:background="@color/white">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@android:color/primary_text_light"
-        android:padding="@dimen/dismiss_padding"
-        android:id="@+id/error"/>
+        tools:text="Inmite s.r.o."
+        android:id="@+id/name"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
 
-    <android.support.wearable.view.WearableListView
-        android:id="@+id/list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="36dp"
+        android:orientation="horizontal">
+
+        <android.support.wearable.view.DelayedConfirmationView
+            android:id="@+id/confirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cancel"
+            app:circle_color="@color/blue"
+            app:circle_radius="@dimen/circle_radius"
+            app:circle_radius_pressed="@dimen/circle_radius_pressed"
+            app:circle_padding="@dimen/circle_padding"
+            app:circle_border_width="@dimen/circle_border_normal_width"
+            app:circle_border_color="@color/light_blue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textColor="@color/medium_gray"
+            android:text="@string/checking_in"/>
+    </LinearLayout>
+
+</LinearLayout>

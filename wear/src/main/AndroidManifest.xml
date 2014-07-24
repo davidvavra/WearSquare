@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cz.destil.wearsquare" >
+          package="cz.destil.wearsquare">
 
-    <uses-feature android:name="android.hardware.type.watch" />
+    <uses-feature android:name="android.hardware.type.watch"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:name=".core.App"
-        android:theme="@android:style/Theme.DeviceDefault" >
+        android:theme="@android:style/Theme.DeviceDefault">
+        <activity
+            android:name=".activity.CheckInListActivity"
+            android:label="@string/check_in">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activity.CheckInActivity"
-            android:label="@string/check_in" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            >
         </activity>
 
         <service
             android:name=".service.ListenerService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"/>
             </intent-filter>
         </service>
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version"/>
     </application>
 
 </manifest>
