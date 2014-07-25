@@ -24,6 +24,7 @@
             android:name=".activity.CheckInActivity"
             >
         </activity>
+        <activity android:name="android.support.wearable.activity.ConfirmationActivity" />
 
         <service
             android:name=".service.ListenerService">

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.wearable.Asset;
-import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.mariux.teleport.lib.TeleportService;
@@ -14,7 +13,6 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Api;
@@ -36,6 +34,7 @@ public class FoursquareService extends TeleportService {
     @Override
     public void onCreate() {
         super.onCreate();
+        DebugLog.d("Service started");
         setOnGetMessageTask(new ListenForMessageTask());
     }
 

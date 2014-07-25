@@ -18,6 +18,7 @@
         android:fontFamily="sans-serif-condensed-light"
         android:gravity="center_vertical"
         android:layout_height="52dp"
+        android:maxLines="2"
         android:layout_marginLeft="72dp"
         android:layout_marginRight="16dp"
         android:layout_width="wrap_content"

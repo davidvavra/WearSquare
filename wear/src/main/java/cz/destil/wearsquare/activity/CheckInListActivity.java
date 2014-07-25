@@ -14,6 +14,7 @@ import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.event.ErrorEvent;
+import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.event.VenueSearchEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
@@ -77,6 +78,11 @@ public class CheckInListActivity extends BaseActivity {
     @Subscribe
     public void onError(ErrorEvent event) {
         showError(event.getMessage());
+    }
+
+    @Subscribe
+    public void onExit(ExitEvent event) {
+        finish();
     }
 
     private void showError(String message) {
