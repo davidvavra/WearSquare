@@ -59,6 +59,7 @@ public class CheckInActivity extends BaseActivity {
             @Override
             public void onTimerFinished(View view) {
                 if (!mTimerSelected) {
+                    teleport().sendMessage("check-in/"+getIntent().getStringExtra("VENUE_ID"), null);
                     Intent i = new Intent(CheckInActivity.this, ConfirmationActivity.class);
                     i.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);
                     i.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.checked_in));

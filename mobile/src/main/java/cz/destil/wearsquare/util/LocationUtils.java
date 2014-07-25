@@ -13,4 +13,16 @@ public class LocationUtils {
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         return location.getLatitude() + "," + location.getLongitude();
     }
+
+    public static int getLastAccuracy() {
+        LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        return (int) location.getAccuracy();
+    }
+
+    public static int getLastAltitude() {
+        LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        return (int) location.getAltitude();
+    }
 }

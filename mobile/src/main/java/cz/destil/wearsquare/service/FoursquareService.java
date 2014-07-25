@@ -2,6 +2,7 @@ package cz.destil.wearsquare.service;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataMap;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Api;
+import cz.destil.wearsquare.api.CheckIns;
 import cz.destil.wearsquare.api.SearchVenues;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.data.Preferences;
@@ -42,30 +44,54 @@ public class FoursquareService extends TeleportService {
         @Override
         protected void onPostExecute(String path) {
             if (path.equals("/start")) {
-                DebugLog.d("service called from wear");
+                DebugLog.d("downloading venues");
                 if (Preferences.hasFoursquareToken()) {
-                    Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
-                            new Callback<SearchVenues.SearchResponse>() {
-
-                                @Override
-                                public void success(SearchVenues.SearchResponse searchResponse, Response response) {
-                                    DebugLog.d("success=" + searchResponse.getVenues());
-                                    syncToWear(searchResponse.getVenues());
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    sendError(error.getMessage());
-                                }
-                            }
-                    );
+                    downloadCheckInList();
                 } else {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
 
                 setOnGetMessageTask(new ListenForMessageTask());
+            } else if (path.startsWith("check-in")) {
+                DebugLog.d("sending check in");
+                sendCheckIn(path);
             }
         }
+    }
+
+    private void sendCheckIn(String path) {
+        Uri uri = Uri.parse(path);
+        String id = uri.getLastPathSegment();
+        Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(), LocationUtils.getLastAltitude(),
+                new Callback<CheckIns.CheckInResponse>() {
+                    @Override
+                    public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
+                        DebugLog.d("check in successful");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        sendError(error.getMessage());
+                    }
+                });
+    }
+
+    private void downloadCheckInList() {
+        Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
+                new Callback<SearchVenues.SearchResponse>() {
+
+                    @Override
+                    public void success(SearchVenues.SearchResponse searchResponse, Response response) {
+                        DebugLog.d("success=" + searchResponse.getVenues());
+                        syncToWear(searchResponse.getVenues());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        sendError(error.getMessage());
+                    }
+                }
+        );
     }
 
     private void sendError(String message) {
