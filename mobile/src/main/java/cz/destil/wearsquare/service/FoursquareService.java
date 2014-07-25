@@ -3,6 +3,7 @@ package cz.destil.wearsquare.service;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataMap;
@@ -18,6 +19,7 @@ import java.util.List;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Api;
 import cz.destil.wearsquare.api.CheckIns;
+import cz.destil.wearsquare.api.ExploreVenues;
 import cz.destil.wearsquare.api.SearchVenues;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.data.Preferences;
@@ -30,8 +32,13 @@ import retrofit.client.Response;
 
 public class FoursquareService extends TeleportService {
 
-    // need to hold strong reference to targets, because Picasso holds WeakReferences
-    HashMap<String, Target> mTargets;
+    // for image downloading:
+    HashMap<String, Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
+    int mBitmapsDownloaded;
+    String mPath;
+    String mKey;
+    ArrayList<DataMap> mDataVenues;
+    int mNumberOfBitmaps;
 
     @Override
     public void onCreate() {
@@ -43,20 +50,59 @@ public class FoursquareService extends TeleportService {
     class ListenForMessageTask extends OnGetMessageTask {
         @Override
         protected void onPostExecute(String path) {
-            if (path.equals("/start")) {
+            if (path.equals("/check-in-list")) {
                 DebugLog.d("downloading venues");
                 if (Preferences.hasFoursquareToken()) {
                     downloadCheckInList();
                 } else {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
-
-                setOnGetMessageTask(new ListenForMessageTask());
             } else if (path.startsWith("check-in")) {
                 DebugLog.d("sending check in");
                 sendCheckIn(path);
+            } else if (path.equals("/explore-list")) {
+                DebugLog.d("downloading explore");
+                if (Preferences.hasFoursquareToken()) {
+                    downloadExploreList();
+                } else {
+                    sendError(getString(R.string.please_connect_foursquare_first));
+                }
             }
+            setOnGetMessageTask(new ListenForMessageTask());
         }
+    }
+
+    private void downloadExploreList() {
+        Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(), new Callback<ExploreVenues.ExploreVenuesResponse>() {
+            @Override
+            public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
+                DebugLog.d("success=" + exploreVenuesResponse.getVenues());
+                syncExploreToWear(exploreVenuesResponse.getVenues());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                sendError(error.getMessage());
+            }
+        });
+    }
+
+    private void downloadCheckInList() {
+        Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
+                new Callback<SearchVenues.SearchResponse>() {
+
+                    @Override
+                    public void success(SearchVenues.SearchResponse searchResponse, Response response) {
+                        DebugLog.d("success=" + searchResponse.getVenues());
+                        syncCheckInListToWear(searchResponse.getVenues());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        sendError(error.getMessage());
+                    }
+                }
+        );
     }
 
     private void sendCheckIn(String path) {
@@ -76,24 +122,6 @@ public class FoursquareService extends TeleportService {
                 });
     }
 
-    private void downloadCheckInList() {
-        Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
-                new Callback<SearchVenues.SearchResponse>() {
-
-                    @Override
-                    public void success(SearchVenues.SearchResponse searchResponse, Response response) {
-                        DebugLog.d("success=" + searchResponse.getVenues());
-                        syncToWear(searchResponse.getVenues());
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        sendError(error.getMessage());
-                    }
-                }
-        );
-    }
-
     private void sendError(String message) {
         DebugLog.e(message);
         PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/error");
@@ -101,27 +129,67 @@ public class FoursquareService extends TeleportService {
         syncDataItem(data);
     }
 
-    private void syncToWear(final List<SearchVenues.Venue> venues) {
+    private void syncExploreToWear(final List<ExploreVenues.Venue> venues) {
         final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
-        mTargets = new HashMap<String, Target>();
+        List<String> images = new ArrayList<String>();
+        for (final ExploreVenues.Venue venue : venues) {
+            final DataMap dataMap = new DataMap();
+            dataMap.putString("id", venue.id);
+            dataMap.putString("name", venue.name);
+            dataMap.putString("tip", venue.tip);
+            dataVenues.add(dataMap);
+            images.add(venue.imageUrl);
+        }
+        downloadImagesAndSync(images, "photo", dataVenues, "/explore-list", "explore_venues");
+    }
+
+    private void syncCheckInListToWear(final List<SearchVenues.Venue> venues) {
+        final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
+        List<String> images = new ArrayList<String>();
         for (final SearchVenues.Venue venue : venues) {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
             dataMap.putString("name", venue.name);
             dataVenues.add(dataMap);
-            mTargets.put(venue.id, new Target() {
+            images.add(venue.getCategoryIconUrl());
+        }
+        downloadImagesAndSync(images, "icon", dataVenues, "/check-in-list", "check_in_venues");
+    }
+
+    /**
+     * Downloads images in parallel and synces everything to Wear when complete.
+     */
+    private void downloadImagesAndSync(List<String> imageUrls, String assetKey, ArrayList<DataMap> dataVenues, String path, String key) {
+        mTargets = new HashMap<String, Target>();
+        mDataVenues = dataVenues;
+        mBitmapsDownloaded = 0;
+        mPath = path;
+        mKey = key;
+        mNumberOfBitmaps = imageUrls.size();
+        int i = 0;
+        for (String imageUrl : imageUrls) {
+            downloadImage(imageUrl, dataVenues.get(i), assetKey);
+            i++;
+        }
+    }
+
+    private void downloadImage(final String imageUrl, final DataMap dataMap, final String assetKey) {
+        if (TextUtils.isEmpty(imageUrl)) {
+            possiblySync();
+        } else {
+            mTargets.put(imageUrl, new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    DebugLog.d("bitmap loaded for " + venue.name);
-                    Asset icon = ImageUtils.createAssetFromBitmap(bitmap);
-                    dataMap.putAsset("icon", icon);
-                    possiblySendVenues(dataVenues, venues.size());
+                    DebugLog.d(assetKey + " bitmap loaded for " + imageUrl);
+                    Asset asset = ImageUtils.createAssetFromBitmap(bitmap);
+                    dataMap.putAsset(assetKey, asset);
+                    possiblySync();
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    DebugLog.w("bitmap failed for " + venue.name);
-                    possiblySendVenues(dataVenues, venues.size());
+                    DebugLog.w(assetKey + " bitmap failed for " + imageUrl);
+                    possiblySync();
                 }
 
                 @Override
@@ -129,20 +197,20 @@ public class FoursquareService extends TeleportService {
 
                 }
             });
-            Picasso.with(App.get()).load(venue.getCategoryIconUrl()).into(mTargets.get(venue.id));
+            Picasso.with(App.get()).load(imageUrl).into(mTargets.get(imageUrl));
         }
     }
 
-    int bitmapsDownloaded = 0;
 
-    private synchronized void possiblySendVenues(ArrayList<DataMap> dataVenues, int numberOfVenues) {
-        bitmapsDownloaded++;
-        if (bitmapsDownloaded >= numberOfVenues) {
-            DebugLog.d("Sending checkin venues to wear");
-
-            final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/check-in-list");
-            data.getDataMap().putDataMapArrayList("venues", dataVenues);
+    private synchronized void possiblySync() {
+        mBitmapsDownloaded++;
+        if (mBitmapsDownloaded >= mNumberOfBitmaps) {
+            DebugLog.d("Sending venues to wear");
+            final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId(mPath);
+            data.getDataMap().putDataMapArrayList(mKey, mDataVenues);
             syncDataItem(data);
+            mTargets = null;
+            mDataVenues = null;
         }
     }
 }
