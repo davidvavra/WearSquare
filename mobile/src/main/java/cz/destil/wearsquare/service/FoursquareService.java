@@ -60,10 +60,10 @@ public class FoursquareService extends TeleportService {
             } else if (path.startsWith("check-in")) {
                 DebugLog.d("sending check in");
                 sendCheckIn(path);
-            } else if (path.equals("/explore-list")) {
+            } else if (path.startsWith("/explore-list")) {
                 DebugLog.d("downloading explore");
                 if (Preferences.hasFoursquareToken()) {
-                    downloadExploreList();
+                    downloadExploreList(path);
                 } else {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
@@ -72,7 +72,9 @@ public class FoursquareService extends TeleportService {
         }
     }
 
-    private void downloadExploreList() {
+    private void downloadExploreList(String path) {
+        Uri uri = Uri.parse(path);
+        ImageUtils.setScreenDimensions(uri.getLastPathSegment());
         Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(), new Callback<ExploreVenues.ExploreVenuesResponse>() {
             @Override
             public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {

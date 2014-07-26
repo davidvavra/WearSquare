@@ -10,6 +10,7 @@ import cz.destil.wearsquare.adapter.EmptyGridPagerAdapter;
 import cz.destil.wearsquare.adapter.ExploreAdapter;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.util.DebugLog;
+import cz.destil.wearsquare.util.UiUtils;
 
 public class ExploreActivity extends ProgressActivity {
 
@@ -31,7 +32,7 @@ public class ExploreActivity extends ProgressActivity {
     public void startConnected() {
         super.startConnected();
         DebugLog.d("sending start message");
-        teleport().sendMessage("/explore-list", null);
+        teleport().sendMessage("/explore-list/"+ UiUtils.getScreenDimensions(), null);
         showProgress();
     }
 
