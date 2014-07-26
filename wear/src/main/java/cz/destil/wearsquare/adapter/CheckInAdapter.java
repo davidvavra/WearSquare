@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.wearable.view.CircledImageView;
 import android.support.wearable.view.WearableListView;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -93,6 +94,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         public void onScaleUpStart() {
             image.setAlpha(1f);
             text.setAlpha(1f);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             image.setCircleColor(mSelectedCircleColor);
         }
 
@@ -100,6 +102,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         public void onScaleDownStart() {
             image.setAlpha(0.5f);
             text.setAlpha(0.5f);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             image.setCircleColor(mDefaultCircleColor);
         }
     }
