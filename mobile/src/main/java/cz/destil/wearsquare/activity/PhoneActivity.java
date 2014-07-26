@@ -1,31 +1,26 @@
 package cz.destil.wearsquare.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Hidden;
-import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.data.Preferences;
-import cz.destil.wearsquare.util.DebugLog;
 
 
 public class PhoneActivity extends BaseActivity {
@@ -33,28 +28,52 @@ public class PhoneActivity extends BaseActivity {
     private static final int REQUEST_CODE_FSQ_CONNECT = 42;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 43;
 
-    @InjectView(R.id.primary)
-    TextView vPrimary;
-    @InjectView(R.id.foursquare_button)
-    Button vFoursquareButton;
+    @InjectView(R.id.about)
+    TextView vAbout;
+    @InjectView(R.id.login_box)
+    LinearLayout vLoginBox;
+    @InjectView(R.id.instructions_box)
+    LinearLayout vInstructionsBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
         ButterKnife.inject(this);
-        ButterKnife.inject(this);
-        vPrimary.setMovementMethod(LinkMovementMethod.getInstance());
+        vAbout.setMovementMethod(LinkMovementMethod.getInstance());
         init();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_logout).setVisible(Preferences.hasFoursquareToken());
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Preferences.clearFoursquareToken();
+            init();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void init() {
         if (Preferences.hasFoursquareToken()) {
-            vPrimary.setText(R.string.main_message);
-            vFoursquareButton.setVisibility(View.GONE);
+            vLoginBox.setVisibility(View.GONE);
+            vInstructionsBox.setVisibility(View.VISIBLE);
         } else {
-            vPrimary.setText(R.string.login_message);
+            vLoginBox.setVisibility(View.VISIBLE);
+            vInstructionsBox.setVisibility(View.GONE);
         }
+        invalidateOptionsMenu();
     }
 
     @OnClick(R.id.foursquare_button)

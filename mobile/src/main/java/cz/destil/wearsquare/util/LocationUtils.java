@@ -9,6 +9,7 @@ import cz.destil.wearsquare.core.App;
 public class LocationUtils {
 
     public static String getLastLocation() {
+        // return "51.497470, -0.135633";//"40.765068,-73.983172"; // FAKE FOR screenshots
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         return location.getLatitude() + "," + location.getLongitude();

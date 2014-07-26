@@ -34,7 +34,7 @@ import retrofit.client.Response;
 public class FoursquareService extends TeleportService {
 
     // for image downloading:
-    HashMap<String, Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
+    HashMap<Integer, Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
     int mBitmapsDownloaded;
     String mPath;
     String mKey;
@@ -169,7 +169,7 @@ public class FoursquareService extends TeleportService {
      * Downloads images in parallel and synces everything to Wear when complete.
      */
     private void downloadImagesAndSync(List<String> imageUrls, String assetKey, ArrayList<DataMap> dataVenues, String path, String key) {
-        mTargets = new HashMap<String, Target>();
+        mTargets = new HashMap<Integer, Target>();
         mDataVenues = dataVenues;
         mBitmapsDownloaded = 0;
         mPath = path;
@@ -177,16 +177,16 @@ public class FoursquareService extends TeleportService {
         mNumberOfBitmaps = imageUrls.size();
         int i = 0;
         for (String imageUrl : imageUrls) {
-            downloadImage(imageUrl, dataVenues.get(i), assetKey);
+            downloadImage(imageUrl, dataVenues.get(i), assetKey, i);
             i++;
         }
     }
 
-    private void downloadImage(final String imageUrl, final DataMap dataMap, final String assetKey) {
+    private void downloadImage(final String imageUrl, final DataMap dataMap, final String assetKey, int i) {
         if (TextUtils.isEmpty(imageUrl)) {
             possiblySync();
         } else {
-            mTargets.put(imageUrl, new Target() {
+            mTargets.put(i, new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     DebugLog.d(assetKey + " bitmap loaded for " + imageUrl);
@@ -206,7 +206,7 @@ public class FoursquareService extends TeleportService {
 
                 }
             });
-            Picasso.with(App.get()).load(imageUrl).into(mTargets.get(imageUrl));
+            Picasso.with(App.get()).load(imageUrl).into(mTargets.get(i));
         }
     }
 

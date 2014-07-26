@@ -24,4 +24,8 @@ public class Preferences {
     private static SharedPreferences preferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.get());
     }
+
+    public static void clearFoursquareToken() {
+        preferences().edit().remove(TOKEN).commit();
+    }
 }
