@@ -9,6 +9,7 @@ import com.squareup.otto.Subscribe;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.event.CheckInVenueListEvent;
+import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
@@ -37,7 +38,7 @@ public class CheckInListActivity extends ProgressActivity {
 
     @Subscribe
     public void onVenueList(CheckInVenueListEvent event) {
-        DebugLog.d("setting up adapter: "+event.getVenues());
+        DebugLog.d("setting up adapter: " + event.getVenues());
         hideProgress();
         vList.setAdapter(new CheckInAdapter(CheckInListActivity.this, event.getVenues()));
         vList.setClickListener(new WearableListView.ClickListener() {
@@ -59,7 +60,13 @@ public class CheckInListActivity extends ProgressActivity {
     }
 
     @Subscribe
+    public void onError(ErrorEvent event) {
+        showError(event.getMessage());
+    }
+
+    @Subscribe
     public void onExit(ExitEvent event) {
+        DebugLog.d("on exit");
         finish();
     }
 }

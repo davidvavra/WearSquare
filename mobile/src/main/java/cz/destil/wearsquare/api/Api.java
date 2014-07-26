@@ -39,40 +39,5 @@ public class Api {
     // parent classes common for all requests:
 
     public static class FoursquareResponse {
-        FoursquareError meta;
-
-        public boolean isMissingAuth() {
-            return meta.isMissingAuth();
-        }
-    }
-
-    public static class FoursquareError {
-        int code;
-        String errorType;
-
-        public boolean isMissingAuth() {
-            return "invalid_auth".equals(errorType) || "not_authorized".equals(errorType);
-        }
-    }
-
-    public static class FoursquareNotification {
-        String type;
-        FoursquareNotificationDetail item;
-
-        @Override
-        public String toString() {
-            return type + " : " + item;
-        }
-    }
-
-    public static class FoursquareNotificationDetail {
-        String message;
-        String text;
-        String shout;
-
-        @Override
-        public String toString() {
-            return message + " " + text + " " + shout;
-        }
     }
 }

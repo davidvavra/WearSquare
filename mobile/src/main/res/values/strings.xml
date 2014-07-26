@@ -8,5 +8,6 @@
         Mini Launcher</a></string>
     <string name="login_message">Please login with Foursquare first:</string>
     <string name="please_connect_foursquare_first">Login to Foursquare on your phone first</string>
+    <string name="connect_to_internet">Please get online on your phone</string>
 
 </resources>

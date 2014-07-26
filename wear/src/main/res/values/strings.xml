@@ -9,5 +9,7 @@
     <string name="checking_in">Checking in …</string>
     <string name="checked_in">Checked in</string>
     <string name="exploring">Exploring</string>
+    <string name="action_navigate">Navigate</string>
+    <string name="open_on_phone">Open on phone</string>
 
 </resources>

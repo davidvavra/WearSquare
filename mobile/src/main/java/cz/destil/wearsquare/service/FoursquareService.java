@@ -1,5 +1,6 @@
 package cz.destil.wearsquare.service;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -67,6 +68,10 @@ public class FoursquareService extends TeleportService {
                 } else {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
+            } else if (path.startsWith("/navigate")) {
+                launchNavigation(path);
+            } else if (path.startsWith("/open")) {
+                openOnPhone(path);
             }
             setOnGetMessageTask(new ListenForMessageTask());
         }
@@ -84,7 +89,7 @@ public class FoursquareService extends TeleportService {
 
             @Override
             public void failure(RetrofitError error) {
-                sendError(error.getMessage());
+                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
             }
         });
     }
@@ -101,7 +106,7 @@ public class FoursquareService extends TeleportService {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        sendError(error.getMessage());
+                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
                     }
                 }
         );
@@ -119,7 +124,7 @@ public class FoursquareService extends TeleportService {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        sendError(error.getMessage());
+                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
                     }
                 });
     }
@@ -139,6 +144,8 @@ public class FoursquareService extends TeleportService {
             dataMap.putString("id", venue.id);
             dataMap.putString("name", venue.name);
             dataMap.putString("tip", venue.tip);
+            dataMap.putDouble("latitude", venue.latitude);
+            dataMap.putDouble("longitude", venue.longitude);
             dataVenues.add(dataMap);
             images.add(venue.imageUrl);
         }
@@ -214,5 +221,22 @@ public class FoursquareService extends TeleportService {
             mTargets = null;
             mDataVenues = null;
         }
+    }
+
+    private void openOnPhone(String path) {
+        String id = Uri.parse(path).getLastPathSegment();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.foursquare.com/venue/" + id));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.get().startActivity(intent);
+    }
+
+    private void launchNavigation(String path) {
+        List<String> segments = Uri.parse(path).getPathSegments();
+        String latitude = segments.get(1);
+        String longitude = segments.get(2);
+        String name = segments.get(3);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:ll=" + latitude + "," + longitude + "&q=" + name + "&mode=w"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        App.get().startActivity(intent);
     }
 }

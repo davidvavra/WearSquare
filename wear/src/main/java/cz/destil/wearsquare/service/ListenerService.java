@@ -84,7 +84,8 @@ public class ListenerService extends TeleportService {
             for (DataMap dataVenue : dataVenues) {
                 Bitmap bitmap = dataVenue.getAsset("photo") != null ? loadBitmapFromAsset(dataVenue.getAsset
                         ("photo")) : null;
-                venues.add(new ExploreAdapter.Venue(dataVenue.getString("id"), dataVenue.getString("name"), dataVenue.getString("tip"), bitmap));
+                venues.add(new ExploreAdapter.Venue(dataVenue.getString("id"), dataVenue.getString("name"), dataVenue.getString("tip"), bitmap,
+                        dataVenue.getDouble("latitude"), dataVenue.getDouble("longitude")));
             }
             App.bus().post(new ExploreVenueListEvent(venues));
         }

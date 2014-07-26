@@ -37,8 +37,10 @@ public class CheckInActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         DebugLog.d("onActivityResult");
-        finish();
-        App.bus().post(new ExitEvent());
+        if (requestCode == CONFIRM_ACTIVITY) {
+            finish();
+            App.bus().post(new ExitEvent());
+        }
     }
 
     @Override
@@ -59,7 +61,7 @@ public class CheckInActivity extends BaseActivity {
             @Override
             public void onTimerFinished(View view) {
                 if (!mTimerSelected) {
-                    teleport().sendMessage("check-in/"+getIntent().getStringExtra("VENUE_ID"), null);
+                    teleport().sendMessage("check-in/" + getIntent().getStringExtra("VENUE_ID"), null);
                     Intent i = new Intent(CheckInActivity.this, ConfirmationActivity.class);
                     i.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);
                     i.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.checked_in));

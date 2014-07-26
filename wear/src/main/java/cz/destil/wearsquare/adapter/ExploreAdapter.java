@@ -16,13 +16,20 @@
 package cz.destil.wearsquare.adapter;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.ImageReference;
 
 import java.util.List;
+
+import cz.destil.wearsquare.R;
+import cz.destil.wearsquare.activity.ExploreActivity;
+import cz.destil.wearsquare.fragment.ActionFragment;
+import cz.destil.wearsquare.util.DebugLog;
 
 /**
  * Constructs fragments as requested by the GridViewPager. For each row a
@@ -30,24 +37,55 @@ import java.util.List;
  */
 public class ExploreAdapter extends FragmentGridPagerAdapter {
 
+    private ExploreActivity activity;
     private List<Venue> items;
 
-    public ExploreAdapter(FragmentManager fm, List<ExploreAdapter.Venue> items) {
-        super(fm);
+    public ExploreAdapter(ExploreActivity activity, List<ExploreAdapter.Venue> items) {
+        super(activity.getFragmentManager());
+        this.activity = activity;
         this.items = items;
     }
 
     @Override
     public Fragment getFragment(int row, int col) {
-        Venue venue = items.get(row);
-        CardFragment fragment = CardFragment.create(venue.name, venue.tip);
-        fragment.setExpansionEnabled(true);
-        return fragment;
+        final Venue venue = items.get(row);
+        switch (col) {
+            case 0:
+                CardFragment fragment = CardFragment.create(venue.name, venue.tip);
+                fragment.setExpansionEnabled(true);
+                return fragment;
+            case 1:
+                return ActionFragment.create(R.drawable.ic_full_navigate, R.string.action_navigate, new ActionFragment.Listener() {
+                    @Override
+                    public void onActionPerformed() {
+                        DebugLog.d("navigate");
+                        activity.navigate(venue);
+                    }
+                });
+            case 2:
+                return ActionFragment.create(R.drawable.ic_full_check_in, R.string.check_in, new ActionFragment.Listener() {
+                    @Override
+                    public void onActionPerformed() {
+                        DebugLog.d("check in");
+                        activity.checkIn(venue);
+                    }
+                });
+            case 3:
+                return ActionFragment.create(R.drawable.ic_full_open_on_phone, R.string.open_on_phone, new ActionFragment.Listener() {
+                    @Override
+                    public void onActionPerformed() {
+                        DebugLog.d("open");
+                        activity.openOnPhone(venue);
+                    }
+                });
+            default:
+                return null;
+        }
     }
 
     @Override
     public ImageReference getBackground(int row, int column) {
-        Bitmap photo = items.get(row).photo;
+        Bitmap photo = column == 0 ? items.get(row).photo : items.get(row).getDarkPhoto();
         return photo == null ? null : ImageReference.forBitmap(photo);
     }
 
@@ -58,7 +96,7 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
 
     @Override
     public int getColumnCount(int rowNum) {
-        return 1;
+        return 4;
     }
 
     public static class Venue {
@@ -66,12 +104,54 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
         private String name;
         private String tip;
         private Bitmap photo;
+        private double latitude;
+        private double longitude;
+        private Bitmap darkPhoto;
 
-        public Venue(String id, String name, String tip, Bitmap photo) {
+        public Venue(String id, String name, String tip, Bitmap photo, double latitude, double longitude) {
             this.id = id;
             this.name = name;
             this.tip = tip;
             this.photo = photo;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getTip() {
+            return tip;
+        }
+
+        public Bitmap getPhoto() {
+            return photo;
+        }
+
+        public Bitmap getDarkPhoto() {
+            if (darkPhoto == null) {
+                darkPhoto = Bitmap.createBitmap(photo.getWidth(), photo.getHeight(), photo.getConfig());
+                Canvas canvas = new Canvas(darkPhoto);
+                canvas.drawBitmap(photo, new Matrix(), null);
+                Paint paint = new Paint();
+                paint.setColor(0);
+                paint.setAlpha(127);
+                canvas.drawRect(0, 0, photo.getWidth(), photo.getHeight(), paint);
+            }
+            return darkPhoto;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
         }
     }
 }

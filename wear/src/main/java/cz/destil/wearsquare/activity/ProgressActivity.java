@@ -15,6 +15,8 @@ import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.event.ErrorEvent;
+import cz.destil.wearsquare.event.ExitEvent;
+import cz.destil.wearsquare.util.DebugLog;
 
 public abstract class ProgressActivity extends BaseActivity {
 
@@ -42,11 +44,6 @@ public abstract class ProgressActivity extends BaseActivity {
         showError(getString(R.string.please_connect));
     }
 
-    @Subscribe
-    public void onError(ErrorEvent event) {
-        showError(event.getMessage());
-    }
-
     public void showProgress() {
         vProgress.setVisibility(View.VISIBLE);
         vError.setVisibility(View.GONE);
@@ -56,7 +53,7 @@ public abstract class ProgressActivity extends BaseActivity {
         vProgress.setVisibility(View.GONE);
     }
 
-    private void showError(String message) {
+    public void showError(String message) {
         vProgress.setVisibility(View.GONE);
         vError.setVisibility(View.VISIBLE);
         vError.setText(message);
