@@ -8,8 +8,8 @@ android {
         applicationId "cz.destil.wearsquare"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 1
-        versionName "0.5-ALPHA"
+        versionCode 2
+        versionName "0.6-ALPHA"
     }
 
     signingConfigs {
@@ -37,6 +37,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.crittercism:crittercism-android-agent:+'
     //compile 'com.squareup.okhttp:okhttp:2.0.0'
     //compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 }
