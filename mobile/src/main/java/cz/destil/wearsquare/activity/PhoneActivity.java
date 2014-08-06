@@ -21,6 +21,7 @@ import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Hidden;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.data.Preferences;
+import cz.destil.wearsquare.util.PackageUtils;
 
 
 public class PhoneActivity extends BaseActivity {
@@ -30,6 +31,8 @@ public class PhoneActivity extends BaseActivity {
 
     @InjectView(R.id.about)
     TextView vAbout;
+    @InjectView(R.id.mini_launcher_info)
+    TextView vMiniLauncherInfo;
     @InjectView(R.id.login_box)
     LinearLayout vLoginBox;
     @InjectView(R.id.instructions_box)
@@ -40,7 +43,7 @@ public class PhoneActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
         ButterKnife.inject(this);
-        vAbout.setMovementMethod(LinkMovementMethod.getInstance());
+        setupAbout();
         init();
     }
 
@@ -63,6 +66,12 @@ public class PhoneActivity extends BaseActivity {
             init();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupAbout() {
+        vAbout.setMovementMethod(LinkMovementMethod.getInstance());
+        vMiniLauncherInfo.setMovementMethod(LinkMovementMethod.getInstance());
+        vMiniLauncherInfo.setVisibility(PackageUtils.isWearLauncherInstalled() ? View.GONE : View.VISIBLE);
     }
 
     private void init() {

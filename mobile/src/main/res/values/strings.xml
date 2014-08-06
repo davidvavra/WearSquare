@@ -3,8 +3,9 @@
 
     <string name="app_name">WearSquare</string>
     <string name="connect_to_4sq">Connect to Foursquare</string>
-    <string name="about">Installation of <a href="https://play.google.com/store/apps/details?id=com.npi.wearminilauncher">Wear
-        Mini Launcher</a> is recommended.\n<a href="https://github.com/destil/wearsquare/issues">Report issues</a> | <a
+    <string name="mini_launcher_info">Installation of <a href="https://play.google.com/store/apps/details?id=com.npi.wearminilauncher">Wear
+        Mini Launcher</a> is recommended.</string>
+    <string name="about"><a href="https://github.com/destil/wearsquare/issues">Report issues</a> | <a
         href="https://github.com/destil/wearsquare">Open-source code</a> | Author: <a
         href="http://www.destil.cz/">David Vávra</a></string>
     <string name="login_message">Please login with Foursquare first:</string>

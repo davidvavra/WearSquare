@@ -1,13 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:background="@color/light_gray"
             android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:background="@color/light_gray"
                   android:orientation="vertical"
                   tools:context=".PhoneActivity">
 
@@ -124,7 +124,17 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/mini_launcher_info"
+                android:textColorLink="@color/link"
+                android:textSize="13sp"
+                android:text="@string/mini_launcher_info"/>
 
             <TextView
                 android:layout_width="wrap_content"
