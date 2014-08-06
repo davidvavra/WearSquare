@@ -6,16 +6,21 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExitEvent;
+import cz.destil.wearsquare.event.ImageLoadedEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
 public class CheckInListActivity extends ProgressActivity {
 
     WearableListView vList;
+    private List<CheckInAdapter.Venue> mVenues;
+    private CheckInAdapter mAdapter;
 
     @Override
     int getMainViewResourceId() {
@@ -41,7 +46,9 @@ public class CheckInListActivity extends ProgressActivity {
     public void onVenueList(CheckInVenueListEvent event) {
         DebugLog.d("setting up adapter: " + event.getVenues());
         hideProgress();
-        vList.setAdapter(new CheckInAdapter(CheckInListActivity.this, event.getVenues()));
+        mVenues = event.getVenues();
+        mAdapter = new CheckInAdapter(CheckInListActivity.this, mVenues);
+        vList.setAdapter(mAdapter);
         vList.setClickListener(new WearableListView.ClickListener() {
                                    @Override
                                    public void onClick(WearableListView.ViewHolder viewHolder) {
@@ -69,5 +76,16 @@ public class CheckInListActivity extends ProgressActivity {
     public void onExit(ExitEvent event) {
         DebugLog.d("on exit");
         finish();
+    }
+
+    @Subscribe
+    public void onImageDownloaded(ImageLoadedEvent event) {
+        for (CheckInAdapter.Venue venue : mVenues) {
+            if (venue.getImageUrl().equals(event.getImageUrl())) {
+                venue.setIcon(event.getBitmap());
+                mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 }

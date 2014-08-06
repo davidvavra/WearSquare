@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.TextUtils;
+import android.util.SparseArray;
 
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataMap;
@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import cz.destil.wearsquare.R;
@@ -33,13 +32,7 @@ import retrofit.client.Response;
 
 public class FoursquareService extends TeleportService {
 
-    // for image downloading:
-    HashMap<Integer, Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
-    int mBitmapsDownloaded;
-    String mPath;
-    String mKey;
-    ArrayList<DataMap> mDataVenues;
-    int mNumberOfBitmaps;
+    SparseArray<Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
 
     @Override
     public void onCreate() {
@@ -146,10 +139,14 @@ public class FoursquareService extends TeleportService {
             dataMap.putString("tip", venue.tip);
             dataMap.putDouble("latitude", venue.latitude);
             dataMap.putDouble("longitude", venue.longitude);
+            dataMap.putString("image_url", venue.imageUrl);
             dataVenues.add(dataMap);
             images.add(venue.imageUrl);
         }
-        downloadImagesAndSync(images, "photo", dataVenues, "/explore-list", "explore_venues");
+        PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/explore-list");
+        data.getDataMap().putDataMapArrayList("explore_venues", dataVenues);
+        syncDataItem(data);
+        downloadImages(images);
     }
 
     private void syncCheckInListToWear(final List<SearchVenues.Venue> venues) {
@@ -159,46 +156,36 @@ public class FoursquareService extends TeleportService {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
             dataMap.putString("name", venue.name);
+            dataMap.putString("image_url", venue.getCategoryIconUrl());
             dataVenues.add(dataMap);
             images.add(venue.getCategoryIconUrl());
         }
-        downloadImagesAndSync(images, "icon", dataVenues, "/check-in-list", "check_in_venues");
+        PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/check-in-list");
+        data.getDataMap().putDataMapArrayList("check_in_venues", dataVenues);
+        syncDataItem(data);
+        downloadImages(images);
     }
 
-    /**
-     * Downloads images in parallel and synces everything to Wear when complete.
-     */
-    private void downloadImagesAndSync(List<String> imageUrls, String assetKey, ArrayList<DataMap> dataVenues, String path, String key) {
-        mTargets = new HashMap<Integer, Target>();
-        mDataVenues = dataVenues;
-        mBitmapsDownloaded = 0;
-        mPath = path;
-        mKey = key;
-        mNumberOfBitmaps = imageUrls.size();
+    private void downloadImages(List<String> imageUrls) {
         int i = 0;
-        for (String imageUrl : imageUrls) {
-            downloadImage(imageUrl, dataVenues.get(i), assetKey, i);
-            i++;
-        }
-    }
-
-    private void downloadImage(final String imageUrl, final DataMap dataMap, final String assetKey, int i) {
-        if (TextUtils.isEmpty(imageUrl)) {
-            possiblySync();
-        } else {
+        mTargets = new SparseArray<Target>();
+        for (final String imageUrl : imageUrls) {
             mTargets.put(i, new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    DebugLog.d(assetKey + " bitmap loaded for " + imageUrl);
+                    DebugLog.d("bitmap loaded for " + imageUrl);
                     Asset asset = ImageUtils.createAssetFromBitmap(bitmap);
-                    dataMap.putAsset(assetKey, asset);
-                    possiblySync();
+                    final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/image");
+                    data.getDataMap().putString("image_url", imageUrl);
+                    data.getDataMap().putAsset("asset", asset);
+                    syncDataItem(data);
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    DebugLog.w(assetKey + " bitmap failed for " + imageUrl);
-                    possiblySync();
+                    final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/image");
+                    data.getDataMap().putString("image_url", imageUrl);
+                    syncDataItem(data);
                 }
 
                 @Override
@@ -207,19 +194,7 @@ public class FoursquareService extends TeleportService {
                 }
             });
             Picasso.with(App.get()).load(imageUrl).into(mTargets.get(i));
-        }
-    }
-
-
-    private synchronized void possiblySync() {
-        mBitmapsDownloaded++;
-        if (mBitmapsDownloaded >= mNumberOfBitmaps) {
-            DebugLog.d("Sending venues to wear");
-            final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId(mPath);
-            data.getDataMap().putDataMapArrayList(mKey, mDataVenues);
-            syncDataItem(data);
-            mTargets = null;
-            mDataVenues = null;
+            i++;
         }
     }
 

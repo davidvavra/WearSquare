@@ -85,8 +85,12 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
 
     @Override
     public ImageReference getBackground(int row, int column) {
-        Bitmap photo = column == 0 ? items.get(row).photo : items.get(row).getDarkPhoto();
-        return photo == null ? null : ImageReference.forBitmap(photo);
+        Bitmap photo = items.get(row).photo;
+        if (photo == null) {
+            return null;
+        }
+        photo = (column == 0) ? photo : items.get(row).getDarkPhoto();
+        return ImageReference.forBitmap(photo);
     }
 
     @Override
@@ -106,15 +110,16 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
         private Bitmap photo;
         private double latitude;
         private double longitude;
+        private String imageUrl;
         private Bitmap darkPhoto;
 
-        public Venue(String id, String name, String tip, Bitmap photo, double latitude, double longitude) {
+        public Venue(String id, String name, String tip, double latitude, double longitude, String imageUrl) {
             this.id = id;
             this.name = name;
             this.tip = tip;
-            this.photo = photo;
             this.latitude = latitude;
             this.longitude = longitude;
+            this.imageUrl = imageUrl;
         }
 
         public String getId() {
@@ -152,6 +157,14 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
 
         public double getLongitude() {
             return longitude;
+        }
+
+        public void setPhoto(Bitmap photo) {
+            this.photo = photo;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
         }
     }
 }

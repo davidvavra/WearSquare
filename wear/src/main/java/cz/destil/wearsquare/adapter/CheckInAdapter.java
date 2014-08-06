@@ -108,13 +108,22 @@ public class CheckInAdapter extends WearableListView.Adapter {
     }
 
     public static class Venue {
-        String id;
-        String name;
-        Bitmap icon;
+        private String id;
+        private String name;
+        private String imageUrl;
+        private Bitmap icon;
 
-        public Venue(String id, String name, Bitmap icon) {
+        public Venue(String id, String name, String imageUrl) {
             this.id = id;
             this.name = name;
+            this.imageUrl = imageUrl;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setIcon(Bitmap icon) {
             this.icon = icon;
         }
     }
