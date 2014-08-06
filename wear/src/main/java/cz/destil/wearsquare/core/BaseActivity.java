@@ -3,14 +3,12 @@ package cz.destil.wearsquare.core;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.mariux.teleport.lib.TeleportClient;
 
-import butterknife.ButterKnife;
+import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
 public class BaseActivity extends Activity {
@@ -20,13 +18,14 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DebugLog.d("onCreate");
+        DebugLog.d(this+" onCreate");
         mTeleportClient = new TeleportClient(this);
         App.bus().register(this);
     }
 
     @Override
     protected void onDestroy() {
+        DebugLog.d(this+" onDestroy");
         App.bus().unregister(this);
         super.onDestroy();
     }
@@ -34,20 +33,21 @@ public class BaseActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        DebugLog.d("onStart");
+        DebugLog.d(this+" onStart");
         mTeleportClient.connect();
-                Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+        Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi
+                .GetConnectedNodesResult>() {
 
 
-                    @Override
-                    public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
-                        if (getConnectedNodesResult.getNodes().size()>0) {
-                            startConnected();
-                        } else {
-                            startDisconnected();
-                        }
-                    }
-                });
+            @Override
+            public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
+                if (getConnectedNodesResult.getNodes().size() > 0) {
+                    startConnected();
+                } else {
+                    startDisconnected();
+                }
+            }
+        });
     }
 
     protected void startDisconnected() {
@@ -71,5 +71,9 @@ public class BaseActivity extends Activity {
 
     public boolean isConnected() {
         return mTeleportClient.getGoogleApiClient().isConnected();
+    }
+
+    public void finishOtherActivities() {
+        App.bus().post(new ExitEvent());
     }
 }

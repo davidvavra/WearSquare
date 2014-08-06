@@ -29,6 +29,7 @@ public class ExploreActivity extends ProgressActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        finishOtherActivities();
         super.onCreate(savedInstanceState);
         vPager = (GridViewPager) getMainView();
         vPager.setAdapter(new EmptyGridPagerAdapter()); // bug in the UI library
