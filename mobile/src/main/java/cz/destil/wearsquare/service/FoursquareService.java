@@ -42,7 +42,6 @@ public class FoursquareService extends TeleportService {
     @Override
     public void onCreate() {
         super.onCreate();
-        DebugLog.d("Service started");
         setOnGetMessageTask(new ListenForMessageTask());
     }
 
@@ -53,17 +52,14 @@ public class FoursquareService extends TeleportService {
         @Override
         protected void onPostExecute(String path) {
             if (path.equals("/check-in-list")) {
-                DebugLog.d("downloading venues");
                 if (Preferences.hasFoursquareToken()) {
                     downloadCheckInList();
                 } else {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
             } else if (path.startsWith("check-in")) {
-                DebugLog.d("sending check in");
                 sendCheckIn(path);
             } else if (path.startsWith("/explore-list")) {
-                DebugLog.d("downloading explore");
                 if (Preferences.hasFoursquareToken()) {
                     downloadExploreList(path);
                 } else {
@@ -87,7 +83,6 @@ public class FoursquareService extends TeleportService {
         Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(), new Callback<ExploreVenues.ExploreVenuesResponse>() {
             @Override
             public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
-                DebugLog.d("success=" + exploreVenuesResponse.getVenues());
                 syncExploreToWear(exploreVenuesResponse.getVenues());
             }
 
@@ -107,7 +102,6 @@ public class FoursquareService extends TeleportService {
 
                     @Override
                     public void success(SearchVenues.SearchResponse searchResponse, Response response) {
-                        DebugLog.d("success=" + searchResponse.getVenues());
                         syncCheckInListToWear(searchResponse.getVenues());
                     }
 
@@ -129,7 +123,7 @@ public class FoursquareService extends TeleportService {
                 new Callback<CheckIns.CheckInResponse>() {
                     @Override
                     public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
-                        DebugLog.d("check in successful");
+                        // ignore for now
                     }
 
                     @Override
@@ -204,7 +198,6 @@ public class FoursquareService extends TeleportService {
             mTargets.put(i, new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    DebugLog.d("bitmap loaded for " + imageUrl);
                     Asset asset = ImageUtils.createAssetFromBitmap(bitmap);
                     final PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/image");
                     data.getDataMap().putString("image_url", imageUrl);
