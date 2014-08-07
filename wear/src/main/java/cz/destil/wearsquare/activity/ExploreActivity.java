@@ -33,7 +33,8 @@ public class ExploreActivity extends ProgressActivity {
     private static final int ON_PHONE_ACTIVITY = 41;
     GridViewPager vPager;
     private List<ExploreAdapter.Venue> mVenues;
-    private int mImagesLoaded;
+    private int mNumImagesLoaded;
+    private int mNumVenuesWithImages;
 
     @Override
     int getMainViewResourceId() {
@@ -51,7 +52,7 @@ public class ExploreActivity extends ProgressActivity {
     public void startConnected() {
         super.startConnected();
         DebugLog.d("sending start message");
-        mImagesLoaded = 0;
+        mNumImagesLoaded = 0;
         teleport().sendMessage("/explore-list/" + UiUtils.getScreenDimensions(), null);
         showProgress();
     }
@@ -70,6 +71,12 @@ public class ExploreActivity extends ProgressActivity {
         hideProgress();
         showSmallProgress();
         mVenues = event.getVenues();
+        mNumVenuesWithImages = 0;
+        for (ExploreAdapter.Venue venue : mVenues) {
+            if (venue.getImageUrl() != null) {
+                mNumVenuesWithImages++;
+            }
+        }
         setupAdapter();
     }
 
@@ -95,8 +102,8 @@ public class ExploreActivity extends ProgressActivity {
         if (event.getBitmap() != null) {
             setupAdapter();
         }
-        mImagesLoaded++;
-        if (mImagesLoaded == mVenues.size()) {
+        mNumImagesLoaded++;
+        if (mNumImagesLoaded == mNumVenuesWithImages) {
             hideSmallProgress();
             enableScroll();
         }

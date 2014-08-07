@@ -29,6 +29,7 @@ import cz.destil.wearsquare.util.LocationUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
 /**
  * Receives all communication from wearable and processes it.
  *
@@ -76,6 +77,7 @@ public class FoursquareService extends TeleportService {
             setOnGetMessageTask(new ListenForMessageTask());
         }
     }
+
     /**
      * Downloads explore list of venues.
      */
@@ -95,6 +97,7 @@ public class FoursquareService extends TeleportService {
             }
         });
     }
+
     /**
      * Downloads list of venues for a check-in.
      */
@@ -159,9 +162,11 @@ public class FoursquareService extends TeleportService {
             dataMap.putString("tip", venue.tip);
             dataMap.putDouble("latitude", venue.latitude);
             dataMap.putDouble("longitude", venue.longitude);
-            dataMap.putString("image_url", venue.imageUrl);
+            if (venue.imageUrl != null) {
+                dataMap.putString("image_url", venue.imageUrl);
+                images.add(venue.imageUrl);
+            }
             dataVenues.add(dataMap);
-            images.add(venue.imageUrl);
         }
         PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/explore-list");
         data.getDataMap().putDataMapArrayList("explore_venues", dataVenues);
