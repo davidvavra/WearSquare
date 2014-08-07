@@ -29,7 +29,6 @@ import java.util.List;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.activity.ExploreActivity;
 import cz.destil.wearsquare.fragment.ActionFragment;
-import cz.destil.wearsquare.util.DebugLog;
 
 /**
  * Constructs fragments as requested by the GridViewPager. For each row a
@@ -60,7 +59,6 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
                 return ActionFragment.create(R.drawable.ic_full_navigate, R.string.action_navigate, new ActionFragment.Listener() {
                     @Override
                     public void onActionPerformed() {
-                        DebugLog.d("navigate");
                         activity.navigate(venue);
                     }
                 });
@@ -68,7 +66,6 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
                 return ActionFragment.create(R.drawable.ic_full_check_in, R.string.check_in, new ActionFragment.Listener() {
                     @Override
                     public void onActionPerformed() {
-                        DebugLog.d("check in");
                         activity.checkIn(venue);
                     }
                 });
@@ -76,7 +73,6 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
                 return ActionFragment.create(R.drawable.ic_full_open_on_phone, R.string.open_on_phone, new ActionFragment.Listener() {
                     @Override
                     public void onActionPerformed() {
-                        DebugLog.d("open");
                         activity.openOnPhone(venue);
                     }
                 });

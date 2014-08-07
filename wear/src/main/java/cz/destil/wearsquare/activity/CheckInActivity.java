@@ -14,7 +14,6 @@ import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.event.ExitEvent;
-import cz.destil.wearsquare.util.DebugLog;
 
 /**
  * Displays a timer which performs check-in after period or inactivity. Or cancels check-in when user presses the timer.
@@ -41,7 +40,6 @@ public class CheckInActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        DebugLog.d("onActivityResult");
         if (requestCode == CONFIRM_ACTIVITY) {
             finish();
             App.bus().post(new ExitEvent());
@@ -58,7 +56,6 @@ public class CheckInActivity extends BaseActivity {
     }
 
     private void startConfirmation() {
-        DebugLog.d("starting timer");
         vConfirmation.setTotalTimeMs(2500);
         vConfirmation.start();
         mTimerSelected = false;

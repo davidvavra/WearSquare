@@ -9,7 +9,6 @@ import com.google.android.gms.wearable.Wearable;
 import com.mariux.teleport.lib.TeleportClient;
 
 import cz.destil.wearsquare.event.ExitEvent;
-import cz.destil.wearsquare.util.DebugLog;
 
 /**
  * Base activity for all others, handles Teleport, Otto and detecting connected state.
@@ -23,14 +22,12 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DebugLog.d(this + " onCreate");
         mTeleportClient = new TeleportClient(this);
         App.bus().register(this);
     }
 
     @Override
     protected void onDestroy() {
-        DebugLog.d(this + " onDestroy");
         App.bus().unregister(this);
         super.onDestroy();
     }
@@ -38,7 +35,6 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        DebugLog.d(this + " onStart");
         mTeleportClient.connect();
         Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi
                 .GetConnectedNodesResult>() {
@@ -59,20 +55,19 @@ public abstract class BaseActivity extends Activity {
      * Override in child to handle disconnected state.
      */
     protected void startDisconnected() {
-        DebugLog.d("start disconnected");
+
     }
 
     /**
      * Override in child to handle connected state.
      */
     protected void startConnected() {
-        DebugLog.d("start connected");
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        DebugLog.d("onStop");
         mTeleportClient.disconnect();
     }
 

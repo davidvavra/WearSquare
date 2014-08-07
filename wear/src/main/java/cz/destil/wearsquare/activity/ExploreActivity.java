@@ -19,7 +19,6 @@ import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
-import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.UiUtils;
 
 /**
@@ -51,7 +50,6 @@ public class ExploreActivity extends ProgressActivity {
     @Override
     public void startConnected() {
         super.startConnected();
-        DebugLog.d("sending start message");
         mNumImagesLoaded = 0;
         teleport().sendMessage("/explore-list/" + UiUtils.getScreenDimensions(), null);
         showProgress();
@@ -87,7 +85,6 @@ public class ExploreActivity extends ProgressActivity {
 
     @Subscribe
     public void onExit(ExitEvent event) {
-        DebugLog.d("on exit");
         finish();
     }
 

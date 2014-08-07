@@ -14,7 +14,6 @@ import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
-import cz.destil.wearsquare.util.DebugLog;
 
 /**
  * Displays a list of nearby venues suitable for a check-in.
@@ -42,14 +41,12 @@ public class CheckInListActivity extends ProgressActivity {
     @Override
     public void startConnected() {
         super.startConnected();
-        DebugLog.d("sending start message");
         teleport().sendMessage("/check-in-list", null);
         showProgress();
     }
 
     @Subscribe
     public void onVenueList(CheckInVenueListEvent event) {
-        DebugLog.d("setting up adapter: " + event.getVenues());
         hideProgress();
         mVenues = event.getVenues();
         mAdapter = new CheckInAdapter(CheckInListActivity.this, mVenues);
@@ -60,7 +57,6 @@ public class CheckInListActivity extends ProgressActivity {
                                        String id = (String) viewHolder.itemView.getTag();
                                        String name = ((TextView) viewHolder.itemView.findViewById(R.id.text)).getText
                                                ().toString();
-                                       DebugLog.d("id=" + id + " name=" + name);
                                        CheckInActivity.call(CheckInListActivity.this, id, name);
                                    }
 
@@ -79,7 +75,6 @@ public class CheckInListActivity extends ProgressActivity {
 
     @Subscribe
     public void onExit(ExitEvent event) {
-        DebugLog.d("on exit");
         finish();
     }
 

@@ -21,7 +21,6 @@ import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
-import cz.destil.wearsquare.util.DebugLog;
 /**
  * Receives and processes all communication from the phone.
  *
@@ -41,13 +40,10 @@ public class ListenerService extends TeleportService {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
                 DataMap data = dataMapItem.getDataMap();
                 if (data.containsKey("error_message")) {
-                    DebugLog.d("error");
                     App.bus().post(new ErrorEvent(data.getString("error_message")));
                 } else if (data.containsKey("check_in_venues")) {
-                    DebugLog.d("check in");
                     processCheckInList(data);
                 } else if (data.containsKey("explore_venues")) {
-                    DebugLog.d("explore");
                     processExploreList(data);
                 } else if (data.containsKey("image_url")) {
                     new ProcessImageTask(data).start();
@@ -100,7 +96,6 @@ public class ListenerService extends TeleportService {
             if (asset != null) {
                 bitmap = loadBitmapFromAsset(asset);
             }
-            DebugLog.d("image loaded: " + imageUrl);
             App.bus().post(new ImageLoadedEvent(imageUrl, bitmap));
         }
 
