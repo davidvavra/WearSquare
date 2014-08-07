@@ -15,5 +15,9 @@
     <string name="or">or</string>
     <string name="how_to_explore">How to explore nearby venues:</string>
     <string name="logout">Logout</string>
+    <string name="desc_explore_by_launcher">Explore by launcher</string>
+    <string name="desc_explore_by_voice">Explore by voice</string>
+    <string name="desc_check_in_by_launcher">Check in by launcher</string>
+    <string name="desc_check_in_by_voice">Check in by voice</string>
 
 </resources>

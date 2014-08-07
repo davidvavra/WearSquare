@@ -6,6 +6,11 @@ import android.location.LocationManager;
 
 import cz.destil.wearsquare.core.App;
 
+/**
+ * Location-related utils.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class LocationUtils {
 
     public static String getLastLocation() {

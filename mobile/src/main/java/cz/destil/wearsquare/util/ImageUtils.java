@@ -6,6 +6,11 @@ import com.google.android.gms.wearable.Asset;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Image-related utils.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class ImageUtils {
     private static String sScreenDimensions;
 

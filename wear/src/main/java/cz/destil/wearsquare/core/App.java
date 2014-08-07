@@ -6,6 +6,11 @@ import com.squareup.otto.Bus;
 
 import cz.destil.wearsquare.util.MainThreadBus;
 
+/**
+ * An application object.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class App extends Application {
 
     private static App sInstance;

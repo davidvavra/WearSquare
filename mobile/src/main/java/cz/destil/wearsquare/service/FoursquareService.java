@@ -29,7 +29,11 @@ import cz.destil.wearsquare.util.LocationUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
+/**
+ * Receives all communication from wearable and processes it.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class FoursquareService extends TeleportService {
 
     SparseArray<Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
@@ -41,6 +45,9 @@ public class FoursquareService extends TeleportService {
         setOnGetMessageTask(new ListenForMessageTask());
     }
 
+    /**
+     * Main listener for messages from wearable.
+     */
     class ListenForMessageTask extends OnGetMessageTask {
         @Override
         protected void onPostExecute(String path) {
@@ -69,7 +76,9 @@ public class FoursquareService extends TeleportService {
             setOnGetMessageTask(new ListenForMessageTask());
         }
     }
-
+    /**
+     * Downloads explore list of venues.
+     */
     private void downloadExploreList(String path) {
         Uri uri = Uri.parse(path);
         ImageUtils.setScreenDimensions(uri.getLastPathSegment());
@@ -86,7 +95,9 @@ public class FoursquareService extends TeleportService {
             }
         });
     }
-
+    /**
+     * Downloads list of venues for a check-in.
+     */
     private void downloadCheckInList() {
         Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
                 new Callback<SearchVenues.SearchResponse>() {
@@ -105,6 +116,9 @@ public class FoursquareService extends TeleportService {
         );
     }
 
+    /**
+     * Actually pushes a check-in to 4sq.
+     */
     private void sendCheckIn(String path) {
         Uri uri = Uri.parse(path);
         String id = uri.getLastPathSegment();
@@ -122,6 +136,9 @@ public class FoursquareService extends TeleportService {
                 });
     }
 
+    /**
+     * Sends error to wearable.
+     */
     private void sendError(String message) {
         DebugLog.e(message);
         PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/error");
@@ -129,6 +146,9 @@ public class FoursquareService extends TeleportService {
         syncDataItem(data);
     }
 
+    /**
+     * Pushes list of explore venues to wear and starts downloading images.
+     */
     private void syncExploreToWear(final List<ExploreVenues.Venue> venues) {
         final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
         List<String> images = new ArrayList<String>();
@@ -149,6 +169,9 @@ public class FoursquareService extends TeleportService {
         downloadImages(images);
     }
 
+    /**
+     * Pushes check-in list of venues to wearable and starts downloading images.
+     */
     private void syncCheckInListToWear(final List<SearchVenues.Venue> venues) {
         final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
         List<String> images = new ArrayList<String>();
@@ -166,9 +189,12 @@ public class FoursquareService extends TeleportService {
         downloadImages(images);
     }
 
+    /**
+     * Downloads images in parallel and pushes them to wearable as Assets.
+     */
     private void downloadImages(List<String> imageUrls) {
         int i = 0;
-        mTargets = new SparseArray<Target>();
+        mTargets = new SparseArray<Target>(); // needs strong reference
         for (final String imageUrl : imageUrls) {
             mTargets.put(i, new Target() {
                 @Override
@@ -198,6 +224,9 @@ public class FoursquareService extends TeleportService {
         }
     }
 
+    /**
+     * Opens venue in the 4sq app on the phone.
+     */
     private void openOnPhone(String path) {
         String id = Uri.parse(path).getLastPathSegment();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.foursquare.com/venue/" + id));
@@ -205,6 +234,9 @@ public class FoursquareService extends TeleportService {
         App.get().startActivity(intent);
     }
 
+    /**
+     * Launches navigation on the phone
+     */
     private void launchNavigation(String path) {
         List<String> segments = Uri.parse(path).getPathSegments();
         String latitude = segments.get(1);

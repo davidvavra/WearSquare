@@ -9,7 +9,7 @@ import retrofit.RestAdapter;
 /**
  * Processor for 4sq API.
  *
- * @author David 'Destil' Vavra (david@vavra.me)
+ * @author David Vávra (david@vavra.me)
  */
 public class Api {
 

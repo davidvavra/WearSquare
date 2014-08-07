@@ -255,9 +255,8 @@ public final class FoursquareOAuth {
                         if (appendString.length() == 1) hexString.append("0");
                         hexString.append(appendString);
                     }
-        
-                    String signature = hexString.toString().toUpperCase(); 
-                    return signature;
+
+                    return hexString.toString().toUpperCase();
         
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

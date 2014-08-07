@@ -17,6 +17,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 
+/**
+ * Adapter for check-in list.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class CheckInAdapter extends WearableListView.Adapter {
 
     private float mDefaultCircleRadius;

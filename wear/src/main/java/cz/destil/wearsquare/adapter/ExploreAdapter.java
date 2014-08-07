@@ -34,6 +34,8 @@ import cz.destil.wearsquare.util.DebugLog;
 /**
  * Constructs fragments as requested by the GridViewPager. For each row a
  * different background is provided.
+ *
+ * @author David Vávra (david@vavra.me)
  */
 public class ExploreAdapter extends FragmentGridPagerAdapter {
 

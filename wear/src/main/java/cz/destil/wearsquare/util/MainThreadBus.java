@@ -4,7 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.squareup.otto.Bus;
-
+/**
+ * Modification to Otto which allow firing events on any thread.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class MainThreadBus extends Bus {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 

@@ -11,7 +11,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
-
+/**
+ * Base activity which handles displaying progress and errors in generic way.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public abstract class ProgressActivity extends BaseActivity {
 
     @InjectView(R.id.progress)

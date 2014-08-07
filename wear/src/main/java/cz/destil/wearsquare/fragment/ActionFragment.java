@@ -11,11 +11,14 @@ import android.widget.TextView;
 
 import cz.destil.wearsquare.R;
 
+/**
+ * Fragment displaying big action and label, based on Wear Design Guidelines.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class ActionFragment extends Fragment implements View.OnClickListener {
 
     private Listener mListener;
-    private CircledImageView vIcon;
-    private TextView vLabel;
 
     public static ActionFragment create(int iconResId, int labelResId, Listener listener) {
         ActionFragment fragment = new ActionFragment();
@@ -35,8 +38,8 @@ public class ActionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        vIcon = (CircledImageView) view.findViewById(R.id.icon);
-        vLabel = (TextView) view.findViewById(R.id.label);
+        CircledImageView vIcon = (CircledImageView) view.findViewById(R.id.icon);
+        TextView vLabel = (TextView) view.findViewById(R.id.label);
         vIcon.setImageResource(getArguments().getInt("ICON"));
         vLabel.setText(getArguments().getInt("LABEL"));
         view.setOnClickListener(this);

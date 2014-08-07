@@ -22,12 +22,16 @@ import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
 import cz.destil.wearsquare.util.DebugLog;
-
+/**
+ * Receives and processes all communication from the phone.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class ListenerService extends TeleportService {
 
     /**
-     * Overriding as workaround to:
-     * https://github.com/Mariuxtheone/Teleport/issues/3
+     * Main entry point for data from the phone.
+     * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
      */
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
@@ -53,6 +57,9 @@ public class ListenerService extends TeleportService {
         }
     }
 
+    /**
+     * Processes check-in list.
+     */
     private void processCheckInList(DataMap data) {
         List<CheckInAdapter.Venue> venues = new ArrayList<CheckInAdapter.Venue>();
         ArrayList<DataMap> dataVenues = data.getDataMapArrayList("check_in_venues");
@@ -62,6 +69,9 @@ public class ListenerService extends TeleportService {
         App.bus().post(new CheckInVenueListEvent(venues));
     }
 
+    /**
+     * Processes explore list.
+     */
     private void processExploreList(DataMap data) {
         List<ExploreAdapter.Venue> venues = new ArrayList<ExploreAdapter.Venue>();
         ArrayList<DataMap> dataVenues = data.getDataMapArrayList("explore_venues");
@@ -71,7 +81,9 @@ public class ListenerService extends TeleportService {
         }
         App.bus().post(new ExploreVenueListEvent(venues));
     }
-
+    /**
+     * Decodes BitMap from Asset.
+     */
     class ProcessImageTask extends BaseAsyncTask {
 
         private DataMap data;

@@ -11,21 +11,26 @@ import com.mariux.teleport.lib.TeleportClient;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
-public class BaseActivity extends Activity {
+/**
+ * Base activity for all others, handles Teleport, Otto and detecting connected state.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
+public abstract class BaseActivity extends Activity {
 
     private TeleportClient mTeleportClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DebugLog.d(this+" onCreate");
+        DebugLog.d(this + " onCreate");
         mTeleportClient = new TeleportClient(this);
         App.bus().register(this);
     }
 
     @Override
     protected void onDestroy() {
-        DebugLog.d(this+" onDestroy");
+        DebugLog.d(this + " onDestroy");
         App.bus().unregister(this);
         super.onDestroy();
     }
@@ -33,7 +38,7 @@ public class BaseActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        DebugLog.d(this+" onStart");
+        DebugLog.d(this + " onStart");
         mTeleportClient.connect();
         Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi
                 .GetConnectedNodesResult>() {
@@ -50,10 +55,16 @@ public class BaseActivity extends Activity {
         });
     }
 
+    /**
+     * Override in child to handle disconnected state.
+     */
     protected void startDisconnected() {
         DebugLog.d("start disconnected");
     }
 
+    /**
+     * Override in child to handle connected state.
+     */
     protected void startConnected() {
         DebugLog.d("start connected");
     }
@@ -67,10 +78,6 @@ public class BaseActivity extends Activity {
 
     public TeleportClient teleport() {
         return mTeleportClient;
-    }
-
-    public boolean isConnected() {
-        return mTeleportClient.getGoogleApiClient().isConnected();
     }
 
     public void finishOtherActivities() {

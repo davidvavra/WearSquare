@@ -17,13 +17,17 @@ import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.R;
-import cz.destil.wearsquare.api.Hidden;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.data.Preferences;
 import cz.destil.wearsquare.util.PackageUtils;
 
-
+/**
+ * This activity is displayed in the phone, it's used for 4sq login and general information.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class PhoneActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_FSQ_CONNECT = 42;
@@ -87,7 +91,7 @@ public class PhoneActivity extends BaseActivity {
 
     @OnClick(R.id.foursquare_button)
     void connectFoursquare() {
-        Intent intent = FoursquareOAuth.getConnectIntent(this, Hidden.CLIENT_ID);
+        Intent intent = FoursquareOAuth.getConnectIntent(this, BuildConfig.CLIENT_ID);
         startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
     }
 
@@ -97,8 +101,8 @@ public class PhoneActivity extends BaseActivity {
             case REQUEST_CODE_FSQ_CONNECT:
                 AuthCodeResponse codeResponse = FoursquareOAuth.getAuthCodeFromResult(resultCode, data);
                 if (!TextUtils.isEmpty(codeResponse.getCode())) {
-                    Intent intent = FoursquareOAuth.getTokenExchangeIntent(this, Hidden.CLIENT_ID,
-                            Hidden.CLIENT_SECRET, codeResponse.getCode());
+                    Intent intent = FoursquareOAuth.getTokenExchangeIntent(this, BuildConfig.CLIENT_ID,
+                            BuildConfig.CLIENT_SECRET, codeResponse.getCode());
                     startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
                 }
                 break;

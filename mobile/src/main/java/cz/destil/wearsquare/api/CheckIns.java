@@ -7,7 +7,7 @@ import retrofit.http.Query;
 /**
  * Processor for 4sq checkings/add API.
  *
- * @author David 'Destil' Vavra (david@vavra.me)
+ * @author David Vávra (david@vavra.me)
  */
 public interface CheckIns {
 

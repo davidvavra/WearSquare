@@ -4,6 +4,11 @@ import android.content.pm.PackageManager;
 
 import cz.destil.wearsquare.core.App;
 
+/**
+ * Package-related utils.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class PackageUtils {
 
     public static boolean isWearLauncherInstalled() {

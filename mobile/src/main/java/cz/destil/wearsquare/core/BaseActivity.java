@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.mariux.teleport.lib.TeleportClient;
-
-public class BaseActivity extends Activity {
+/**
+ * Base activity for all others. It handles Teleport.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
+public abstract class BaseActivity extends Activity {
 
     private TeleportClient mTeleportClient;
 

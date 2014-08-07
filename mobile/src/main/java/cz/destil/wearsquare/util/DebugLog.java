@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * Simple debugging utils.
  *
- * @author David 'Destil' Vavra (david@vavra.me)
+ * @author David Vávra (david@vavra.me)
  */
 public class DebugLog {
     private static final String DEFAULT_TAG = "WSQ";

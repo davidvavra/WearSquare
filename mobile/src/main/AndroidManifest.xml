@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="cz.destil.wearsquare">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -28,7 +29,8 @@
             android:theme="@android:style/Theme.Dialog"/>
 
         <service
-            android:name=".service.FoursquareService">
+            android:name=".service.FoursquareService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER"/>
             </intent-filter>

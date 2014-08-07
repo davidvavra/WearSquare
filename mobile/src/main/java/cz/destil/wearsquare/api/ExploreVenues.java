@@ -11,7 +11,7 @@ import retrofit.http.Query;
 /**
  * Processor for 4sq venues/explore API.
  *
- * @author David 'Destil' Vavra (david@vavra.me)
+ * @author David Vávra (david@vavra.me)
  */
 public interface ExploreVenues {
 

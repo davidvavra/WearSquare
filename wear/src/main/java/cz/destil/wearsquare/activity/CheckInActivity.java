@@ -16,6 +16,11 @@ import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
+/**
+ * Displays a timer which performs check-in after period or inactivity. Or cancels check-in when user presses the timer.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class CheckInActivity extends BaseActivity {
 
 

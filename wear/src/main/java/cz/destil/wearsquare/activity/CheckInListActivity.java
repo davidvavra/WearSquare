@@ -16,6 +16,11 @@ import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
 import cz.destil.wearsquare.util.DebugLog;
 
+/**
+ * Displays a list of nearby venues suitable for a check-in.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class CheckInListActivity extends ProgressActivity {
 
     WearableListView vList;

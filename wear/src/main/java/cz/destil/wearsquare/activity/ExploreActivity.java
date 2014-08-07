@@ -22,6 +22,12 @@ import cz.destil.wearsquare.event.ImageLoadedEvent;
 import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.UiUtils;
 
+/**
+ * Displays a list of interesting venues around the user with images and tips. User can swipe to navigate to them,
+ * check-in there and open them on the phone.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class ExploreActivity extends ProgressActivity {
 
     private static final int ON_PHONE_ACTIVITY = 41;

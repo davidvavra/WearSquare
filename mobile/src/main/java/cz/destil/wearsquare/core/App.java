@@ -3,7 +3,11 @@ package cz.destil.wearsquare.core;
 import android.app.Application;
 
 import com.crittercism.app.Crittercism;
-
+/**
+ * App instance.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class App extends Application {
 
     private static App sInstance;

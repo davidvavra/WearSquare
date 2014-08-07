@@ -4,7 +4,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import cz.destil.wearsquare.core.App;
-
+/**
+ * Simplifies access to SharedPreferences.
+ *
+ * @author David Vávra (david@vavra.me)
+ */
 public class Preferences {
 
     private static final String TOKEN = "foursquare_token";
