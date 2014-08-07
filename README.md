@@ -18,7 +18,7 @@ Unofficial Foursquare Client for Android Wear.
 <img src="graphics/screenshots/checkin-in.png" width="200" hspace="5"/>
 <img src="graphics/screenshots/checked-in.png" width="200" hspace="5" />
 
-### Quickly explore your neigbourhood:
+### Quickly explore your neighbourhood:
 <br />
 <img src="graphics/screenshots/exploring-launcher.png" width="200" hspace="5"/>
 <img src="graphics/screenshots/explore-list.png" width="200" hspace="5" />
