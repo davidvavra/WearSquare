@@ -5,7 +5,7 @@ Unofficial Foursquare Client for Android Wear.
 
 ## Download:
 
-[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=eu.inmite.android.gridwichterle) 
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=cz.destil.wearsquare) 
 
 ([join the beta](https://plus.google.com/communities/101759563856154570864))
 
