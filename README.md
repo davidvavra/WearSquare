@@ -20,10 +20,10 @@ Unofficial Foursquare Client for Android Wear.
 
 ### Quickly explore your neighbourhood:
 <br />
-<img src="graphics/screenshots/exploring-launcher.png" width="200" hspace="5"/>
-<img src="graphics/screenshots/explore-list.png" width="200" hspace="5" />
-<img src="graphics/screenshots/navigate.png" width="200" hspace="5"/>
-<img src="graphics/screenshots/checkin-action.png" width="200" hspace="5" />
+<img src="graphics/screenshots/exploring-launcher.png" width="170" hspace="5"/>
+<img src="graphics/screenshots/explore-list.png" width="170" hspace="5" />
+<img src="graphics/screenshots/navigate.png" width="170" hspace="5"/>
+<img src="graphics/screenshots/checkin-action.png" width="170" hspace="5" />
 
 Future plans
 -----
