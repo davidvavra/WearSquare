@@ -13,10 +13,10 @@ Unofficial Foursquare Client for Android Wear.
 
 ### Lightning fast check-in from your watch:
 <br />
-<img src="graphics/screenshots/check-in-launcher.png" width="180" hspace="5"/>
-<img src="graphics/screenshots/checkin-list.png" width="180" hspace="5" />
-<img src="graphics/screenshots/checkin-in.png" width="180" hspace="5"/>
-<img src="graphics/screenshots/checked-in.png" width="180" hspace="5" />
+<img src="graphics/screenshots/check-in-launcher.png" width="170" hspace="5"/>
+<img src="graphics/screenshots/checkin-list.png" width="170" hspace="5" />
+<img src="graphics/screenshots/checkin-in.png" width="170" hspace="5"/>
+<img src="graphics/screenshots/checked-in.png" width="170" hspace="5" />
 
 ### Quickly explore your neighbourhood:
 <br />
