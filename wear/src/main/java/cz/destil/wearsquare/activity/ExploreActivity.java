@@ -62,6 +62,7 @@ public class ExploreActivity extends ProgressActivity {
     @Subscribe
     public void onVenueList(ExploreVenueListEvent event) {
         hideProgress();
+        showSmallProgress();
         mVenues = event.getVenues();
         setupAdapter();
     }
@@ -90,6 +91,7 @@ public class ExploreActivity extends ProgressActivity {
         }
         mImagesLoaded++;
         if (mImagesLoaded == mVenues.size()) {
+            hideSmallProgress();
             enableScroll();
         }
     }

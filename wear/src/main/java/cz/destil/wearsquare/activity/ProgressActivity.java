@@ -3,20 +3,14 @@ package cz.destil.wearsquare.activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
-import cz.destil.wearsquare.event.ErrorEvent;
-import cz.destil.wearsquare.event.ExitEvent;
-import cz.destil.wearsquare.util.DebugLog;
 
 public abstract class ProgressActivity extends BaseActivity {
 
@@ -24,9 +18,11 @@ public abstract class ProgressActivity extends BaseActivity {
     ProgressBar vProgress;
     @InjectView(R.id.error)
     TextView vError;
-    @InjectView(R.id.container)
-    RelativeLayout vContainer;
-    private View mMainView;
+    @InjectView(R.id.main)
+    FrameLayout vMainContainer;
+    @InjectView(R.id.small_progress)
+    ProgressBar vSmallProgress;
+    private View vMainView;
 
     abstract int getMainViewResourceId();
 
@@ -35,7 +31,8 @@ public abstract class ProgressActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         ButterKnife.inject(this);
-        mMainView = ((ViewGroup)LayoutInflater.from(this).inflate(getMainViewResourceId(), vContainer)).getChildAt(2);
+        hideSmallProgress();
+        vMainView = ((FrameLayout) LayoutInflater.from(this).inflate(getMainViewResourceId(), vMainContainer)).getChildAt(0);
     }
 
     @Override
@@ -53,6 +50,14 @@ public abstract class ProgressActivity extends BaseActivity {
         vProgress.setVisibility(View.GONE);
     }
 
+    public void hideSmallProgress() {
+        vSmallProgress.setVisibility(View.GONE);
+    }
+
+    public void showSmallProgress() {
+        vSmallProgress.setVisibility(View.VISIBLE);
+    }
+
     public void showError(String message) {
         vProgress.setVisibility(View.GONE);
         vError.setVisibility(View.VISIBLE);
@@ -60,7 +65,7 @@ public abstract class ProgressActivity extends BaseActivity {
     }
 
     public View getMainView() {
-        return mMainView;
+        return vMainView;
     }
 
 }
