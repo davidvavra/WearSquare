@@ -64,8 +64,6 @@ public class ListenerService extends TeleportService {
                 if (data.containsKey("error_message")) {
                     App.bus().post(new ErrorEvent(data.getString("error_message")));
                 } else if (data.containsKey("check_in_venues")) {
-                    Object objedc= null;
-                    objedc.hashCode();
                     processCheckInList(data);
                 } else if (data.containsKey("explore_venues")) {
                     processExploreList(data);
