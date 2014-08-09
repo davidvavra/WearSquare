@@ -21,6 +21,8 @@ import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
+import cz.destil.wearsquare.util.DebugLog;
+
 /**
  * Receives and processes all communication from the phone.
  *
@@ -28,12 +30,19 @@ import cz.destil.wearsquare.event.ImageLoadedEvent;
  */
 public class ListenerService extends TeleportService {
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DebugLog.d("ListenerService onCreate");
+    }
+
     /**
      * Main entry point for data from the phone.
      * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
      */
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
+        DebugLog.d("onDataChanged");
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {

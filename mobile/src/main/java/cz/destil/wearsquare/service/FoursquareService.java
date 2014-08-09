@@ -42,6 +42,7 @@ public class FoursquareService extends TeleportService {
     @Override
     public void onCreate() {
         super.onCreate();
+        DebugLog.d("Foursquare service onCreate");
         setOnGetMessageTask(new ListenForMessageTask());
     }
 
@@ -51,24 +52,29 @@ public class FoursquareService extends TeleportService {
     class ListenForMessageTask extends OnGetMessageTask {
         @Override
         protected void onPostExecute(String path) {
-            if (path.equals("/check-in-list")) {
-                if (Preferences.hasFoursquareToken()) {
-                    downloadCheckInList();
-                } else {
-                    sendError(getString(R.string.please_connect_foursquare_first));
+            DebugLog.d("message received: " + path);
+            try {
+                if (path.equals("/check-in-list")) {
+                    if (Preferences.hasFoursquareToken()) {
+                        downloadCheckInList();
+                    } else {
+                        sendError(getString(R.string.please_connect_foursquare_first));
+                    }
+                } else if (path.startsWith("check-in")) {
+                    sendCheckIn(path);
+                } else if (path.startsWith("/explore-list")) {
+                    if (Preferences.hasFoursquareToken()) {
+                        downloadExploreList(path);
+                    } else {
+                        sendError(getString(R.string.please_connect_foursquare_first));
+                    }
+                } else if (path.startsWith("/navigate")) {
+                    launchNavigation(path);
+                } else if (path.startsWith("/open")) {
+                    openOnPhone(path);
                 }
-            } else if (path.startsWith("check-in")) {
-                sendCheckIn(path);
-            } else if (path.startsWith("/explore-list")) {
-                if (Preferences.hasFoursquareToken()) {
-                    downloadExploreList(path);
-                } else {
-                    sendError(getString(R.string.please_connect_foursquare_first));
-                }
-            } else if (path.startsWith("/navigate")) {
-                launchNavigation(path);
-            } else if (path.startsWith("/open")) {
-                openOnPhone(path);
+            } catch (LocationUtils.LocationNotFoundException e) {
+                sendError(getString(R.string.no_location));
             }
             setOnGetMessageTask(new ListenForMessageTask());
         }
@@ -77,10 +83,11 @@ public class FoursquareService extends TeleportService {
     /**
      * Downloads explore list of venues.
      */
-    private void downloadExploreList(String path) {
+    private void downloadExploreList(String path) throws LocationUtils.LocationNotFoundException {
         Uri uri = Uri.parse(path);
         ImageUtils.setScreenDimensions(uri.getLastPathSegment());
-        Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(), new Callback<ExploreVenues.ExploreVenuesResponse>() {
+        Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(),
+                new Callback<ExploreVenues.ExploreVenuesResponse>() {
             @Override
             public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
                 syncExploreToWear(exploreVenuesResponse.getVenues());
@@ -96,7 +103,7 @@ public class FoursquareService extends TeleportService {
     /**
      * Downloads list of venues for a check-in.
      */
-    private void downloadCheckInList() {
+    private void downloadCheckInList() throws LocationUtils.LocationNotFoundException {
         Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
                 new Callback<SearchVenues.SearchResponse>() {
 
@@ -107,7 +114,8 @@ public class FoursquareService extends TeleportService {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
+                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
+                                ());
                     }
                 }
         );
@@ -116,10 +124,11 @@ public class FoursquareService extends TeleportService {
     /**
      * Actually pushes a check-in to 4sq.
      */
-    private void sendCheckIn(String path) {
+    private void sendCheckIn(String path) throws LocationUtils.LocationNotFoundException {
         Uri uri = Uri.parse(path);
         String id = uri.getLastPathSegment();
-        Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(), LocationUtils.getLastAltitude(),
+        Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(),
+                LocationUtils.getLastAltitude(),
                 new Callback<CheckIns.CheckInResponse>() {
                     @Override
                     public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
@@ -128,9 +137,11 @@ public class FoursquareService extends TeleportService {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
+                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
+                                ());
                     }
-                });
+                }
+        );
     }
 
     /**
@@ -240,7 +251,8 @@ public class FoursquareService extends TeleportService {
         String latitude = segments.get(1);
         String longitude = segments.get(2);
         String name = segments.get(3);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:ll=" + latitude + "," + longitude + "&q=" + name + "&mode=w"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:ll=" + latitude + "," +
+                "" + longitude + "&q=" + name + "&mode=w"));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         App.get().startActivity(intent);
     }

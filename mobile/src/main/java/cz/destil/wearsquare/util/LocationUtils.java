@@ -13,12 +13,17 @@ import cz.destil.wearsquare.core.App;
  */
 public class LocationUtils {
 
-    public static String getLastLocation() {
+    public static String getLastLocation() throws LocationNotFoundException {
         // return "51.497470, -0.135633";//"40.765068,-73.983172"; // FAKE FOR screenshots
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        if (location == null) {
+            throw new LocationNotFoundException();
+        }
         return location.getLatitude() + "," + location.getLongitude();
     }
+
+
 
     public static int getLastAccuracy() {
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
@@ -30,5 +35,8 @@ public class LocationUtils {
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         return (int) location.getAltitude();
+    }
+
+    public static class LocationNotFoundException extends Exception {
     }
 }
