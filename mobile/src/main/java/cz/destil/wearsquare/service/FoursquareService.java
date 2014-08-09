@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.mariux.teleport.lib.TeleportService;
 import com.squareup.picasso.Picasso;
@@ -43,40 +45,38 @@ public class FoursquareService extends TeleportService {
     public void onCreate() {
         super.onCreate();
         DebugLog.d("Foursquare service onCreate");
-        setOnGetMessageTask(new ListenForMessageTask());
     }
 
     /**
-     * Main listener for messages from wearable.
+     * Main entry point for messages from the watch.
+     * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
      */
-    class ListenForMessageTask extends OnGetMessageTask {
-        @Override
-        protected void onPostExecute(String path) {
-            DebugLog.d("message received: " + path);
-            try {
-                if (path.equals("/check-in-list")) {
-                    if (Preferences.hasFoursquareToken()) {
-                        downloadCheckInList();
-                    } else {
-                        sendError(getString(R.string.please_connect_foursquare_first));
-                    }
-                } else if (path.startsWith("check-in")) {
-                    sendCheckIn(path);
-                } else if (path.startsWith("/explore-list")) {
-                    if (Preferences.hasFoursquareToken()) {
-                        downloadExploreList(path);
-                    } else {
-                        sendError(getString(R.string.please_connect_foursquare_first));
-                    }
-                } else if (path.startsWith("/navigate")) {
-                    launchNavigation(path);
-                } else if (path.startsWith("/open")) {
-                    openOnPhone(path);
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+        String path = messageEvent.getPath();
+        DebugLog.d("message received: " + path);
+        try {
+            if (path.equals("/check-in-list")) {
+                if (Preferences.hasFoursquareToken()) {
+                    downloadCheckInList();
+                } else {
+                    sendError(getString(R.string.please_connect_foursquare_first));
                 }
-            } catch (LocationUtils.LocationNotFoundException e) {
-                sendError(getString(R.string.no_location));
+            } else if (path.startsWith("check-in")) {
+                sendCheckIn(path);
+            } else if (path.startsWith("/explore-list")) {
+                if (Preferences.hasFoursquareToken()) {
+                    downloadExploreList(path);
+                } else {
+                    sendError(getString(R.string.please_connect_foursquare_first));
+                }
+            } else if (path.startsWith("/navigate")) {
+                launchNavigation(path);
+            } else if (path.startsWith("/open")) {
+                openOnPhone(path);
             }
-            setOnGetMessageTask(new ListenForMessageTask());
+        } catch (LocationUtils.LocationNotFoundException e) {
+            sendError(getString(R.string.no_location));
         }
     }
 
