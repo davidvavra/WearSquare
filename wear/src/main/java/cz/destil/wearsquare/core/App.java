@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.squareup.otto.Bus;
 
+import cz.destil.wearsquare.util.ExceptionHandler;
 import cz.destil.wearsquare.util.MainThreadBus;
 
 /**
@@ -20,6 +21,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(Thread.getDefaultUncaughtExceptionHandler()));
         sBus = new MainThreadBus();
     }
 

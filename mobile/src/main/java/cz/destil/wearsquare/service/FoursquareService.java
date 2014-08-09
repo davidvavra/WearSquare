@@ -7,8 +7,12 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.mariux.teleport.lib.TeleportService;
@@ -27,6 +31,7 @@ import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.data.Preferences;
 import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.ImageUtils;
+import cz.destil.wearsquare.util.IntentUtils;
 import cz.destil.wearsquare.util.LocationUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,12 +46,6 @@ public class FoursquareService extends TeleportService {
 
     SparseArray<Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        DebugLog.d("Foursquare service onCreate");
-    }
-
     /**
      * Main entry point for messages from the watch.
      * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
@@ -54,7 +53,6 @@ public class FoursquareService extends TeleportService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         String path = messageEvent.getPath();
-        DebugLog.d("message received: " + path);
         try {
             if (path.equals("/check-in-list")) {
                 if (Preferences.hasFoursquareToken()) {
@@ -71,9 +69,11 @@ public class FoursquareService extends TeleportService {
                     sendError(getString(R.string.please_connect_foursquare_first));
                 }
             } else if (path.startsWith("/navigate")) {
-                launchNavigation(path);
+                IntentUtils.launchNavigation(path);
             } else if (path.startsWith("/open")) {
-                openOnPhone(path);
+                IntentUtils.openOnPhone(path);
+            } else if (path.startsWith("exception:")) {
+                IntentUtils.sendEmail(path.split("exception:")[1]);
             }
         } catch (LocationUtils.LocationNotFoundException e) {
             sendError(getString(R.string.no_location));
@@ -88,16 +88,17 @@ public class FoursquareService extends TeleportService {
         ImageUtils.setScreenDimensions(uri.getLastPathSegment());
         Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(),
                 new Callback<ExploreVenues.ExploreVenuesResponse>() {
-            @Override
-            public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
-                syncExploreToWear(exploreVenuesResponse.getVenues());
-            }
+                    @Override
+                    public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
+                        syncExploreToWear(exploreVenuesResponse.getVenues());
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
-            }
-        });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
+                    }
+                }
+        );
     }
 
     /**
@@ -231,29 +232,5 @@ public class FoursquareService extends TeleportService {
             Picasso.with(App.get()).load(imageUrl).into(mTargets.get(i));
             i++;
         }
-    }
-
-    /**
-     * Opens venue in the 4sq app on the phone.
-     */
-    private void openOnPhone(String path) {
-        String id = Uri.parse(path).getLastPathSegment();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.foursquare.com/venue/" + id));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        App.get().startActivity(intent);
-    }
-
-    /**
-     * Launches navigation on the phone
-     */
-    private void launchNavigation(String path) {
-        List<String> segments = Uri.parse(path).getPathSegments();
-        String latitude = segments.get(1);
-        String longitude = segments.get(2);
-        String name = segments.get(3);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:ll=" + latitude + "," +
-                "" + longitude + "&q=" + name + "&mode=w"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        App.get().startActivity(intent);
     }
 }

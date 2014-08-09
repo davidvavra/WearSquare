@@ -135,7 +135,8 @@ public class ExploreActivity extends ProgressActivity {
     }
 
     public void navigate(ExploreAdapter.Venue venue) {
-        teleport().sendMessage("/navigate/" + venue.getLatitude() + "/" + venue.getLongitude() + "/" + venue.getName(), null);
+        teleport().sendMessage("/navigate/" + venue.getLatitude() + "/" + venue.getLongitude() + "/" + venue.getName
+                (), null);
         openOnPhoneAnimation();
     }
 

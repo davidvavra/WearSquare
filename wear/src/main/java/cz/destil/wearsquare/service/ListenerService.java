@@ -9,6 +9,7 @@ import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.mariux.teleport.lib.TeleportService;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,11 @@ import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.core.BaseAsyncTask;
 import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
+import cz.destil.wearsquare.event.ExceptionEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
 import cz.destil.wearsquare.util.DebugLog;
+import cz.destil.wearsquare.util.ExceptionHandler;
 
 /**
  * Receives and processes all communication from the phone.
@@ -33,7 +36,18 @@ public class ListenerService extends TeleportService {
     @Override
     public void onCreate() {
         super.onCreate();
-        DebugLog.d("ListenerService onCreate");
+        App.bus().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        App.bus().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe
+    public void onUncaughtException(ExceptionEvent e) {
+        ExceptionHandler.sendExceptionToPhone(e.getException(), this);
     }
 
     /**
@@ -42,7 +56,6 @@ public class ListenerService extends TeleportService {
      */
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        DebugLog.d("onDataChanged");
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
@@ -51,6 +64,8 @@ public class ListenerService extends TeleportService {
                 if (data.containsKey("error_message")) {
                     App.bus().post(new ErrorEvent(data.getString("error_message")));
                 } else if (data.containsKey("check_in_venues")) {
+                    Object objedc= null;
+                    objedc.hashCode();
                     processCheckInList(data);
                 } else if (data.containsKey("explore_venues")) {
                     processExploreList(data);

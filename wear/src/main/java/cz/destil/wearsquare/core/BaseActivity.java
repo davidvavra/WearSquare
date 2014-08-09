@@ -7,8 +7,12 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.mariux.teleport.lib.TeleportClient;
+import com.squareup.otto.Subscribe;
 
+import cz.destil.wearsquare.event.ExceptionEvent;
 import cz.destil.wearsquare.event.ExitEvent;
+import cz.destil.wearsquare.util.DebugLog;
+import cz.destil.wearsquare.util.ExceptionHandler;
 
 /**
  * Base activity for all others, handles Teleport, Otto and detecting connected state.
@@ -17,18 +21,22 @@ import cz.destil.wearsquare.event.ExitEvent;
  */
 public abstract class BaseActivity extends Activity {
 
+    private GlobalSubscription mGlobalSubscription;
     private TeleportClient mTeleportClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTeleportClient = new TeleportClient(this);
         App.bus().register(this);
+        mGlobalSubscription = new GlobalSubscription();
+        App.bus().register(mGlobalSubscription);
+        mTeleportClient = new TeleportClient(this);
     }
 
     @Override
     protected void onDestroy() {
         App.bus().unregister(this);
+        App.bus().unregister(mGlobalSubscription);
         super.onDestroy();
     }
 
@@ -36,8 +44,9 @@ public abstract class BaseActivity extends Activity {
     protected void onStart() {
         super.onStart();
         mTeleportClient.connect();
-        Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback<NodeApi
-                .GetConnectedNodesResult>() {
+        Wearable.NodeApi.getConnectedNodes(mTeleportClient.getGoogleApiClient()).setResultCallback(new ResultCallback
+                <NodeApi
+                        .GetConnectedNodesResult>() {
 
 
             @Override
@@ -77,5 +86,12 @@ public abstract class BaseActivity extends Activity {
 
     public void finishOtherActivities() {
         App.bus().post(new ExitEvent());
+    }
+
+    private class GlobalSubscription {
+        @Subscribe
+        public void onException(ExceptionEvent e) {
+            ExceptionHandler.sendExceptionToPhone(e.getException(), mTeleportClient);
+        }
     }
 }
