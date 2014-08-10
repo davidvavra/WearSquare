@@ -81,7 +81,7 @@ public class CheckInListActivity extends ProgressActivity {
     @Subscribe
     public void onImageDownloaded(ImageLoadedEvent event) {
         for (CheckInAdapter.Venue venue : mVenues) {
-            if (venue.getImageUrl().equals(event.getImageUrl())) {
+            if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
                 venue.setIcon(event.getBitmap());
                 mAdapter.notifyDataSetChanged();
                 break;
