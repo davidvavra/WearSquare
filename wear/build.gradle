@@ -9,8 +9,8 @@ android {
         applicationId "cz.destil.wearsquare"
         minSdkVersion 20
         targetSdkVersion 20
-        versionCode 1
-        versionName "1.0"
+        versionCode = Integer.parseInt(VERSION_CODE)
+        versionName = VERSION_NAME
     }
 
     signingConfigs {
