@@ -1,18 +1,12 @@
 package cz.destil.wearsquare.service;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.util.SparseArray;
 
-import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.Asset;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.mariux.teleport.lib.TeleportService;
@@ -129,11 +123,11 @@ public class FoursquareService extends TeleportService {
         Uri uri = Uri.parse(path);
         String id = uri.getLastPathSegment();
         Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(),
-                LocationUtils.getLastAltitude(),
+                LocationUtils.getLastAltitude(), Preferences.getBroadcast(),
                 new Callback<CheckIns.CheckInResponse>() {
                     @Override
                     public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
-                        // ignore for now
+                        // ignore for now, maybe log it to some check-in log in the future
                     }
 
                     @Override

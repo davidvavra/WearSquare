@@ -65,9 +65,14 @@ public class PhoneActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            Preferences.clearFoursquareToken();
-            init();
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                Preferences.clearFoursquareToken();
+                init();
+                break;
+            case R.id.action_settings:
+                SettingsActivity.call(this);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

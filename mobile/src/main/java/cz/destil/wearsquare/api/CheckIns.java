@@ -13,7 +13,7 @@ public interface CheckIns {
 
     @POST("/checkins/add")
     void add(@Query("venueId") String venueId, @Query("ll") String ll, @Query("llAcc") int accuracy, @Query("alt") int altitude,
-             Callback<CheckInResponse> callback);
+             @Query("broadcast") String broadcast, Callback<CheckInResponse> callback);
 
     public static class CheckInResponse extends Api.FoursquareResponse {
     }

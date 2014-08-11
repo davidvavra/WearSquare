@@ -25,6 +25,11 @@
         </activity>
 
         <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".activity.PhoneActivity"
+            tools:ignore="UnusedAttribute"/>
+        <activity
             android:name="com.foursquare.android.nativeoauth.TokenExchangeActivity"
             android:theme="@android:style/Theme.Dialog"/>
 
