@@ -5,9 +5,9 @@ import android.os.Build;
 import com.mariux.teleport.lib.TeleportClient;
 import com.mariux.teleport.lib.TeleportService;
 
+import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.event.ExceptionEvent;
-import cz.destil.wearsquare.service.ListenerService;
 
 /**
  * Sends exceptions to mobile phone before crashing.
@@ -37,13 +37,13 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private static String buildMessageText(Throwable exception) {
-        String message = Build.MANUFACTURER + " " + Build.MODEL + " " + Build.VERSION.RELEASE + " " + Build.DEVICE;
+        String message = Build.MANUFACTURER + " " + Build.MODEL + " " + Build.VERSION.RELEASE + " " + " v" + BuildConfig.VERSION_NAME;
         message += "\n\n";
         message += exception.toString();
         message += "\n";
         for (StackTraceElement element : exception.getStackTrace()) {
             message += element.toString() + "\n";
         }
-        return "exception:"+message;
+        return "exception:" + message;
     }
 }

@@ -9,5 +9,6 @@
     <string name="exploring">Exploring</string>
     <string name="action_navigate">Navigate</string>
     <string name="open_on_phone">Open on phone</string>
+    <string name="no_venues_nearby">No venues nearby</string>
 
 </resources>

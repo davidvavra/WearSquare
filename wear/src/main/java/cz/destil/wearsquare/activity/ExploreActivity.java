@@ -67,15 +67,19 @@ public class ExploreActivity extends ProgressActivity {
     @Subscribe
     public void onVenueList(ExploreVenueListEvent event) {
         hideProgress();
-        showSmallProgress();
         mVenues = event.getVenues();
-        mNumVenuesWithImages = 0;
-        for (ExploreAdapter.Venue venue : mVenues) {
-            if (venue.getImageUrl() != null) {
-                mNumVenuesWithImages++;
+        if (mVenues != null && mVenues.size() > 0) {
+            showSmallProgress();
+            mNumVenuesWithImages = 0;
+            for (ExploreAdapter.Venue venue : mVenues) {
+                if (venue.getImageUrl() != null) {
+                    mNumVenuesWithImages++;
+                }
             }
+            setupAdapter();
+        } else {
+            showError(getString(R.string.no_venues_nearby));
         }
-        setupAdapter();
     }
 
     @Subscribe
