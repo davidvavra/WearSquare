@@ -95,7 +95,7 @@ public class ExploreActivity extends ProgressActivity {
     @Subscribe
     public void onImageLoaded(ImageLoadedEvent event) {
         for (ExploreAdapter.Venue venue : mVenues) {
-            if (venue.getImageUrl().equals(event.getImageUrl())) {
+            if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
                 venue.setPhoto(event.getBitmap());
                 break;
             }
