@@ -5,6 +5,9 @@ import android.os.Build;
 import com.mariux.teleport.lib.TeleportClient;
 import com.mariux.teleport.lib.TeleportService;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.event.ExceptionEvent;
@@ -39,11 +42,10 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     private static String buildMessageText(Throwable exception) {
         String message = Build.MANUFACTURER + " " + Build.MODEL + " " + Build.VERSION.RELEASE + " " + " v" + BuildConfig.VERSION_NAME;
         message += "\n\n";
-        message += exception.toString();
-        message += "\n";
-        for (StackTraceElement element : exception.getStackTrace()) {
-            message += element.toString() + "\n";
-        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        exception.printStackTrace(pw);
+        message += sw.toString();
         return "exception:" + message;
     }
 }
