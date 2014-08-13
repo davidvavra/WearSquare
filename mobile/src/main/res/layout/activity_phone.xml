@@ -148,6 +148,14 @@
                 android:textColorLink="@color/link"
                 android:textSize="13sp"
                 android:text="@string/about"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/donation"
+                android:layout_marginTop="8dp"
+                android:text="@string/buy_author_beer"
+                style="@android:style/Widget.Holo.Button.Small"/>
         </LinearLayout>
 
     </LinearLayout>

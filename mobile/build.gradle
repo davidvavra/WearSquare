@@ -40,4 +40,5 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'com.crittercism:crittercism-android-agent:4.5.3'
+    compile 'com.anjlab.android.iab.v3:library:1.0.8@aar'
 }

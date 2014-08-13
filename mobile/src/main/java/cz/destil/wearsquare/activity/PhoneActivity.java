@@ -7,9 +7,11 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
@@ -22,13 +24,14 @@ import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.data.Preferences;
 import cz.destil.wearsquare.util.PackageUtils;
+import cz.destil.wearsquare.util.ToastUtil;
 
 /**
  * This activity is displayed in the phone, it's used for 4sq login and general information.
  *
  * @author David Vávra (david@vavra.me)
  */
-public class PhoneActivity extends BaseActivity {
+public class PhoneActivity extends BaseActivity implements BillingProcessor.IBillingHandler {
 
     private static final int REQUEST_CODE_FSQ_CONNECT = 42;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 43;
@@ -41,6 +44,10 @@ public class PhoneActivity extends BaseActivity {
     LinearLayout vLoginBox;
     @InjectView(R.id.instructions_box)
     LinearLayout vInstructionsBox;
+    @InjectView(R.id.donation)
+    Button vDonation;
+
+    BillingProcessor mBilling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,16 @@ public class PhoneActivity extends BaseActivity {
         setContentView(R.layout.activity_phone);
         ButterKnife.inject(this);
         setupAbout();
+        mBilling = new BillingProcessor(this, null, this);
         init();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mBilling != null) {
+            mBilling.release();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -87,9 +103,13 @@ public class PhoneActivity extends BaseActivity {
         if (Preferences.hasFoursquareToken()) {
             vLoginBox.setVisibility(View.GONE);
             vInstructionsBox.setVisibility(View.VISIBLE);
+            if (mBilling.isInitialized()) {
+                vDonation.setVisibility(View.VISIBLE);
+            }
         } else {
             vLoginBox.setVisibility(View.VISIBLE);
             vInstructionsBox.setVisibility(View.GONE);
+            vDonation.setVisibility(View.GONE);
         }
         invalidateOptionsMenu();
     }
@@ -100,26 +120,54 @@ public class PhoneActivity extends BaseActivity {
         startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
     }
 
+    @OnClick(R.id.donation)
+    void donate() {
+        mBilling.purchase("beer");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_FSQ_CONNECT:
-                AuthCodeResponse codeResponse = FoursquareOAuth.getAuthCodeFromResult(resultCode, data);
-                if (!TextUtils.isEmpty(codeResponse.getCode())) {
-                    Intent intent = FoursquareOAuth.getTokenExchangeIntent(this, BuildConfig.CLIENT_ID,
-                            BuildConfig.CLIENT_SECRET, codeResponse.getCode());
-                    startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
-                }
-                break;
-            case REQUEST_CODE_FSQ_TOKEN_EXCHANGE:
-                AccessTokenResponse tokenResponse = FoursquareOAuth.getTokenFromResult(resultCode, data);
-                if (!TextUtils.isEmpty(tokenResponse.getAccessToken())) {
-                    Preferences.setFoursquareToken(tokenResponse.getAccessToken());
-                    init();
-                }
-                break;
+        if (!mBilling.handleActivityResult(requestCode, resultCode, data)) {
+            switch (requestCode) {
+                case REQUEST_CODE_FSQ_CONNECT:
+                    AuthCodeResponse codeResponse = FoursquareOAuth.getAuthCodeFromResult(resultCode, data);
+                    if (!TextUtils.isEmpty(codeResponse.getCode())) {
+                        Intent intent = FoursquareOAuth.getTokenExchangeIntent(this, BuildConfig.CLIENT_ID,
+                                BuildConfig.CLIENT_SECRET, codeResponse.getCode());
+                        startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
+                    }
+                    break;
+                case REQUEST_CODE_FSQ_TOKEN_EXCHANGE:
+                    AccessTokenResponse tokenResponse = FoursquareOAuth.getTokenFromResult(resultCode, data);
+                    if (!TextUtils.isEmpty(tokenResponse.getAccessToken())) {
+                        Preferences.setFoursquareToken(tokenResponse.getAccessToken());
+                        init();
+                    }
+                    break;
+            }
         }
     }
 
+    @Override
+    public void onProductPurchased(String s) {
+        ToastUtil.show(R.string.thanks);
+        mBilling.consumePurchase("beer");
+    }
 
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int i, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        if (Preferences.hasFoursquareToken()) {
+            vDonation.setVisibility(View.VISIBLE);
+        }
+    }
 }
