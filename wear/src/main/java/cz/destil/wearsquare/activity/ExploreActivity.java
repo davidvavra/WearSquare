@@ -94,19 +94,21 @@ public class ExploreActivity extends ProgressActivity {
 
     @Subscribe
     public void onImageLoaded(ImageLoadedEvent event) {
-        for (ExploreAdapter.Venue venue : mVenues) {
-            if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
-                venue.setPhoto(event.getBitmap());
-                break;
+        if (mVenues != null) {
+            for (ExploreAdapter.Venue venue : mVenues) {
+                if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
+                    venue.setPhoto(event.getBitmap());
+                    break;
+                }
             }
-        }
-        if (event.getBitmap() != null) {
-            setupAdapter();
-        }
-        mNumImagesLoaded++;
-        if (mNumImagesLoaded == mNumVenuesWithImages) {
-            hideSmallProgress();
-            enableScroll();
+            if (event.getBitmap() != null) {
+                setupAdapter();
+            }
+            mNumImagesLoaded++;
+            if (mNumImagesLoaded == mNumVenuesWithImages) {
+                hideSmallProgress();
+                enableScroll();
+            }
         }
     }
 
