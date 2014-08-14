@@ -28,6 +28,9 @@ public class CheckInActivity extends BaseActivity {
     DelayedConfirmationView vConfirmation;
     @InjectView(R.id.name)
     TextView vName;
+    @InjectView(R.id.checking_in)
+    TextView vCheckinIn;
+
     private boolean mTimerSelected;
 
     public static void call(Activity activity, String venueId, String venueName) {
@@ -59,10 +62,12 @@ public class CheckInActivity extends BaseActivity {
         vConfirmation.setTotalTimeMs(2500);
         vConfirmation.start();
         mTimerSelected = false;
+        vCheckinIn.setVisibility(View.VISIBLE);
         vConfirmation.setListener(new DelayedConfirmationView.DelayedConfirmationListener() {
             @Override
             public void onTimerFinished(View view) {
                 if (!mTimerSelected) {
+                    vCheckinIn.setVisibility(View.INVISIBLE);
                     teleport().sendMessage("check-in/" + getIntent().getStringExtra("VENUE_ID"), null);
                     Intent i = new Intent(CheckInActivity.this, ConfirmationActivity.class);
                     i.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);

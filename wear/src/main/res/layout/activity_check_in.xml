@@ -44,6 +44,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="2dp"
             android:textSize="15sp"
+            android:id="@+id/checking_in"
             android:fontFamily="sans-serif-condensed-light"
             android:textColor="@color/medium_gray"
             android:text="@string/checking_in"/>
