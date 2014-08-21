@@ -1,7 +1,7 @@
 WearSquare
 ==========
 
-Unofficial Foursquare Client for Android Wear.
+Unofficial Foursquare® Client for Android Wear.
 
 ## Download:
 
@@ -42,3 +42,6 @@ Author
 -----
 - [David 'Destil' Vávra](http://www.destil.cz)
 - [Follow me on G+](http://google.com/+DavidVávra) to be notified about future versions
+ 
+
+This app uses the Foursquare API but is not affiliated with or endorsed by Foursquare Labs, Inc. All of the Foursquare® logos (including all badges) and trademarks displayed on this application are the property of Foursquare Labs, Inc.
