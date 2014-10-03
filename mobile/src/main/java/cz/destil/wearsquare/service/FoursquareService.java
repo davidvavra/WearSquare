@@ -7,7 +7,6 @@ import android.util.SparseArray;
 
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.mariux.teleport.lib.TeleportService;
 import com.squareup.picasso.Picasso;
@@ -40,13 +39,21 @@ public class FoursquareService extends TeleportService {
 
     SparseArray<Target> mTargets; // need to hold strong reference to targets, because Picasso holds WeakReferences
 
-    /**
-     * Main entry point for messages from the watch.
-     * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
-     */
     @Override
-    public void onMessageReceived(MessageEvent messageEvent) {
-        String path = messageEvent.getPath();
+    public void onCreate() {
+        super.onCreate();
+        setOnGetMessageCallback(new OnGetMessageCallback() {
+            @Override
+            public void onCallback(String path) {
+                handleMessage(path);
+            }
+        });
+    }
+
+    /**
+     * Handle all messages here.
+     */
+    private void handleMessage(String path) {
         try {
             if (path.equals("/check-in-list")) {
                 if (Preferences.hasFoursquareToken()) {

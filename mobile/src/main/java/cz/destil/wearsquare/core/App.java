@@ -3,6 +3,7 @@ package cz.destil.wearsquare.core;
 import android.app.Application;
 
 import com.crittercism.app.Crittercism;
+
 /**
  * App instance.
  *

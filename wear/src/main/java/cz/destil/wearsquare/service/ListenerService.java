@@ -2,12 +2,8 @@ package cz.destil.wearsquare.service;
 
 import android.graphics.Bitmap;
 
-import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.Asset;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 import com.mariux.teleport.lib.TeleportService;
 import com.squareup.otto.Subscribe;
 
@@ -17,13 +13,11 @@ import java.util.List;
 import cz.destil.wearsquare.adapter.CheckInAdapter;
 import cz.destil.wearsquare.adapter.ExploreAdapter;
 import cz.destil.wearsquare.core.App;
-import cz.destil.wearsquare.core.BaseAsyncTask;
 import cz.destil.wearsquare.event.CheckInVenueListEvent;
 import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExceptionEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
-import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.ExceptionHandler;
 
 /**
@@ -37,6 +31,12 @@ public class ListenerService extends TeleportService {
     public void onCreate() {
         super.onCreate();
         App.bus().register(this);
+        setOnSyncDataItemCallback(new OnSyncDataItemCallback() {
+            @Override
+            public void onDataSync(DataMap dataMap) {
+                handleDataChanged(dataMap);
+            }
+        });
     }
 
     @Override
@@ -51,26 +51,20 @@ public class ListenerService extends TeleportService {
     }
 
     /**
-     * Main entry point for data from the phone.
-     * Workaround to:  https://github.com/Mariuxtheone/Teleport/issues/3
+     * Handles received data.
      */
-    @Override
-    public void onDataChanged(DataEventBuffer dataEvents) {
-        final List<DataEvent> events = FreezableUtils.freezeIterable(dataEvents);
-        for (DataEvent event : events) {
-            if (event.getType() == DataEvent.TYPE_CHANGED) {
-                DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
-                DataMap data = dataMapItem.getDataMap();
-                if (data.containsKey("error_message")) {
-                    App.bus().post(new ErrorEvent(data.getString("error_message")));
-                } else if (data.containsKey("check_in_venues")) {
-                    processCheckInList(data);
-                } else if (data.containsKey("explore_venues")) {
-                    processExploreList(data);
-                } else if (data.containsKey("image_url")) {
-                    new ProcessImageTask(data).start();
-                }
-
+    private void handleDataChanged(DataMap data) {
+        if (data.containsKey("error_message")) {
+            App.bus().post(new ErrorEvent(data.getString("error_message")));
+        } else if (data.containsKey("check_in_venues")) {
+            processCheckInList(data);
+        } else if (data.containsKey("explore_venues")) {
+            processExploreList(data);
+        } else if (data.containsKey("image_url")) {
+            Asset asset = data.getAsset("asset");
+            if (asset != null) {
+                String imageUrl = data.getString("image_url");
+                new ProcessImageTask(imageUrl).execute(asset, getGoogleApiClient());
             }
         }
     }
@@ -99,31 +93,21 @@ public class ListenerService extends TeleportService {
         }
         App.bus().post(new ExploreVenueListEvent(venues));
     }
+
     /**
      * Decodes BitMap from Asset.
      */
-    class ProcessImageTask extends BaseAsyncTask {
+    class ProcessImageTask extends ImageFromAssetTask {
 
-        private DataMap data;
+        private String imageUrl;
 
-        ProcessImageTask(DataMap data) {
-            this.data = data;
+        ProcessImageTask(String imageUrl) {
+            this.imageUrl = imageUrl;
         }
 
         @Override
-        public void inBackground() {
-            Asset asset = data.getAsset("asset");
-            String imageUrl = data.getString("image_url");
-            Bitmap bitmap = null;
-            if (asset != null) {
-                bitmap = loadBitmapFromAsset(asset);
-            }
+        protected void onPostExecute(Bitmap bitmap) {
             App.bus().post(new ImageLoadedEvent(imageUrl, bitmap));
-        }
-
-        @Override
-        public void postExecute() {
-
         }
     }
 }
