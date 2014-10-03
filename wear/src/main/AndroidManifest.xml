@@ -16,7 +16,7 @@
         android:name=".core.App"
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.DeviceDefault">
+        android:theme="@style/WearTheme">
         <activity
             android:name=".activity.CheckInListActivity"
             android:icon="@drawable/ic_check_in"

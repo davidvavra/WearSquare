@@ -27,7 +27,7 @@
         android:layout_alignParentTop="true"
         android:padding="8dp"
         style="@android:style/Widget.Holo.ProgressBar.Small"
-        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
         android:id="@+id/small_progress"
         android:indeterminate="true"/>
 
