@@ -1,5 +1,6 @@
 package cz.destil.wearsquare.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -116,8 +117,12 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
 
     @OnClick(R.id.foursquare_button)
     void connectFoursquare() {
-        Intent intent = FoursquareOAuth.getConnectIntent(this, BuildConfig.CLIENT_ID);
-        startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
+        try {
+            Intent intent = FoursquareOAuth.getConnectIntent(this, BuildConfig.CLIENT_ID);
+            startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
+        } catch (ActivityNotFoundException e) {
+            ToastUtil.show(R.string.no_google_play);
+        }
     }
 
     @OnClick(R.id.donation)
