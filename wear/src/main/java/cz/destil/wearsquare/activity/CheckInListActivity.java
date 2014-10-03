@@ -35,7 +35,7 @@ public class CheckInListActivity extends ProgressActivity {
     protected void onCreate(Bundle savedInstanceState) {
         finishOtherActivities();
         super.onCreate(savedInstanceState);
-        vList = (WearableListView) getMainView();
+        vList = (WearableListView) getMainView().findViewById(R.id.list);
     }
 
     @Override

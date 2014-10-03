@@ -1,53 +1,57 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    android:padding="8dp"
-    android:gravity="center">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Inmite s.r.o."
-        android:id="@+id/name"
-        android:fontFamily="sans-serif-condensed-light"
-        android:textSize="20sp"
-        android:textColor="@color/black"/>
-
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:tools="http://schemas.android.com/tools"
+                                              android:layout_height="match_parent"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:layout_width="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="36dp"
-        android:orientation="horizontal">
-
-        <android.support.wearable.view.DelayedConfirmationView
-            android:id="@+id/confirmation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cancel"
-            app:circle_color="@color/blue"
-            app:circle_radius="@dimen/circle_radius"
-            app:circle_radius_pressed="@dimen/circle_radius_pressed"
-            app:circle_padding="@dimen/circle_padding"
-            app:circle_border_width="@dimen/circle_border_normal_width"
-            app:circle_border_color="@color/light_blue"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        app:layout_box="left|right"
+        android:padding="8dp"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingEnd="2dp"
-            android:textSize="15sp"
-            android:id="@+id/checking_in"
+            tools:text="Inmite s.r.o."
+            android:id="@+id/name"
             android:fontFamily="sans-serif-condensed-light"
-            android:textColor="@color/medium_gray"
-            android:text="@string/checking_in"/>
-    </LinearLayout>
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="36dp"
+            android:orientation="horizontal">
+
+            <android.support.wearable.view.DelayedConfirmationView
+                android:id="@+id/confirmation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cancel"
+                app:circle_color="@color/blue"
+                app:circle_radius="@dimen/circle_radius"
+                app:circle_radius_pressed="@dimen/circle_radius_pressed"
+                app:circle_padding="@dimen/circle_padding"
+                app:circle_border_width="@dimen/circle_border_normal_width"
+                app:circle_border_color="@color/light_blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="2dp"
+                android:textSize="15sp"
+                android:id="@+id/checking_in"
+                android:fontFamily="sans-serif-condensed-light"
+                android:textColor="@color/medium_gray"
+                android:text="@string/checking_in"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.wearable.view.BoxInsetLayout>
