@@ -3,7 +3,6 @@ package cz.destil.wearsquare.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.destil.wearsquare.util.ImageUtils;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -16,6 +15,7 @@ import retrofit.http.Query;
 public interface ExploreVenues {
 
     public static int LIMIT_VENUES = 7;
+    public static String IMAGE_DIMENSIONS = "640x400";
 
     @GET("/venues/explore?openNow=1&sortByDistance=1&venuePhotos=1&limit=" + LIMIT_VENUES)
     void best(@Query("ll") String ll, Callback<ExploreVenuesResponse> callback);
@@ -35,7 +35,7 @@ public interface ExploreVenues {
             String photo = null;
             if (item.venue.photos.groups.size() > 0) {
                 FoursquarePhotoGroupItem groupItem = item.venue.photos.groups.get(0).items.get(0);
-                photo = groupItem.prefix + ImageUtils.getScreenDimensions() + groupItem.suffix;
+                photo = groupItem.prefix + IMAGE_DIMENSIONS + groupItem.suffix;
             }
             String tip = (item.tips != null && item.tips.size() > 0) ? item.tips.get(0).text : "";
             String hours = (item.venue.hours != null) ? item.venue.hours.status : null;

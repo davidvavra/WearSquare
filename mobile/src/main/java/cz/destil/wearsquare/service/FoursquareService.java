@@ -85,8 +85,6 @@ public class FoursquareService extends TeleportService {
      * Downloads explore list of venues.
      */
     private void downloadExploreList(String path) throws LocationUtils.LocationNotFoundException {
-        Uri uri = Uri.parse(path);
-        ImageUtils.setScreenDimensions(uri.getLastPathSegment());
         Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(),
                 new Callback<ExploreVenues.ExploreVenuesResponse>() {
                     @Override

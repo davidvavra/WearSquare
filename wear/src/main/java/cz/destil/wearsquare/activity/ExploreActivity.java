@@ -19,7 +19,6 @@ import cz.destil.wearsquare.event.ErrorEvent;
 import cz.destil.wearsquare.event.ExitEvent;
 import cz.destil.wearsquare.event.ExploreVenueListEvent;
 import cz.destil.wearsquare.event.ImageLoadedEvent;
-import cz.destil.wearsquare.util.UiUtils;
 
 /**
  * Displays a list of interesting venues around the user with images and tips. User can swipe to navigate to them,
@@ -51,7 +50,7 @@ public class ExploreActivity extends ProgressActivity {
     public void startConnected() {
         super.startConnected();
         mNumImagesLoaded = 0;
-        teleport().sendMessage("/explore-list/" + UiUtils.getScreenDimensions(), null);
+        teleport().sendMessage("/explore-list", null);
         showProgress();
     }
 
