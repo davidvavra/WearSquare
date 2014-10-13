@@ -66,6 +66,7 @@ public class ListenerService extends TeleportService {
                 String imageUrl = data.getString("image_url");
                 new ProcessImageTask(imageUrl).execute(asset, getGoogleApiClient());
             }
+
         }
     }
 
@@ -97,7 +98,7 @@ public class ListenerService extends TeleportService {
     /**
      * Decodes BitMap from Asset.
      */
-    class ProcessImageTask extends ImageFromAssetTask {
+    class ProcessImageTask extends cz.destil.wearsquare.util.ImageFromAssetTask {
 
         private String imageUrl;
 
