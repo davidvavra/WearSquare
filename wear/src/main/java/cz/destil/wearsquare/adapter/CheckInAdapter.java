@@ -23,8 +23,6 @@ import cz.destil.wearsquare.R;
  */
 public class CheckInAdapter extends WearableListView.Adapter {
 
-    private float mDefaultCircleRadius;
-    private float mSelectedCircleRadius;
     private int mDefaultCircleColor;
     private int mSelectedCircleColor;
     private Context mContext;
@@ -33,8 +31,6 @@ public class CheckInAdapter extends WearableListView.Adapter {
     public CheckInAdapter(Context context, List<Venue> items) {
         mContext = context;
         this.items = items;
-        mDefaultCircleRadius = context.getResources().getDimension(R.dimen.default_settings_circle_radius);
-        mSelectedCircleRadius = context.getResources().getDimension(R.dimen.selected_settings_circle_radius);
         mDefaultCircleColor = context.getResources().getColor(R.color.medium_gray);
         mSelectedCircleColor = context.getResources().getColor(R.color.brand);
     }
@@ -60,7 +56,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         return items.size();
     }
 
-    class ListItem extends FrameLayout implements WearableListView.Item {
+    class ListItem extends FrameLayout implements WearableListView.OnCenterProximityListener {
 
         @InjectView(R.id.image)
         CircledImageView image;
@@ -74,36 +70,15 @@ public class CheckInAdapter extends WearableListView.Adapter {
         }
 
         @Override
-        public float getProximityMinValue() {
-            return mDefaultCircleRadius;
-        }
-
-        @Override
-        public float getProximityMaxValue() {
-            return mSelectedCircleRadius;
-        }
-
-        @Override
-        public float getCurrentProximityValue() {
-            return image.getCircleRadius();
-        }
-
-        @Override
-        public void setScalingAnimatorValue(float value) {
-            image.setCircleRadius(value);
-            image.setCircleRadiusPressed(value);
-        }
-
-        @Override
-        public void onScaleUpStart() {
-            image.setAlpha(1f);
+        public void onCenterPosition(boolean b) {
+            image.animate().scaleX(1f).scaleY(1f).alpha(1f);
             text.setAlpha(1f);
             image.setCircleColor(mSelectedCircleColor);
         }
 
         @Override
-        public void onScaleDownStart() {
-            image.setAlpha(0.5f);
+        public void onNonCenterPosition(boolean b) {
+            image.animate().scaleX(0.8f).scaleY(0.8f).alpha(0.5f);
             text.setAlpha(0.5f);
             image.setCircleColor(mDefaultCircleColor);
         }

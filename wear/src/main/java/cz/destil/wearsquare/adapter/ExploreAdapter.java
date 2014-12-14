@@ -17,17 +17,16 @@ package cz.destil.wearsquare.adapter;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
-import android.support.wearable.view.ImageReference;
 
 import java.util.List;
 
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.activity.ExploreActivity;
+import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.fragment.ActionFragment;
 
 /**
@@ -82,13 +81,8 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
     }
 
     @Override
-    public ImageReference getBackground(int row, int column) {
-        Bitmap photo = items.get(row).photo;
-        if (photo == null) {
-            return null;
-        }
-        photo = (column == 0) ? photo : items.get(row).getDarkPhoto();
-        return ImageReference.forBitmap(photo);
+    public Drawable getBackgroundForRow(int row) {
+        return items.get(row).photo;
     }
 
     @Override
@@ -105,11 +99,10 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
         private String id;
         private String name;
         private String tip;
-        private Bitmap photo;
+        private BitmapDrawable photo;
         private double latitude;
         private double longitude;
         private String imageUrl;
-        private Bitmap darkPhoto;
 
         public Venue(String id, String name, String tip, double latitude, double longitude, String imageUrl) {
             this.id = id;
@@ -132,21 +125,8 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
             return tip;
         }
 
-        public Bitmap getPhoto() {
+        public BitmapDrawable getPhoto() {
             return photo;
-        }
-
-        public Bitmap getDarkPhoto() {
-            if (darkPhoto == null) {
-                darkPhoto = Bitmap.createBitmap(photo.getWidth(), photo.getHeight(), photo.getConfig());
-                Canvas canvas = new Canvas(darkPhoto);
-                canvas.drawBitmap(photo, new Matrix(), null);
-                Paint paint = new Paint();
-                paint.setColor(0);
-                paint.setAlpha(127);
-                canvas.drawRect(0, 0, photo.getWidth(), photo.getHeight(), paint);
-            }
-            return darkPhoto;
         }
 
         public double getLatitude() {
@@ -158,7 +138,7 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
         }
 
         public void setPhoto(Bitmap photo) {
-            this.photo = photo;
+            this.photo = new BitmapDrawable(App.get().getResources(), photo);
         }
 
         public String getImageUrl() {
