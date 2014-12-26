@@ -15,7 +15,7 @@ public interface SearchVenues {
 
     public static int LIMIT_VENUES = 10;
 
-    @GET("/venues/search?intent=checkin&limit=" + LIMIT_VENUES)
+    @GET("/venues/search?m=swarm&intent=checkin&limit=" + LIMIT_VENUES)
     void searchForCheckIn(@Query("ll") String ll, Callback<SearchResponse> callback);
 
     public static class SearchResponse extends Api.FoursquareResponse {

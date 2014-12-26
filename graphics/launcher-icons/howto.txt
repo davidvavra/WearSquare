@@ -1,0 +1,3 @@
+Icon generator: http://jgilfelt.github.io/AndroidAssetStudio/icons-launcher.html
+Material icons: https://google.github.io/material-design-icons/
+Material pallet: http://www.materialpalette.com/

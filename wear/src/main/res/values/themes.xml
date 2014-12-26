@@ -2,6 +2,6 @@
 <resources>
 
     <style name="WearTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar">
-        <item name="android:windowOverscan">true</item>
+       <item name="android:windowOverscan">true</item>
     </style>
 </resources>

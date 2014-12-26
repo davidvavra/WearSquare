@@ -3,16 +3,12 @@ package cz.destil.wearsquare.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.ConfirmationActivity;
-import android.support.wearable.view.GridViewPager;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
 import cz.destil.wearsquare.R;
-import cz.destil.wearsquare.adapter.EmptyGridPagerAdapter;
 import cz.destil.wearsquare.adapter.ExploreAdapter;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.event.ErrorEvent;
@@ -26,30 +22,21 @@ import cz.destil.wearsquare.event.ImageLoadedEvent;
  *
  * @author David Vávra (david@vavra.me)
  */
-public class ExploreActivity extends ProgressActivity {
+public class ExploreActivity extends GridPagerActivity {
 
     private static final int ON_PHONE_ACTIVITY = 41;
-    GridViewPager vPager;
     private List<ExploreAdapter.Venue> mVenues;
-    private int mNumImagesLoaded;
-    private int mNumVenuesWithImages;
-
-    @Override
-    int getMainViewResourceId() {
-        return R.layout.activity_explore;
-    }
+    private ExploreAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         finishOtherActivities();
         super.onCreate(savedInstanceState);
-        setupViewPager();
     }
 
     @Override
     public void startConnected() {
         super.startConnected();
-        mNumImagesLoaded = 0;
         teleport().sendMessage("/explore-list", null);
         showProgress();
     }
@@ -68,14 +55,8 @@ public class ExploreActivity extends ProgressActivity {
         hideProgress();
         mVenues = event.getVenues();
         if (mVenues != null && mVenues.size() > 0) {
-            showSmallProgress();
-            mNumVenuesWithImages = 0;
-            for (ExploreAdapter.Venue venue : mVenues) {
-                if (venue.getImageUrl() != null) {
-                    mNumVenuesWithImages++;
-                }
-            }
-            setupAdapter();
+            mAdapter = new ExploreAdapter(this, mVenues);
+            setAdapter(mAdapter);
         } else {
             showError(getString(R.string.no_venues_nearby));
         }
@@ -94,54 +75,22 @@ public class ExploreActivity extends ProgressActivity {
     @Subscribe
     public void onImageLoaded(ImageLoadedEvent event) {
         if (mVenues != null) {
+            int row = 0;
             for (ExploreAdapter.Venue venue : mVenues) {
                 if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
                     venue.setPhoto(event.getBitmap());
                     break;
                 }
+                row++;
             }
             if (event.getBitmap() != null) {
-                setupAdapter();
-            }
-            mNumImagesLoaded++;
-            if (mNumImagesLoaded == mNumVenuesWithImages) {
-                hideSmallProgress();
-                enableScroll();
+                mAdapter.notifyRowBackgroundChanged(row);
             }
         }
     }
 
-    private void setupViewPager() {
-        vPager = (GridViewPager) getMainView();
-        vPager.setAdapter(new EmptyGridPagerAdapter()); // bug in the UI library
-        disableScroll();
-    }
-
-
-    private void enableScroll() {
-        vPager.setOnTouchListener(null);
-    }
-
-    /**
-     * disable touch, we need to wait until all images are loaded
-     * it's a current limitation of FragmentGridViewPager
-     */
-    private void disableScroll() {
-        vPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-    }
-
-    private void setupAdapter() {
-        vPager.setAdapter(new ExploreAdapter(this, mVenues));
-    }
-
     public void navigate(ExploreAdapter.Venue venue) {
-        teleport().sendMessage("/navigate/" + venue.getLatitude() + "/" + venue.getLongitude() + "/" + venue.getName
-                (), null);
+        teleport().sendMessage("/navigate/" + venue.getLatitude() + "/" + venue.getLongitude() + "/" + venue.getName(), null);
         openOnPhoneAnimation();
     }
 

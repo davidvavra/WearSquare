@@ -13,7 +13,7 @@ import retrofit.RestAdapter;
  */
 public class Api {
 
-    public static final String BUILD_DATE = "20140130";
+    public static final String BUILD_DATE = "20141226";
 
     public static final String URL = "https://api.foursquare.com/v2";
 

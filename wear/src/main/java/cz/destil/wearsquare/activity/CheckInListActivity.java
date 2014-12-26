@@ -41,8 +41,10 @@ public class CheckInListActivity extends ProgressActivity {
     @Override
     public void startConnected() {
         super.startConnected();
-        teleport().sendMessage("/check-in-list", null);
-        showProgress();
+        if (mVenues == null) {
+            teleport().sendMessage("/check-in-list", null);
+            showProgress();
+        }
     }
 
     @Subscribe

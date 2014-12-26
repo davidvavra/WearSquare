@@ -127,8 +127,9 @@ public class FoursquareService extends TeleportService {
     private void sendCheckIn(String path) throws LocationUtils.LocationNotFoundException {
         Uri uri = Uri.parse(path);
         String id = uri.getLastPathSegment();
+        String shout = "⌚";
         Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(),
-                LocationUtils.getLastAltitude(), Preferences.getBroadcast(),
+                LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout,
                 new Callback<CheckIns.CheckInResponse>() {
                     @Override
                     public void success(CheckIns.CheckInResponse checkInResponse, Response response) {

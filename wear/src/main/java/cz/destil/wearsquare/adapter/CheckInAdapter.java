@@ -32,7 +32,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         mContext = context;
         this.items = items;
         mDefaultCircleColor = context.getResources().getColor(R.color.medium_gray);
-        mSelectedCircleColor = context.getResources().getColor(R.color.primary);
+        mSelectedCircleColor = context.getResources().getColor(R.color.action_button);
     }
 
     @Override

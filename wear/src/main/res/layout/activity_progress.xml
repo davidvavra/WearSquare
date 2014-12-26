@@ -5,7 +5,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/container"
-                android:background="@color/white"
+                android:background="@color/black"
                 tools:context=".MyActivity"
                 tools:deviceIds="wear">
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:fontFamily="sans-serif-condensed-light"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="@android:color/primary_text_dark"
         android:padding="@dimen/dismiss_padding"
         android:id="@+id/error"/>
 </RelativeLayout>

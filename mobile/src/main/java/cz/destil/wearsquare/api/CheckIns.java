@@ -11,9 +11,10 @@ import retrofit.http.Query;
  */
 public interface CheckIns {
 
-    @POST("/checkins/add")
+    @POST("/checkins/add?m=swarm")
     void add(@Query("venueId") String venueId, @Query("ll") String ll, @Query("llAcc") int accuracy, @Query("alt") int altitude,
-             @Query("broadcast") String broadcast, Callback<CheckInResponse> callback);
+             @Query("broadcast") String broadcast,
+             @Query("shout") String shout, Callback<CheckInResponse> callback);
 
     public static class CheckInResponse extends Api.FoursquareResponse {
     }

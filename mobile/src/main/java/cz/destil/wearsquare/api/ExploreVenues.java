@@ -17,7 +17,7 @@ public interface ExploreVenues {
     public static int LIMIT_VENUES = 7;
     public static String IMAGE_DIMENSIONS = "640x400";
 
-    @GET("/venues/explore?openNow=1&sortByDistance=1&venuePhotos=1&limit=" + LIMIT_VENUES)
+    @GET("/venues/explore?m=foursquare&openNow=1&sortByDistance=1&venuePhotos=1&limit=" + LIMIT_VENUES)
     void best(@Query("ll") String ll, Callback<ExploreVenuesResponse> callback);
 
     public static class ExploreVenuesResponse extends Api.FoursquareResponse {

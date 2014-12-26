@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package cz.destil.wearsquare.adapter;
 
 import android.app.Fragment;
@@ -54,6 +39,9 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
             case 0:
                 CardFragment fragment = CardFragment.create(venue.name, venue.tip);
                 fragment.setExpansionEnabled(true);
+                // Add some extra bottom margin to leave room for the page indicator
+                fragment.setCardMarginBottom(
+                        activity.getResources().getDimensionPixelSize(R.dimen.card_margin_bottom));
                 return fragment;
             case 1:
                 return ActionFragment.create(R.drawable.ic_full_navigate, R.string.action_navigate, new ActionFragment.Listener() {
@@ -79,6 +67,7 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
             default:
                 return null;
         }
+
     }
 
     @Override
