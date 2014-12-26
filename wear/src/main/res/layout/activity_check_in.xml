@@ -34,12 +34,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_cancel"
-                app:circle_color="@color/blue"
+                app:circle_color="@color/primary"
                 app:circle_radius="@dimen/circle_radius"
                 app:circle_radius_pressed="@dimen/circle_radius_pressed"
                 app:circle_padding="@dimen/circle_padding"
                 app:circle_border_width="@dimen/circle_border_normal_width"
-                app:circle_border_color="@color/light_blue"/>
+                app:circle_border_color="@color/primary_light"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -32,7 +32,7 @@ public class CheckInAdapter extends WearableListView.Adapter {
         mContext = context;
         this.items = items;
         mDefaultCircleColor = context.getResources().getColor(R.color.medium_gray);
-        mSelectedCircleColor = context.getResources().getColor(R.color.brand);
+        mSelectedCircleColor = context.getResources().getColor(R.color.primary);
     }
 
     @Override
@@ -71,16 +71,20 @@ public class CheckInAdapter extends WearableListView.Adapter {
 
         @Override
         public void onCenterPosition(boolean b) {
-            image.animate().scaleX(1f).scaleY(1f).alpha(1f);
             text.setAlpha(1f);
             image.setCircleColor(mSelectedCircleColor);
+            image.setAlpha(1f);
+            image.setScaleX(1f);
+            image.setScaleY(1f);
         }
 
         @Override
         public void onNonCenterPosition(boolean b) {
-            image.animate().scaleX(0.8f).scaleY(0.8f).alpha(0.5f);
             text.setAlpha(0.5f);
             image.setCircleColor(mDefaultCircleColor);
+            image.setAlpha(0.5f);
+            image.setScaleX(0.8f);
+            image.setScaleY(0.8f);
         }
     }
 

@@ -9,7 +9,7 @@
         android:layout_marginStart="16dp"
         android:layout_width="52dp"
         app:circle_border_width="0dp"
-        app:circle_color="@color/brand"
+        app:circle_color="@color/primary"
         app:circle_radius="24dp"
         />
 

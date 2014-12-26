@@ -1,7 +1,7 @@
 package cz.destil.wearsquare.core;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.mariux.teleport.lib.TeleportClient;
 /**
@@ -9,7 +9,7 @@ import com.mariux.teleport.lib.TeleportClient;
  *
  * @author David Vávra (david@vavra.me)
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends ActionBarActivity {
 
     private TeleportClient mTeleportClient;
 

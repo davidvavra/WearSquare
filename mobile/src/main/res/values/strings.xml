@@ -25,7 +25,7 @@
     <string name="send_checkins_to_facebook">Send check-ins to Facebook</string>
     <string name="facebook_description">Facebook needs to be connected in Swarm settings</string>
     <string name="action_settings">Settings</string>
-    <string name="buy_author_beer">Buy a beer to the author</string>
+    <string name="buy_author_beer">Buy author a beer</string>
     <string name="thanks">Thanks a lot for supporting development!</string>
     <string name="no_google_play">No Google Play installed.</string>
 

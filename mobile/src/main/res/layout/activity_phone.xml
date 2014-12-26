@@ -7,7 +7,7 @@
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:background="@color/light_gray"
+                  android:background="@color/primary"
                   android:orientation="vertical"
                   tools:context=".PhoneActivity">
 
@@ -146,6 +146,7 @@
                 android:gravity="center"
                 android:id="@+id/about"
                 android:textColorLink="@color/link"
+                android:textColor="@color/white"
                 android:textSize="13sp"
                 android:text="@string/about"/>
 
@@ -154,8 +155,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/donation"
                 android:layout_marginTop="8dp"
-                android:text="@string/buy_author_beer"
-                style="@android:style/Widget.Holo.Button.Small"/>
+                android:text="@string/buy_author_beer"/>
         </LinearLayout>
 
     </LinearLayout>

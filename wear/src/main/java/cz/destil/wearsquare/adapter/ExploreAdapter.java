@@ -21,6 +21,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
+import android.support.wearable.view.GridPagerAdapter;
 
 import java.util.List;
 
@@ -82,7 +83,12 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
 
     @Override
     public Drawable getBackgroundForRow(int row) {
-        return items.get(row).photo;
+        BitmapDrawable background = items.get(row).photo;
+        if (background == null) {
+            return GridPagerAdapter.BACKGROUND_NONE;
+        } else {
+            return background;
+        }
     }
 
     @Override
@@ -138,7 +144,9 @@ public class ExploreAdapter extends FragmentGridPagerAdapter {
         }
 
         public void setPhoto(Bitmap photo) {
-            this.photo = new BitmapDrawable(App.get().getResources(), photo);
+            if (photo != null) {
+                this.photo = new BitmapDrawable(App.get().getResources(), photo);
+            }
         }
 
         public String getImageUrl() {

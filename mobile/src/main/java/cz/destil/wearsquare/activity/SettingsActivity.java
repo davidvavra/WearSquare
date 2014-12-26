@@ -3,16 +3,16 @@ package cz.destil.wearsquare.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
 import cz.destil.wearsquare.SettingsFragment;
-import cz.destil.wearsquare.core.BaseActivity;
 
 /**
  * Activity displaying app settings.
  *
  * @author David Vávra (david@vavra.me)
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends PreferenceActivity {
 
     public static void call(Activity activity) {
         activity.startActivity(new Intent(activity, SettingsActivity.class));

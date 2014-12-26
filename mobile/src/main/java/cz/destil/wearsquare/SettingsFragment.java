@@ -3,6 +3,7 @@ package cz.destil.wearsquare;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+
 /**
  * Screen with app settings.
  *
