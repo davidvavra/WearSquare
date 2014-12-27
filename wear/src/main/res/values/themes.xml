@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="WearTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar">
-       <item name="android:windowOverscan">true</item>
+    <style name="WearTheme" parent="android:Theme.DeviceDefault.NoActionBar">
+       <item name="android:windowOverscan">false</item>
+    </style>
+
+
+    <style name="WearTheme.Overscan">
+        <!-- overscan is here for Moto 360 - display behaves like square one including the black bar -->
+        <item name="android:windowOverscan">true</item>
     </style>
 </resources>

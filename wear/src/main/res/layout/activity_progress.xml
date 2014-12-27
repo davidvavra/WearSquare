@@ -5,7 +5,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/container"
-                android:background="@color/black"
                 tools:context=".MyActivity"
                 tools:deviceIds="wear">
 
@@ -19,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/progress"
+        android:visibility="gone"
         android:indeterminate="true"/>
 
     <ProgressBar
@@ -29,6 +29,7 @@
         style="@android:style/Widget.Holo.ProgressBar.Small"
         android:layout_centerHorizontal="true"
         android:id="@+id/small_progress"
+        android:visibility="gone"
         android:indeterminate="true"/>
 
     <TextView

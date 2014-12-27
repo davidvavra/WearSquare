@@ -3,22 +3,14 @@
 
     <string name="app_name">WearSquare</string>
     <string name="connect_to_4sq">Connect to Foursquare</string>
-    <string name="mini_launcher_info">Installation of <a href="https://play.google.com/store/apps/details?id=com.npi.wearminilauncher">Wear
-        Mini Launcher</a> is recommended.</string>
     <string name="about"><a href="https://github.com/destil/wearsquare/issues">Report issues</a> | <a
         href="https://github.com/destil/wearsquare">Open-source code</a> | Author: <a
         href="http://www.destil.cz/">David Vávra</a></string>
     <string name="login_message">Please login with Foursquare first:</string>
     <string name="please_connect_foursquare_first">Login with the WearSquare app on your phone first</string>
     <string name="connect_to_internet">Please get online on your phone</string>
-    <string name="how_to_check_in">How to check in:</string>
     <string name="or">or</string>
-    <string name="how_to_explore">How to explore nearby venues:</string>
     <string name="logout">Logout</string>
-    <string name="desc_explore_by_launcher">Explore by launcher</string>
-    <string name="desc_explore_by_voice">Explore by voice</string>
-    <string name="desc_check_in_by_launcher">Check in by launcher</string>
-    <string name="desc_check_in_by_voice">Check in by voice</string>
     <string name="no_location">No location on your phone. Turn on location in Android settings.</string>
     <string name="send_checkins_to_twitter">Send check-ins to Twitter</string>
     <string name="twitter_description">Twitter needs to be connected in Swarm settings</string>
@@ -28,5 +20,18 @@
     <string name="buy_author_beer">Buy author a beer</string>
     <string name="thanks">Thanks a lot for supporting development!</string>
     <string name="no_google_play">No Google Play installed.</string>
+    <string name="social_networks">Social networks</string>
+    <string name="emojis_for_check_in">Stickers for check-ins</string>
+    <string name="emoji_1">1st sticker (default)</string>
+    <string name="emoji_2">2nd sticker</string>
+    <string name="emoji_3">3rd sticker</string>
+    <string name="emoji_4">4rd sticker</string>
+    <string name="emoji_5">5th sticker</string>
+    <string name="no_emoji">Empty = no sticker</string>
+    <string name="how_to_use_it">How to use:</string>
+    <string name="on_your_watch">Say to your watch:</string>
+    <string name="start_check_in">\"OK Google, start check in\"</string>
+    <string name="start_explore">\"OK Google, start explore\"</string>
+    <string name="use_start_menu">or scroll down to the \"Start …\" menu.\nIf you use it often you can see it here:</string>
 
 </resources>

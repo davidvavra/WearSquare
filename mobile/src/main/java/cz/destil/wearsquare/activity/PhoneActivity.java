@@ -24,7 +24,6 @@ import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
 import cz.destil.wearsquare.data.Preferences;
-import cz.destil.wearsquare.util.PackageUtils;
 import cz.destil.wearsquare.util.ToastUtil;
 
 /**
@@ -39,8 +38,6 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
 
     @InjectView(R.id.about)
     TextView vAbout;
-    @InjectView(R.id.mini_launcher_info)
-    TextView vMiniLauncherInfo;
     @InjectView(R.id.login_box)
     LinearLayout vLoginBox;
     @InjectView(R.id.instructions_box)
@@ -96,8 +93,6 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
 
     private void setupAbout() {
         vAbout.setMovementMethod(LinkMovementMethod.getInstance());
-        vMiniLauncherInfo.setMovementMethod(LinkMovementMethod.getInstance());
-        vMiniLauncherInfo.setVisibility(PackageUtils.isWearLauncherInstalled() ? View.GONE : View.VISIBLE);
     }
 
     private void init() {

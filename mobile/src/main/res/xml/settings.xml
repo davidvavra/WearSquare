@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="twitter"
-        android:title="@string/send_checkins_to_twitter"
-        android:summary="@string/twitter_description"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="facebook"
-        android:title="@string/send_checkins_to_facebook"
-        android:summary="@string/facebook_description"
-        android:defaultValue="false" />
+    <PreferenceCategory
+        android:title="@string/social_networks">
+        <CheckBoxPreference
+            android:key="twitter"
+            android:title="@string/send_checkins_to_twitter"
+            android:summary="@string/twitter_description"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="facebook"
+            android:title="@string/send_checkins_to_facebook"
+            android:summary="@string/facebook_description"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/emojis_for_check_in">
+        <EditTextPreference
+            android:key="emoji_1"
+            android:title="@string/emoji_1"/>
+        <EditTextPreference
+            android:key="emoji_2"
+            android:title="@string/emoji_2"/>
+        <EditTextPreference
+            android:key="emoji_3"
+            android:title="@string/emoji_3"/>
+        <EditTextPreference
+            android:key="emoji_4"
+            android:title="@string/emoji_4"/>
+        <EditTextPreference
+            android:key="emoji_5"
+            android:title="@string/emoji_5"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -38,4 +38,4 @@ public abstract class ImageFromAssetTask extends AsyncTask<Object, Void, Bitmap>
     @Override
     protected abstract void onPostExecute(Bitmap bitmap);
 
-};
+}

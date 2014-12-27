@@ -10,7 +10,8 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.destil.wearsquare.adapter.CheckInAdapter;
+import cz.destil.wearsquare.adapter.CheckInListAdapter;
+import cz.destil.wearsquare.adapter.EmojiAdapter;
 import cz.destil.wearsquare.adapter.ExploreAdapter;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.event.CheckInVenueListEvent;
@@ -74,11 +75,13 @@ public class ListenerService extends TeleportService {
      * Processes check-in list.
      */
     private void processCheckInList(DataMap data) {
-        List<CheckInAdapter.Venue> venues = new ArrayList<CheckInAdapter.Venue>();
+        List<CheckInListAdapter.Venue> venues = new ArrayList<>();
         ArrayList<DataMap> dataVenues = data.getDataMapArrayList("check_in_venues");
         for (DataMap dataVenue : dataVenues) {
-            venues.add(new CheckInAdapter.Venue(dataVenue.getString("id"), dataVenue.getString("name"), dataVenue.getString("image_url")));
+            venues.add(new CheckInListAdapter.Venue(dataVenue.getString("id"), dataVenue.getString("name"), dataVenue.getString("image_url")));
         }
+        ArrayList<String> emojis = data.getDataMap("emojis").getStringArrayList("emojis");
+        EmojiAdapter.setEmojis(emojis);
         App.bus().post(new CheckInVenueListEvent(venues));
     }
 
@@ -86,7 +89,7 @@ public class ListenerService extends TeleportService {
      * Processes explore list.
      */
     private void processExploreList(DataMap data) {
-        List<ExploreAdapter.Venue> venues = new ArrayList<ExploreAdapter.Venue>();
+        List<ExploreAdapter.Venue> venues = new ArrayList<>();
         ArrayList<DataMap> dataVenues = data.getDataMapArrayList("explore_venues");
         for (DataMap dataVenue : dataVenues) {
             venues.add(new ExploreAdapter.Venue(dataVenue.getString("id"), dataVenue.getString("name"), dataVenue.getString("tip"),

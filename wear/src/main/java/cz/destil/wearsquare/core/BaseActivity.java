@@ -11,7 +11,6 @@ import com.squareup.otto.Subscribe;
 
 import cz.destil.wearsquare.event.ExceptionEvent;
 import cz.destil.wearsquare.event.ExitEvent;
-import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.ExceptionHandler;
 
 /**

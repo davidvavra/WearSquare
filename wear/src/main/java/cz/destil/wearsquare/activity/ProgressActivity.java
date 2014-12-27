@@ -35,7 +35,6 @@ public abstract class ProgressActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
         ButterKnife.inject(this);
-        hideSmallProgress();
         vMainView = ((FrameLayout) LayoutInflater.from(this).inflate(getMainViewResourceId(), vMainContainer)).getChildAt(0);
     }
 

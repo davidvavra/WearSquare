@@ -37,8 +37,10 @@ public class ExploreActivity extends GridPagerActivity {
     @Override
     public void startConnected() {
         super.startConnected();
-        teleport().sendMessage("/explore-list", null);
-        showProgress();
+        if (mVenues == null) {
+            teleport().sendMessage("/explore-list", null);
+            showProgress();
+        }
     }
 
     @Override

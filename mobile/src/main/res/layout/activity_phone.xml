@@ -1,13 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
+            android:background="@color/primary"
             android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:background="@color/primary"
                   android:orientation="vertical"
                   tools:context=".PhoneActivity">
 
@@ -19,6 +19,7 @@
             android:paddingTop="100dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
             android:layout_height="450dp"
             android:orientation="vertical">
 
@@ -42,7 +43,6 @@
             android:gravity="center_horizontal"
             android:background="@color/white"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_height="wrap_content"
@@ -53,70 +53,49 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:paddingBottom="8dp"
-                android:text="@string/how_to_check_in"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:contentDescription="@string/desc_check_in_by_voice"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/guide_check_in_voice"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/or"/>
-
-                <ImageView
-                    android:contentDescription="@string/desc_check_in_by_launcher"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/guide_check_in_launcher"/>
-            </LinearLayout>
+                android:text="@string/how_to_use_it"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:paddingTop="16dp"
                 android:paddingBottom="8dp"
-                android:text="@string/how_to_explore"/>
+                android:text="@string/on_your_watch"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:textColor="?android:textColorSecondary"
+                android:text="@string/start_check_in"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/or"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:textColor="?android:textColorSecondary"
+                android:text="@string/start_explore"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:text="@string/use_start_menu"/>
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/desc_explore_by_voice"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/guide_explore_voice"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/or"/>
-
-                <ImageView
-                    android:contentDescription="@string/desc_explore_by_launcher"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/guide_explore_launcher"/>
-            </LinearLayout>
-
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/how_to_use_it"
+                android:src="@drawable/guide"/>
         </LinearLayout>
 
         <LinearLayout
@@ -128,15 +107,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/mini_launcher_info"
-                android:textColorLink="@color/link"
-                android:textSize="13sp"
-                android:text="@string/mini_launcher_info"/>
 
             <TextView
                 android:layout_width="wrap_content"

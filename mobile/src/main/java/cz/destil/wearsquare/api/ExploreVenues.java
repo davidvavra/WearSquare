@@ -24,7 +24,7 @@ public interface ExploreVenues {
         FoursquareContent response;
 
         public List<Venue> getVenues() {
-            List<Venue> venues = new ArrayList<Venue>();
+            List<Venue> venues = new ArrayList<>();
             for (FoursquareItem item : response.groups.get(0).items) {
                 venues.add(parseVenue(item));
             }

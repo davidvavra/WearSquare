@@ -126,8 +126,9 @@ public class FoursquareService extends TeleportService {
      */
     private void sendCheckIn(String path) throws LocationUtils.LocationNotFoundException {
         Uri uri = Uri.parse(path);
-        String id = uri.getLastPathSegment();
-        String shout = "⌚";
+        List<String> pathSegments = uri.getPathSegments();
+        String id = pathSegments.get(1);
+        String shout = pathSegments.size() > 2 ? pathSegments.get(2) : "";
         Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(),
                 LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout,
                 new Callback<CheckIns.CheckInResponse>() {
@@ -159,8 +160,8 @@ public class FoursquareService extends TeleportService {
      * Pushes list of explore venues to wear and starts downloading images.
      */
     private void syncExploreToWear(final List<ExploreVenues.Venue> venues) {
-        final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
-        List<String> images = new ArrayList<String>();
+        final ArrayList<DataMap> dataVenues = new ArrayList<>();
+        List<String> images = new ArrayList<>();
         for (final ExploreVenues.Venue venue : venues) {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
@@ -184,8 +185,8 @@ public class FoursquareService extends TeleportService {
      * Pushes check-in list of venues to wearable and starts downloading images.
      */
     private void syncCheckInListToWear(final List<SearchVenues.Venue> venues) {
-        final ArrayList<DataMap> dataVenues = new ArrayList<DataMap>();
-        List<String> images = new ArrayList<String>();
+        final ArrayList<DataMap> dataVenues = new ArrayList<>();
+        List<String> images = new ArrayList<>();
         for (final SearchVenues.Venue venue : venues) {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
@@ -196,6 +197,9 @@ public class FoursquareService extends TeleportService {
         }
         PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/check-in-list");
         data.getDataMap().putDataMapArrayList("check_in_venues", dataVenues);
+        DataMap emojiMap = new DataMap();
+        emojiMap.putStringArrayList("emojis", Preferences.getEmojis());
+        data.getDataMap().putDataMap("emojis", emojiMap);
         syncDataItem(data);
         downloadImages(images);
     }
@@ -205,7 +209,7 @@ public class FoursquareService extends TeleportService {
      */
     private void downloadImages(List<String> imageUrls) {
         int i = 0;
-        mTargets = new SparseArray<Target>(); // needs strong reference
+        mTargets = new SparseArray<>(); // needs strong reference
         for (final String imageUrl : imageUrls) {
             mTargets.put(i, new Target() {
                 @Override

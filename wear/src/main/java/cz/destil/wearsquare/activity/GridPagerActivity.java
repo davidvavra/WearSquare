@@ -15,7 +15,7 @@ import cz.destil.wearsquare.R;
  *
  * @author David Vávra (david@vavra.me)
  */
-public class GridPagerActivity extends ProgressActivity {
+public abstract class GridPagerActivity extends ProgressActivity {
 
     GridViewPager vPager;
     DotsPageIndicator vPagerIndicator;
@@ -33,6 +33,25 @@ public class GridPagerActivity extends ProgressActivity {
 
     public void setAdapter(FragmentGridPagerAdapter adapter) {
         vPager.setAdapter(adapter);
+    }
+
+    void setPagerListener(final PagerListener listener) {
+        vPager.setOnPageChangeListener(new GridViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, int i2, float v, float v2, int i3, int i4) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i, int i2) {
+                listener.onPageChanged();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     private void setup() {
@@ -66,5 +85,9 @@ public class GridPagerActivity extends ProgressActivity {
                 return insets;
             }
         });
+    }
+
+    public interface PagerListener {
+        public void onPageChanged();
     }
 }

@@ -10,5 +10,7 @@
     <string name="action_navigate">Navigate</string>
     <string name="open_on_phone">Open on phone</string>
     <string name="no_venues_nearby">No venues nearby</string>
+    <string name="no_emoji">No sticker</string>
+    <string name="sticker">Sticker:</string>
 
 </resources>

@@ -20,6 +20,7 @@
         <activity
             android:name=".activity.CheckInListActivity"
             android:icon="@drawable/ic_check_in"
+            android:theme="@style/WearTheme.Overscan"
             android:label="@string/check_in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -30,6 +31,7 @@
         <activity
             android:name=".activity.ExploreActivity"
             android:icon="@drawable/ic_explore"
+            android:theme="@style/WearTheme.Overscan"
             android:label="@string/exploring">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,7 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CheckInActivity">
+        <activity android:name=".activity.CheckInActivity"
+                  android:theme="@style/WearTheme.Overscan">
         </activity>
         <activity android:name="android.support.wearable.activity.ConfirmationActivity"/>
 
