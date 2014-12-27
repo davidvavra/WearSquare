@@ -87,7 +87,6 @@ public class CheckInListActivity extends ProgressActivity {
                 if (venue.getImageUrl() != null && venue.getImageUrl().equals(event.getImageUrl())) {
                     venue.setIcon(event.getBitmap());
                     mAdapter.notifyDataSetChanged();
-                    break;
                 }
             }
         }

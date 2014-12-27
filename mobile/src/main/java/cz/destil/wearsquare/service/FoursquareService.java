@@ -13,7 +13,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.api.Api;
@@ -161,7 +163,7 @@ public class FoursquareService extends TeleportService {
      */
     private void syncExploreToWear(final List<ExploreVenues.Venue> venues) {
         final ArrayList<DataMap> dataVenues = new ArrayList<>();
-        List<String> images = new ArrayList<>();
+        Set<String> images = new HashSet<>();
         for (final ExploreVenues.Venue venue : venues) {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
@@ -186,7 +188,7 @@ public class FoursquareService extends TeleportService {
      */
     private void syncCheckInListToWear(final List<SearchVenues.Venue> venues) {
         final ArrayList<DataMap> dataVenues = new ArrayList<>();
-        List<String> images = new ArrayList<>();
+        Set<String> images = new HashSet<>();
         for (final SearchVenues.Venue venue : venues) {
             final DataMap dataMap = new DataMap();
             dataMap.putString("id", venue.id);
@@ -207,7 +209,7 @@ public class FoursquareService extends TeleportService {
     /**
      * Downloads images in parallel and pushes them to wearable as Assets.
      */
-    private void downloadImages(List<String> imageUrls) {
+    private void downloadImages(Set<String> imageUrls) {
         int i = 0;
         mTargets = new SparseArray<>(); // needs strong reference
         for (final String imageUrl : imageUrls) {
