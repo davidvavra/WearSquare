@@ -56,96 +56,107 @@ public class FoursquareService extends TeleportService {
      * Handle all messages here.
      */
     private void handleMessage(String path) {
-        try {
-            if (path.equals("/check-in-list")) {
-                if (Preferences.hasFoursquareToken()) {
-                    downloadCheckInList();
-                } else {
-                    sendError(getString(R.string.please_connect_foursquare_first));
-                }
-            } else if (path.startsWith("check-in")) {
-                sendCheckIn(path);
-            } else if (path.startsWith("/explore-list")) {
-                if (Preferences.hasFoursquareToken()) {
-                    downloadExploreList(path);
-                } else {
-                    sendError(getString(R.string.please_connect_foursquare_first));
-                }
-            } else if (path.startsWith("/navigate")) {
-                IntentUtils.launchNavigation(path);
-            } else if (path.startsWith("/open")) {
-                IntentUtils.openOnPhone(path);
-            } else if (path.startsWith("exception:")) {
-                IntentUtils.sendEmail(path.split("exception:")[1]);
+        if (path.equals("/check-in-list")) {
+            if (Preferences.hasFoursquareToken()) {
+                downloadCheckInList();
+            } else {
+                sendError(getString(R.string.please_connect_foursquare_first));
             }
-        } catch (LocationUtils.LocationNotFoundException e) {
-            sendError(getString(R.string.no_location));
+        } else if (path.startsWith("check-in")) {
+            sendCheckIn(path);
+        } else if (path.startsWith("/explore-list")) {
+            if (Preferences.hasFoursquareToken()) {
+                downloadExploreList(path);
+            } else {
+                sendError(getString(R.string.please_connect_foursquare_first));
+            }
+        } else if (path.startsWith("/navigate")) {
+            IntentUtils.launchNavigation(path);
+        } else if (path.startsWith("/open")) {
+            IntentUtils.openOnPhone(path);
+        } else if (path.startsWith("exception:")) {
+            IntentUtils.sendEmail(path.split("exception:")[1]);
         }
     }
 
     /**
      * Downloads explore list of venues.
      */
-    private void downloadExploreList(String path) throws LocationUtils.LocationNotFoundException {
-        Api.get().create(ExploreVenues.class).best(LocationUtils.getLastLocation(),
-                new Callback<ExploreVenues.ExploreVenuesResponse>() {
-                    @Override
-                    public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
-                        syncExploreToWear(exploreVenuesResponse.getVenues());
-                    }
+    private void downloadExploreList(String path) {
+        LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
+            @Override
+            public void onLocationUpdate(String location) {
+                Api.get().create(ExploreVenues.class).best(location,
+                        new Callback<ExploreVenues.ExploreVenuesResponse>() {
+                            @Override
+                            public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
+                                syncExploreToWear(exploreVenuesResponse.getVenues());
+                            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
-                    }
-                }
-        );
+                            @Override
+                            public void failure(RetrofitError error) {
+                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
+                            }
+                        }
+                );
+            }
+        });
     }
 
     /**
      * Downloads list of venues for a check-in.
      */
-    private void downloadCheckInList() throws LocationUtils.LocationNotFoundException {
-        Api.get().create(SearchVenues.class).searchForCheckIn(LocationUtils.getLastLocation(),
-                new Callback<SearchVenues.SearchResponse>() {
+    private void downloadCheckInList() {
+        LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
+            @Override
+            public void onLocationUpdate(String location) {
+                Api.get().create(SearchVenues.class).searchForCheckIn(location,
+                        new Callback<SearchVenues.SearchResponse>() {
 
-                    @Override
-                    public void success(SearchVenues.SearchResponse searchResponse, Response response) {
-                        syncCheckInListToWear(searchResponse.getVenues());
-                    }
+                            @Override
+                            public void success(SearchVenues.SearchResponse searchResponse, Response response) {
+                                syncCheckInListToWear(searchResponse.getVenues());
+                            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
-                                ());
-                    }
-                }
-        );
+                            @Override
+                            public void failure(RetrofitError error) {
+                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
+                                        ());
+                            }
+                        }
+                );
+            }
+        });
     }
 
     /**
      * Actually pushes a check-in to 4sq.
      */
-    private void sendCheckIn(String path) throws LocationUtils.LocationNotFoundException {
+    private void sendCheckIn(String path) {
         Uri uri = Uri.parse(path);
         List<String> pathSegments = uri.getPathSegments();
-        String id = pathSegments.get(1);
-        String shout = pathSegments.size() > 2 ? pathSegments.get(2) : "";
-        Api.get().create(CheckIns.class).add(id, LocationUtils.getLastLocation(), LocationUtils.getLastAccuracy(),
-                LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout,
-                new Callback<CheckIns.CheckInResponse>() {
-                    @Override
-                    public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
-                        // ignore for now, maybe log it to some check-in log in the future
-                    }
+        final String id = pathSegments.get(1);
+        final String shout = pathSegments.size() > 2 ? pathSegments.get(2) : "";
+        LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
+            @Override
+            public void onLocationUpdate(String location) {
+                Api.get().create(CheckIns.class).add(id, location, LocationUtils.getLastAccuracy(),
+                        LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout,
+                        new Callback<CheckIns.CheckInResponse>() {
+                            @Override
+                            public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
+                                // ignore for now, maybe log it to some check-in log in the future
+                            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
-                                ());
-                    }
-                }
-        );
+                            @Override
+                            public void failure(RetrofitError error) {
+                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
+                                        ());
+                            }
+                        }
+                );
+            }
+        });
     }
 
     /**
