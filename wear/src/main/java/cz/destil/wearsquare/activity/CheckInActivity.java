@@ -3,6 +3,7 @@ package cz.destil.wearsquare.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.wearable.activity.ConfirmationActivity;
 
 import cz.destil.wearsquare.R;
@@ -55,5 +56,12 @@ public class CheckInActivity extends GridPagerActivity {
         i.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.SUCCESS_ANIMATION);
         i.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.checked_in));
         startActivityForResult(i, CheckInActivity.CONFIRM_ACTIVITY);
+        vibrate();
+    }
+
+    private void vibrate() {
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        long[] vibrationPattern = {0, 150, 75, 150};
+        vibrator.vibrate(vibrationPattern, -1 /* don't repeat */);
     }
 }
