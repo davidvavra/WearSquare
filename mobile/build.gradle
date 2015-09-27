@@ -35,6 +35,9 @@ dependencies {
     wearApp project(':wear')
     compile 'com.google.android.gms:play-services-wearable:7.8.0'
     compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:preference-v7:23.0.1'
+    compile 'com.android.support:preference-v14:23.0.1' // should be removed when Google fixes v7
+    compile 'com.android.support:design:23.0.1'
     compile 'Teleport:teleportlib:0.1.4'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'

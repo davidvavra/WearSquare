@@ -1,10 +1,12 @@
-package cz.destil.wearsquare;
+package cz.destil.wearsquare.fragment;
 
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 
+import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.data.Preferences;
 
 
@@ -13,11 +15,10 @@ import cz.destil.wearsquare.data.Preferences;
  *
  * @author David Vávra (david@vavra.me)
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle bundle, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
         syncSummary("emoji_1");
         syncSummary("emoji_2");

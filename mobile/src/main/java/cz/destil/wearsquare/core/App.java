@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crittercism.app.Crittercism;
 
+import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.data.Preferences;
 
 /**
@@ -18,7 +19,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Crittercism.initialize(getApplicationContext(), "53e294fd178784226a000002");
+        if (!BuildConfig.DEBUG) {
+            Crittercism.initialize(getApplicationContext(), "53e294fd178784226a000002");
+        }
         sInstance = this;
         Preferences.init();
     }
