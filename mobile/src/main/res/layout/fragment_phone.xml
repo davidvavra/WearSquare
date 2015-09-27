@@ -1,130 +1,98 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:background="@color/primary"
-            android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  tools:context=".PhoneActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/login_box"
-            android:gravity="center_horizontal"
-            android:background="@color/white"
-            android:paddingTop="100dp"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:visibility="gone"
-            android:layout_height="450dp"
-            android:orientation="vertical">
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     xmlns:tools="http://schemas.android.com/tools"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     tools:context=".PhoneActivity">
 
-            <TextView
-                android:text="@string/login_message"
-                android:layout_width="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/login_box"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/foursquare_button"
-                android:text="@string/connect_to_4sq"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/instructions_box"
-            android:gravity="center_horizontal"
-            android:background="@color/white"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:paddingBottom="8dp"
-                android:text="@string/how_to_use_it"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="@string/on_your_watch"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:textSize="18sp"
-                android:textColor="?android:textColorSecondary"
-                android:text="@string/start_check_in"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="@string/or"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:textSize="18sp"
-                android:textColor="?android:textColorSecondary"
-                android:text="@string/start_explore"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/use_start_menu"/>
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:text="@string/login_message"/>
+
+                <Button
+                    android:id="@+id/foursquare_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connect_to_4sq"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/instructions_box"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/how_to_use_it"
-                android:src="@drawable/guide"/>
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="@string/instructions"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/how_to_use_it"
+                    android:src="@drawable/screen_framed"/>
+            </LinearLayout>
+
+        </FrameLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:text="@string/about"
+            android:textColor="@color/white"
+            android:textColorLink="@color/link"
+            android:textSize="13sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/about"
-                android:textColorLink="@color/link"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:text="@string/about"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/donation"
-                android:layout_marginTop="8dp"
-                android:text="@string/buy_author_beer"/>
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/buy_author_beer"/>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

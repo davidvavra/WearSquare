@@ -36,5 +36,6 @@
     <string name="location_permission_rationale">This app needs location permission for check-ins and recommendations of nearby places.</string>
     <string name="location_permission_denied">This app doesn\'t make sense without location.</string>
     <string name="please_grant_location_permission">Please grant location permission on your phone.</string>
+    <string name="instructions">Find these two in your watch app list:</string>
 
 </resources>
