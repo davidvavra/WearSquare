@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseActivity;
 /**
@@ -18,13 +18,13 @@ import cz.destil.wearsquare.core.BaseActivity;
  */
 public abstract class ProgressActivity extends BaseActivity {
 
-    @InjectView(R.id.progress)
+    @Bind(R.id.progress)
     ProgressBar vProgress;
-    @InjectView(R.id.error)
+    @Bind(R.id.error)
     TextView vError;
-    @InjectView(R.id.main)
+    @Bind(R.id.main)
     FrameLayout vMainContainer;
-    @InjectView(R.id.small_progress)
+    @Bind(R.id.small_progress)
     ProgressBar vSmallProgress;
     private View vMainView;
 
@@ -34,7 +34,7 @@ public abstract class ProgressActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         vMainView = ((FrameLayout) LayoutInflater.from(this).inflate(getMainViewResourceId(), vMainContainer)).getChildAt(0);
     }
 

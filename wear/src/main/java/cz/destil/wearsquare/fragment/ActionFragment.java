@@ -6,7 +6,7 @@ import android.support.wearable.view.CircledImageView;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.core.BaseFragment;
 
@@ -17,9 +17,9 @@ import cz.destil.wearsquare.core.BaseFragment;
  */
 public class ActionFragment extends BaseFragment implements View.OnClickListener {
 
-    @InjectView(R.id.icon)
+    @Bind(R.id.icon)
     CircledImageView vIcon;
-    @InjectView(R.id.label)
+    @Bind(R.id.label)
     TextView vLabel;
 
     private Listener mListener;

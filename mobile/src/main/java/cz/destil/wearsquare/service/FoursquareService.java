@@ -24,13 +24,13 @@ import cz.destil.wearsquare.api.ExploreVenues;
 import cz.destil.wearsquare.api.SearchVenues;
 import cz.destil.wearsquare.core.App;
 import cz.destil.wearsquare.data.Preferences;
-import cz.destil.wearsquare.util.DebugLog;
 import cz.destil.wearsquare.util.ImageUtils;
 import cz.destil.wearsquare.util.IntentUtils;
+import cz.destil.wearsquare.util.L;
 import cz.destil.wearsquare.util.LocationUtils;
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
 
 /**
  * Receives all communication from wearable and processes it.
@@ -86,18 +86,18 @@ public class FoursquareService extends TeleportService {
         LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
             @Override
             public void onLocationUpdate(String location) {
-                Api.get().create(ExploreVenues.class).best(location,
-                        new Callback<ExploreVenues.ExploreVenuesResponse>() {
-                            @Override
-                            public void success(ExploreVenues.ExploreVenuesResponse exploreVenuesResponse, Response response) {
-                                syncExploreToWear(exploreVenuesResponse.getVenues());
-                            }
+                Call<ExploreVenues.ExploreVenuesResponse> call = Api.get().create(ExploreVenues.class).best(location);
+                call.enqueue(new Callback<ExploreVenues.ExploreVenuesResponse>() {
+                                 @Override
+                                 public void onResponse(Response<ExploreVenues.ExploreVenuesResponse> response) {
+                                     syncExploreToWear(response.body().getVenues());
+                                 }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage());
-                            }
-                        }
+                                 @Override
+                                 public void onFailure(Throwable t) {
+                                     sendError(getString(R.string.connect_to_internet));
+                                 }
+                             }
                 );
             }
         });
@@ -110,21 +110,18 @@ public class FoursquareService extends TeleportService {
         LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
             @Override
             public void onLocationUpdate(String location) {
-                Api.get().create(SearchVenues.class).searchForCheckIn(location,
-                        new Callback<SearchVenues.SearchResponse>() {
+                Call<SearchVenues.SearchResponse> call = Api.get().create(SearchVenues.class).searchForCheckIn(location);
+                call.enqueue(new Callback<SearchVenues.SearchResponse>() {
+                    @Override
+                    public void onResponse(Response<SearchVenues.SearchResponse> response) {
+                        syncCheckInListToWear(response.body().getVenues());
+                    }
 
-                            @Override
-                            public void success(SearchVenues.SearchResponse searchResponse, Response response) {
-                                syncCheckInListToWear(searchResponse.getVenues());
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
-                                        ());
-                            }
-                        }
-                );
+                    @Override
+                    public void onFailure(Throwable t) {
+                        sendError(getString(R.string.connect_to_internet));
+                    }
+                });
             }
         });
     }
@@ -140,21 +137,21 @@ public class FoursquareService extends TeleportService {
         LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
             @Override
             public void onLocationUpdate(String location) {
-                Api.get().create(CheckIns.class).add(id, location, LocationUtils.getLastAccuracy(),
-                        LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout,
-                        new Callback<CheckIns.CheckInResponse>() {
-                            @Override
-                            public void success(CheckIns.CheckInResponse checkInResponse, Response response) {
-                                // ignore for now, maybe log it to some check-in log in the future
-                            }
+                Call<CheckIns.CheckInResponse> call = Api.get()
+                        .create(CheckIns.class)
+                        .add(id, location, LocationUtils.getLastAccuracy(),
+                                LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout);
+                call.enqueue(new Callback<CheckIns.CheckInResponse>() {
+                    @Override
+                    public void onResponse(Response<CheckIns.CheckInResponse> response) {
+                        // ignore for now, maybe log it to some check-in log in the future
+                    }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                sendError(error.isNetworkError() ? getString(R.string.connect_to_internet) : error.getMessage
-                                        ());
-                            }
-                        }
-                );
+                    @Override
+                    public void onFailure(Throwable t) {
+                        sendError(getString(R.string.connect_to_internet));
+                    }
+                });
             }
         });
     }
@@ -163,7 +160,7 @@ public class FoursquareService extends TeleportService {
      * Sends error to wearable.
      */
     private void sendError(String message) {
-        DebugLog.e(message);
+        L.e(message);
         PutDataMapRequest data = PutDataMapRequest.createWithAutoAppendedId("/error");
         data.getDataMap().putString("error_message", message);
         syncDataItem(data);

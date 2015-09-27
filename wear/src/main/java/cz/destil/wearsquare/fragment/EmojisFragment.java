@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.activity.CheckInActivity;
 import cz.destil.wearsquare.adapter.EmojiAdapter;
@@ -21,11 +21,11 @@ public class EmojisFragment extends BaseFragment {
 
     private static String sSelectedEmoji = "";
 
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     WearableListView vList;
-    @InjectView(R.id.header)
+    @Bind(R.id.header)
     FrameLayout vHeader;
-    @InjectView(R.id.header_text)
+    @Bind(R.id.header_text)
     TextView vHeaderText;
 
     @Override

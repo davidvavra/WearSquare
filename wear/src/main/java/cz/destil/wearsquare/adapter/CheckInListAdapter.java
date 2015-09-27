@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import cz.destil.wearsquare.R;
 
 /**
@@ -56,15 +56,15 @@ public class CheckInListAdapter extends WearableListView.Adapter {
 
     class ListItem extends FrameLayout implements WearableListView.OnCenterProximityListener {
 
-        @InjectView(R.id.image)
+        @Bind(R.id.image)
         CircledImageView image;
-        @InjectView(R.id.text)
+        @Bind(R.id.text)
         TextView text;
 
         public ListItem(Context context) {
             super(context);
             View.inflate(context, R.layout.list_item_check_in, this);
-            ButterKnife.inject(this, this);
+            ButterKnife.bind(this, this);
         }
 
         @Override

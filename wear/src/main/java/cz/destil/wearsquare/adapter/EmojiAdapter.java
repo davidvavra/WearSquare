@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import cz.destil.wearsquare.R;
 
 /**
@@ -23,12 +23,20 @@ import cz.destil.wearsquare.R;
  */
 public class EmojiAdapter extends WearableListView.Adapter {
 
-    private Context mContext;
     private static List<String> sEmojis;
     private static String sSelectedEmoji;
+    private Context mContext;
 
     public EmojiAdapter(Context context) {
         mContext = context;
+    }
+
+    public static void setEmojis(ArrayList<String> emojis) {
+        sEmojis = emojis;
+    }
+
+    public static String getSelectedEmoji() {
+        return sSelectedEmoji;
     }
 
     @Override
@@ -55,23 +63,15 @@ public class EmojiAdapter extends WearableListView.Adapter {
         return sEmojis.size();
     }
 
-    public static void setEmojis(ArrayList<String> emojis) {
-        sEmojis = emojis;
-    }
-
-    public static String getSelectedEmoji() {
-        return sSelectedEmoji;
-    }
-
     class ListItem extends FrameLayout implements WearableListView.OnCenterProximityListener {
 
-        @InjectView(R.id.emoji)
+        @Bind(R.id.emoji)
         TextView emoji;
 
         public ListItem(Context context) {
             super(context);
             View.inflate(context, R.layout.list_item_emoji, this);
-            ButterKnife.inject(this, this);
+            ButterKnife.bind(this, this);
         }
 
         @Override

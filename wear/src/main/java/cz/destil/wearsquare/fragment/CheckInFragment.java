@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.activity.CheckInActivity;
 import cz.destil.wearsquare.core.BaseFragment;
@@ -23,19 +23,19 @@ import cz.destil.wearsquare.event.PageChangedEvent;
  */
 public class CheckInFragment extends BaseFragment {
 
-    @InjectView(R.id.confirmation)
+    @Bind(R.id.confirmation)
     DelayedConfirmationView vConfirmation;
-    @InjectView(R.id.name)
+    @Bind(R.id.name)
     TextView vName;
-    @InjectView(R.id.checking_in)
+    @Bind(R.id.checking_in)
     TextView vCheckinIn;
-    @InjectView(R.id.delayed_box)
+    @Bind(R.id.delayed_box)
     LinearLayout vDelayedBox;
-    @InjectView(R.id.confirm_box)
+    @Bind(R.id.confirm_box)
     RelativeLayout vConfirmBox;
-    @InjectView(R.id.cancel)
+    @Bind(R.id.cancel)
     CircledImageView vCancel;
-    @InjectView(R.id.ok)
+    @Bind(R.id.ok)
     CircledImageView vOk;
 
     private boolean mTimerInvalid;

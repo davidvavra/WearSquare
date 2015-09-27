@@ -1,6 +1,6 @@
 package cz.destil.wearsquare.api;
 
-import retrofit.Callback;
+import retrofit.Call;
 import retrofit.http.POST;
 import retrofit.http.Query;
 
@@ -11,10 +11,10 @@ import retrofit.http.Query;
  */
 public interface CheckIns {
 
-    @POST("/checkins/add?m=swarm")
-    void add(@Query("venueId") String venueId, @Query("ll") String ll, @Query("llAcc") int accuracy, @Query("alt") int altitude,
-             @Query("broadcast") String broadcast,
-             @Query("shout") String shout, Callback<CheckInResponse> callback);
+    @POST("checkins/add?m=swarm")
+    Call<CheckInResponse> add(@Query("venueId") String venueId, @Query("ll") String ll, @Query("llAcc") int accuracy, @Query("alt") int altitude,
+                              @Query("broadcast") String broadcast,
+                              @Query("shout") String shout);
 
     public static class CheckInResponse extends Api.FoursquareResponse {
     }

@@ -7,7 +7,7 @@ import android.util.Log;
  *
  * @author David Vávra (david@vavra.me)
  */
-public class DebugLog {
+public class L {
     private static final String DEFAULT_TAG = "WSQ";
     private static long startTime;
     private static long previousTime;

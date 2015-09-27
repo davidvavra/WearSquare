@@ -13,12 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.R;
@@ -36,13 +37,13 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
     private static final int REQUEST_CODE_FSQ_CONNECT = 42;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 43;
 
-    @InjectView(R.id.about)
+    @Bind(R.id.about)
     TextView vAbout;
-    @InjectView(R.id.login_box)
+    @Bind(R.id.login_box)
     LinearLayout vLoginBox;
-    @InjectView(R.id.instructions_box)
+    @Bind(R.id.instructions_box)
     LinearLayout vInstructionsBox;
-    @InjectView(R.id.donation)
+    @Bind(R.id.donation)
     Button vDonation;
 
     BillingProcessor mBilling;
@@ -51,7 +52,7 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setupAbout();
         mBilling = new BillingProcessor(this, null, this);
         init();
@@ -122,7 +123,7 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
 
     @OnClick(R.id.donation)
     void donate() {
-        mBilling.purchase("beer");
+        mBilling.purchase(this, "beer");
     }
 
     @Override
@@ -149,7 +150,7 @@ public class PhoneActivity extends BaseActivity implements BillingProcessor.IBil
     }
 
     @Override
-    public void onProductPurchased(String s) {
+    public void onProductPurchased(String s, TransactionDetails transactionDetails) {
         ToastUtil.show(R.string.thanks);
         mBilling.consumePurchase("beer");
     }

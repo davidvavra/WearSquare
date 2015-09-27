@@ -1,1 +1,1 @@
-include ':mobile', ':wear', ':foursquare-oauth-library'
+include ':mobile', ':wear'
