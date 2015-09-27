@@ -9,8 +9,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.SystemClock;
+import android.support.annotation.RequiresPermission;
 
 import cz.destil.wearsquare.core.App;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Location-related utils.
@@ -21,7 +25,7 @@ public class LocationUtils {
 
     private static final int MAX_LOCATION_AGE_MINUTES = 2;
 
-    public static void getLastLocation(final LocationListener listener) {
+    public static void getLastLocation(final LocationListener listener) throws SecurityException{
         // return "51.497470, -0.135633";//"40.765068,-73.983172"; // FAKE FOR screenshots
         final LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
@@ -37,7 +41,7 @@ public class LocationUtils {
         }
     }
 
-    private static void requestSingleLocation(final LocationListener listener, final LocationManager locationManager) {
+    private static void requestSingleLocation(final LocationListener listener, final LocationManager locationManager) throws SecurityException {
         IntentFilter locIntentFilter = new IntentFilter("SINGLE_LOCATION_UPDATE_ACTION");
         Intent updateIntent = new Intent("SINGLE_LOCATION_UPDATE_ACTION");
         final PendingIntent singleUpdatePI = PendingIntent.getBroadcast(App.get(), 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -58,13 +62,13 @@ public class LocationUtils {
     }
 
 
-    public static int getLastAccuracy() {
+    public static int getLastAccuracy() throws SecurityException {
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         return (int) location.getAccuracy();
     }
 
-    public static int getLastAltitude() {
+    public static int getLastAltitude() throws SecurityException {
         LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         return (int) location.getAltitude();

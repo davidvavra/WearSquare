@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
@@ -47,4 +48,6 @@ dependencies {
     compile 'com.anjlab.android.iab.v3:library:1.0.28'
     compile 'com.foursquare:foursquare-android-oauth:1.0.3'
     compile 'com.crashlytics.sdk.android:crashlytics:2.5.2'
+    compile 'com.github.hotchemi:permissionsdispatcher:1.2.1'
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.1'
 }

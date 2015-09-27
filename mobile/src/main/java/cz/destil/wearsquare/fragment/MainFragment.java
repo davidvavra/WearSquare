@@ -1,8 +1,10 @@
 package cz.destil.wearsquare.fragment;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -31,12 +33,17 @@ import cz.destil.wearsquare.R;
 import cz.destil.wearsquare.activity.SettingsActivity;
 import cz.destil.wearsquare.data.Preferences;
 import cz.destil.wearsquare.util.ToastUtil;
+import permissions.dispatcher.DeniedPermission;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+import permissions.dispatcher.ShowsRationale;
 
 /**
  * Main fragment in the phone.
  *
  * @author David Vávra (david@vavra.me)
  */
+@RuntimePermissions
 public class MainFragment extends Fragment implements BillingProcessor.IBillingHandler {
 
     private static final int REQUEST_CODE_FSQ_CONNECT = 42;
@@ -67,7 +74,7 @@ public class MainFragment extends Fragment implements BillingProcessor.IBillingH
         ButterKnife.bind(this, view);
         setupAbout();
         mBilling = new BillingProcessor(getActivity(), null, this);
-        init();
+        MainFragmentPermissionsDispatcher.initWithCheck(this);
     }
 
     @Override
@@ -111,7 +118,8 @@ public class MainFragment extends Fragment implements BillingProcessor.IBillingH
         vAbout.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void init() {
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void init() {
         if (Preferences.hasFoursquareToken()) {
             vLoginBox.setVisibility(View.GONE);
             vInstructionsBox.setVisibility(View.VISIBLE);
@@ -185,5 +193,21 @@ public class MainFragment extends Fragment implements BillingProcessor.IBillingH
         if (Preferences.hasFoursquareToken()) {
             vDonation.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MainFragmentPermissionsDispatcher.
+                onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @ShowsRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showRationaleForLocation() {
+        ToastUtil.show(R.string.location_permission_rationale);
+    }
+
+    @DeniedPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showDeniedForLocation() {
+        ToastUtil.show(R.string.location_permission_denied);
     }
 }

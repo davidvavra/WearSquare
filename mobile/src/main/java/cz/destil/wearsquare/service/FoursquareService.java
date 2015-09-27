@@ -66,7 +66,7 @@ public class FoursquareService extends TeleportService {
             sendCheckIn(path);
         } else if (path.startsWith("/explore-list")) {
             if (Preferences.hasFoursquareToken()) {
-                downloadExploreList(path);
+                downloadExploreList();
             } else {
                 sendError(getString(R.string.please_connect_foursquare_first));
             }
@@ -82,48 +82,56 @@ public class FoursquareService extends TeleportService {
     /**
      * Downloads explore list of venues.
      */
-    private void downloadExploreList(String path) {
-        LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
-            @Override
-            public void onLocationUpdate(String location) {
-                Call<ExploreVenues.ExploreVenuesResponse> call = Api.get().create(ExploreVenues.class).best(location);
-                call.enqueue(new Callback<ExploreVenues.ExploreVenuesResponse>() {
-                                 @Override
-                                 public void onResponse(Response<ExploreVenues.ExploreVenuesResponse> response) {
-                                     syncExploreToWear(response.body().getVenues());
-                                 }
+    private void downloadExploreList() {
+        try {
+            LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
+                @Override
+                public void onLocationUpdate(String location) {
+                    Call<ExploreVenues.ExploreVenuesResponse> call = Api.get().create(ExploreVenues.class).best(location);
+                    call.enqueue(new Callback<ExploreVenues.ExploreVenuesResponse>() {
+                                     @Override
+                                     public void onResponse(Response<ExploreVenues.ExploreVenuesResponse> response) {
+                                         syncExploreToWear(response.body().getVenues());
+                                     }
 
-                                 @Override
-                                 public void onFailure(Throwable t) {
-                                     sendError(getString(R.string.connect_to_internet));
+                                     @Override
+                                     public void onFailure(Throwable t) {
+                                         sendError(getString(R.string.connect_to_internet));
+                                     }
                                  }
-                             }
-                );
-            }
-        });
+                    );
+                }
+            });
+        } catch (SecurityException e) {
+            sendError(getString(R.string.please_grant_location_permission));
+        }
     }
 
     /**
      * Downloads list of venues for a check-in.
      */
     private void downloadCheckInList() {
-        LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
-            @Override
-            public void onLocationUpdate(String location) {
-                Call<SearchVenues.SearchResponse> call = Api.get().create(SearchVenues.class).searchForCheckIn(location);
-                call.enqueue(new Callback<SearchVenues.SearchResponse>() {
-                    @Override
-                    public void onResponse(Response<SearchVenues.SearchResponse> response) {
-                        syncCheckInListToWear(response.body().getVenues());
-                    }
+        try {
+            LocationUtils.getLastLocation(new LocationUtils.LocationListener() {
+                @Override
+                public void onLocationUpdate(String location) {
+                    Call<SearchVenues.SearchResponse> call = Api.get().create(SearchVenues.class).searchForCheckIn(location);
+                    call.enqueue(new Callback<SearchVenues.SearchResponse>() {
+                        @Override
+                        public void onResponse(Response<SearchVenues.SearchResponse> response) {
+                            syncCheckInListToWear(response.body().getVenues());
+                        }
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        sendError(getString(R.string.connect_to_internet));
-                    }
-                });
-            }
-        });
+                        @Override
+                        public void onFailure(Throwable t) {
+                            sendError(getString(R.string.connect_to_internet));
+                        }
+                    });
+                }
+            });
+        } catch (SecurityException e) {
+            sendError(getString(R.string.please_grant_location_permission));
+        }
     }
 
     /**

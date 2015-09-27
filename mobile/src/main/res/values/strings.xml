@@ -33,5 +33,8 @@
     <string name="start_check_in">\"OK Google, start check in\"</string>
     <string name="start_explore">\"OK Google, start explore\"</string>
     <string name="use_start_menu">or scroll down to the \"Start …\" menu.\nIf you use it often you can see it here:</string>
+    <string name="location_permission_rationale">This app needs location permission for check-ins and recommendations of nearby places.</string>
+    <string name="location_permission_denied">This app doesn\'t make sense without location.</string>
+    <string name="please_grant_location_permission">Please grant location permission on your phone.</string>
 
 </resources>
