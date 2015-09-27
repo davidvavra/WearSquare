@@ -2,10 +2,11 @@ package cz.destil.wearsquare.core;
 
 import android.app.Application;
 
-import com.crittercism.app.Crittercism;
+import com.crashlytics.android.Crashlytics;
 
 import cz.destil.wearsquare.BuildConfig;
 import cz.destil.wearsquare.data.Preferences;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * App instance.
@@ -20,7 +21,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         if (!BuildConfig.DEBUG) {
-            Crittercism.initialize(getApplicationContext(), "53e294fd178784226a000002");
+            Fabric.with(this, new Crashlytics());
         }
         sInstance = this;
         Preferences.init();

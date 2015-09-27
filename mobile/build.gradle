@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 23
@@ -43,7 +44,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.crittercism:crittercism-android-agent:5.3.3'
     compile 'com.anjlab.android.iab.v3:library:1.0.28'
     compile 'com.foursquare:foursquare-android-oauth:1.0.3'
+    compile 'com.crashlytics.sdk.android:crashlytics:2.5.2'
 }
