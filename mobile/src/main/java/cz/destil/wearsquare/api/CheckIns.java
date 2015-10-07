@@ -16,6 +16,6 @@ public interface CheckIns {
                               @Query("broadcast") String broadcast,
                               @Query("shout") String shout);
 
-    public static class CheckInResponse extends Api.FoursquareResponse {
+    class CheckInResponse extends Api.FoursquareResponse {
     }
 }

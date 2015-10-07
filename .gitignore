@@ -5,3 +5,4 @@
 /build
 *.iml
 mobile/src/main/java/cz/destil/wearsquare/api/Hidden.java
+mobile/fabric.properties

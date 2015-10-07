@@ -31,6 +31,7 @@ import cz.destil.wearsquare.util.LocationUtils;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Receives all communication from wearable and processes it.
@@ -90,7 +91,7 @@ public class FoursquareService extends TeleportService {
                     Call<ExploreVenues.ExploreVenuesResponse> call = Api.get().create(ExploreVenues.class).best(location);
                     call.enqueue(new Callback<ExploreVenues.ExploreVenuesResponse>() {
                                      @Override
-                                     public void onResponse(Response<ExploreVenues.ExploreVenuesResponse> response) {
+                                     public void onResponse(Response<ExploreVenues.ExploreVenuesResponse> response, Retrofit retrofit) {
                                          syncExploreToWear(response.body().getVenues());
                                      }
 
@@ -118,7 +119,7 @@ public class FoursquareService extends TeleportService {
                     Call<SearchVenues.SearchResponse> call = Api.get().create(SearchVenues.class).searchForCheckIn(location);
                     call.enqueue(new Callback<SearchVenues.SearchResponse>() {
                         @Override
-                        public void onResponse(Response<SearchVenues.SearchResponse> response) {
+                        public void onResponse(Response<SearchVenues.SearchResponse> response, Retrofit retrofit) {
                             syncCheckInListToWear(response.body().getVenues());
                         }
 
@@ -151,7 +152,7 @@ public class FoursquareService extends TeleportService {
                                 LocationUtils.getLastAltitude(), Preferences.getBroadcast(), shout);
                 call.enqueue(new Callback<CheckIns.CheckInResponse>() {
                     @Override
-                    public void onResponse(Response<CheckIns.CheckInResponse> response) {
+                    public void onResponse(Response<CheckIns.CheckInResponse> response, Retrofit retrofit) {
                         // ignore for now, maybe log it to some check-in log in the future
                     }
 

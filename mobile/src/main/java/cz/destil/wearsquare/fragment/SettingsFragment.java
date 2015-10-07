@@ -1,7 +1,6 @@
 package cz.destil.wearsquare.fragment;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;

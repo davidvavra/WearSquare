@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
@@ -15,22 +14,14 @@ import retrofit.http.Query;
  */
 public interface ExploreVenues {
 
-    public static int LIMIT_VENUES = 7;
-    public static String IMAGE_DIMENSIONS = "640x400";
+    int LIMIT_VENUES = 7;
+    String IMAGE_DIMENSIONS = "640x400";
 
     @GET("venues/explore?m=foursquare&openNow=1&sortByDistance=1&venuePhotos=1&limit=" + LIMIT_VENUES)
     Call<ExploreVenuesResponse> best(@Query("ll") String ll);
 
-    public static class ExploreVenuesResponse extends Api.FoursquareResponse {
+    class ExploreVenuesResponse extends Api.FoursquareResponse {
         FoursquareContent response;
-
-        public List<Venue> getVenues() {
-            List<Venue> venues = new ArrayList<>();
-            for (FoursquareItem item : response.groups.get(0).items) {
-                venues.add(parseVenue(item));
-            }
-            return venues;
-        }
 
         public static Venue parseVenue(FoursquareItem item) {
             String photo = null;
@@ -48,9 +39,17 @@ public interface ExploreVenues {
             return new Venue(item.venue.name, categoryIcon, photo, item.venue.location.distance,
                     item.venue.location.lat, item.venue.location.lng, hours, item.venue.id, tip);
         }
+
+        public List<Venue> getVenues() {
+            List<Venue> venues = new ArrayList<>();
+            for (FoursquareItem item : response.groups.get(0).items) {
+                venues.add(parseVenue(item));
+            }
+            return venues;
+        }
     }
 
-    public static class ExploreVenueResponse extends Api.FoursquareResponse {
+    class ExploreVenueResponse extends Api.FoursquareResponse {
         FoursquareItem response;
 
         public Venue getVenue() {
@@ -58,7 +57,7 @@ public interface ExploreVenues {
         }
     }
 
-    public static class Venue {
+    class Venue {
         public String id;
         public String name;
         public String categoryIcon;

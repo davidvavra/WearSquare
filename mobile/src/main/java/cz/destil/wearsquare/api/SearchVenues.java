@@ -3,7 +3,6 @@ package cz.destil.wearsquare.api;
 import java.util.List;
 
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
@@ -14,12 +13,12 @@ import retrofit.http.Query;
  */
 public interface SearchVenues {
 
-    public static int LIMIT_VENUES = 10;
+    int LIMIT_VENUES = 10;
 
     @GET("venues/search?m=swarm&intent=checkin&limit=" + LIMIT_VENUES)
     Call<SearchResponse> searchForCheckIn(@Query("ll") String ll);
 
-    public static class SearchResponse extends Api.FoursquareResponse {
+    class SearchResponse extends Api.FoursquareResponse {
         FoursquareContent response;
 
         public List<Venue> getVenues() {
@@ -27,7 +26,7 @@ public interface SearchVenues {
         }
     }
 
-    public static class Venue {
+    class Venue {
         public String id;
         public String name;
         List<FoursquareCategory> categories;

@@ -88,6 +88,6 @@ public abstract class GridPagerActivity extends ProgressActivity {
     }
 
     public interface PagerListener {
-        public void onPageChanged();
+        void onPageChanged();
     }
 }

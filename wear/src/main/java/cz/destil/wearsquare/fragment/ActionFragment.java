@@ -53,6 +53,6 @@ public class ActionFragment extends BaseFragment implements View.OnClickListener
     }
 
     public interface Listener {
-        public void onActionPerformed();
+        void onActionPerformed();
     }
 }

@@ -9,12 +9,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.SystemClock;
-import android.support.annotation.RequiresPermission;
 
 import cz.destil.wearsquare.core.App;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * Location-related utils.
@@ -25,7 +21,7 @@ public class LocationUtils {
 
     private static final int MAX_LOCATION_AGE_MINUTES = 2;
 
-    public static void getLastLocation(final LocationListener listener) throws SecurityException{
+    public static void getLastLocation(final LocationListener listener) throws SecurityException {
         // return "51.497470, -0.135633";//"40.765068,-73.983172"; // FAKE FOR screenshots
         final LocationManager locationManager = (LocationManager) App.get().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
@@ -51,7 +47,9 @@ public class LocationUtils {
                 context.unregisterReceiver(this);
                 String key = LocationManager.KEY_LOCATION_CHANGED;
                 Location location = (Location) intent.getExtras().get(key);
-                listener.onLocationUpdate(location.getLatitude() + "," + location.getLongitude());
+                if (location != null) {
+                    listener.onLocationUpdate(location.getLatitude() + "," + location.getLongitude());
+                }
                 locationManager.removeUpdates(singleUpdatePI);
             }
         };
@@ -75,6 +73,6 @@ public class LocationUtils {
     }
 
     public interface LocationListener {
-        public void onLocationUpdate(String location);
+        void onLocationUpdate(String location);
     }
 }

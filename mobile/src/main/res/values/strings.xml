@@ -9,9 +9,7 @@
     <string name="login_message">Please login with Foursquare first:</string>
     <string name="please_connect_foursquare_first">Login with the WearSquare app on your phone first</string>
     <string name="connect_to_internet">Please get online on your phone</string>
-    <string name="or">or</string>
     <string name="logout">Logout</string>
-    <string name="no_location">No location on your phone. Turn on location in Android settings.</string>
     <string name="send_checkins_to_twitter">Send check-ins to Twitter</string>
     <string name="twitter_description">Twitter needs to be connected in Swarm settings</string>
     <string name="send_checkins_to_facebook">Send check-ins to Facebook</string>
@@ -29,10 +27,6 @@
     <string name="emoji_5">5th sticker</string>
     <string name="no_emoji">Empty = no sticker</string>
     <string name="how_to_use_it">How to use:</string>
-    <string name="on_your_watch">Say to your watch:</string>
-    <string name="start_check_in">\"OK Google, start check in\"</string>
-    <string name="start_explore">\"OK Google, start explore\"</string>
-    <string name="use_start_menu">or scroll down to the \"Start …\" menu.\nIf you use it often you can see it here:</string>
     <string name="location_permission_rationale">This app needs location permission for check-ins and recommendations of nearby places.</string>
     <string name="location_permission_denied">This app doesn\'t make sense without location.</string>
     <string name="please_grant_location_permission">Please grant location permission on your phone.</string>
